@@ -350,6 +350,12 @@ def returnH1_H2(points1,points2,F,size):
 ## 结果及说明
 
 校正前：  
+![Oringinal Left](https://github.com/Easonyesheng/MarkdownPictures/raw/master/left.jpg)
+![Oringinal Right](https://github.com/Easonyesheng/MarkdownPictures/raw/master/right.jpg)
 
 校正后：
+![Rectifyed Left](https://raw.githubusercontent.com/Easonyesheng/MarkdownPictures/master/RectUncalibLeft.jpg)
+![Rectifyed Right](https://github.com/Easonyesheng/MarkdownPictures/raw/master/RectUncalibRight.jpg)
 
+完整的代码在我的GitHub[项目](https://github.com/Easonyesheng/StereoCamera)中有，记得给个Star。  
+*中国人喜欢折中。如果你告诉他们不要白嫖，他们往往偏要看了用了不Star，如果你告诉他们给钱才能看才能用，他们就会Star来代替给钱。 -- 周树人*  
