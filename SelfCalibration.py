@@ -10,36 +10,27 @@ import cv2
 from PIL import Image
 from kitti_ana import KittiAnalyse
 from rect import mathching, returnH1_H2, getRectifystereo, compute_epipole
+from LoadH5 import parse_K
 
 class SelfCalibration:
     """
     自标定系统
         功能：
             1.读入图片
-            2.读入参数
+            2.读入参数 -- KITTI(txt) & YFCC(h5)
             3.估计F
-            4.F评估
+            4.F评估 -- 可视化+量化
             5.校正
             
-    文件结构
-        -图片文件夹
-            -左图
-            -右图
-        -标定文件夹
-            -左相机参数 -- K & d 
-            -右相机参数
-            -基础矩阵
-        -保存文件夹
-            -校正后左图
-            -校正后右图
-            -极线图
+   
     """
 
-    def __init__(self,ImgPath,ParaPath,SavePath):
+    def __init__(self,ImgPath,ParaPath,SavePath,SavePrefix):
 
         self.ImgPath = ImgPath
         self.ParaPath = ParaPath
         self.SavePath = SavePath
+        self.SavePrefix = SavePrefix
         self.F = None
         self.FE = None
         self.imgl = None
@@ -51,28 +42,32 @@ class SelfCalibration:
 
 
     def load_image_pair(self, img_nameL, img_nameR):
-            """Loads pair of images
-    
-                This method loads the two images for which the 3D scene should be
-                reconstructed. The two images should show the same real-world scene
-                from two different viewpoints.
-    
-                :param img_nameL: name of left image
-                :param img_nameR: name of right image
-                
-            """
-            self.imgl = cv2.imread(os.path.join(self.ImgPath,img_nameL), cv2.CV_8UC3)
-            self.imgr = cv2.imread(os.path.join(self.ImgPath,img_nameR), cv2.CV_8UC3)
-    
-            # make sure images are valid
-            if self.imgl is None:
-                sys.exit("Image " +os.path.join(self.ImgPath,img_nameL) + " could not be loaded.")
-            if self.imgr is None:
-                sys.exit("Image " + os.path.join(self.ImgPath,img_nameR) + " could not be loaded.")
-    
-            if len(self.imgl.shape) == 2:
-                self.imgl = cv2.cvtColor(self.imgl, cv2.COLOR_GRAY2BGR)
-                self.imgr = cv2.cvtColor(self.imgr, cv2.COLOR_GRAY2BGR)
+        """Loads pair of images
+
+        This method loads the two images for which the 3D scene should be
+        reconstructed. The two images should show the same real-world scene
+        from two different viewpoints.
+
+        :param img_nameL: name of left image
+        :param img_nameR: name of right image
+            
+        """
+        self.img_left_name, self.img_right_name = img_nameL,img_nameR
+        self.imgl = cv2.imread(os.path.join(self.ImgPath,img_nameL), 0)
+        self.imgr = cv2.imread(os.path.join(self.ImgPath,img_nameR), 0)
+        # print(self.imgl.shape)
+        # self.imgl = cv2.resize(self.imgl,(256,256))
+        # self.imgr = cv2.resize(self.imgr,(256,256))
+
+        # make sure images are valid
+        if self.imgl is None:
+            sys.exit("Image " +os.path.join(self.ImgPath,img_nameL) + " could not be loaded.")
+        if self.imgr is None:
+            sys.exit("Image " + os.path.join(self.ImgPath,img_nameR) + " could not be loaded.")
+
+        if len(self.imgl.shape) == 2:
+            self.imgl = cv2.cvtColor(self.imgl, cv2.COLOR_GRAY2BGR)
+            self.imgr = cv2.cvtColor(self.imgr, cv2.COLOR_GRAY2BGR)
     
              
     def Show(self):
@@ -102,8 +97,8 @@ class SelfCalibration:
         print("F: \nF_GT:",self.F,"\nFE:",self.FE)
 
             
-    def LoadPara(self):
-        """Load the camera parameters
+    def LoadPara_KITTI(self):
+        """Load the camera parameters from KITTI's calib_file
 
             Load the parameters and undistort the images
 
@@ -113,10 +108,14 @@ class SelfCalibration:
             :para dr: vector of distortion coefficients of right camera
 
         """
-        paser = KittiAnalyse(self.ImgPath,self.ParaPath,self.SavePath)
+        ParaPath = os.listdir(self.ParaPath)[1]
+        print(ParaPath)
+        paser = KittiAnalyse(self.ImgPath,os.path.join(self.ParaPath,ParaPath),self.SavePath)
         calib = paser.calib
         Kl,Kr = calib['K_0{}'.format('0')],calib['K_0{}'.format('1')]
         dl,dr = calib['D_0{}'.format('0')],calib['D_0{}'.format('1')]
+        Rl,Rr = calib['R_rect_0{}'.format('0')],calib['R_rect_0{}'.format('1')]
+        Pl,Pr = calib['P_rect_0{}'.format('0')],calib['P_rect_0{}'.format('1')]
 
         self.Kl = Kl
         self.Kr = Kr
@@ -124,24 +123,116 @@ class SelfCalibration:
         self.Kr_inv = np.linalg.inv(Kr)  # store inverse for fast access
         self.dl = dl
         self.dr = dr
+        # for rect
+        self.Pl = Pl.reshape((3,4)) 
+        self.Pr = Pr.reshape((3,4)) 
+        self.Rl = Rl
+        self.Rr = Rr 
+        # print(Pl)
+        # print(Rl)
+
 
         # # undistort the images
         # self.imgl = cv2.undistort(self.imgl, self.Kl, self.dl)
         # self.imgr = cv2.undistort(self.imgr, self.Kr, self.dr)
+    
+    def LoadPara_YFCC(self):
+        """Load the camera parameters from YFCC's calib_file
 
-    def LoadFMGT(self, F_filename = 'F.txt'):
+            Load the parameters and undistort the images
+
+            :para Kl: left camera's 3x3 intrinsic camera matrix
+            :para Kr: right camera's 3x3 intrinsic camera matrix
+            :para dl: vector of distortion coefficients of left camera ; set to [0,0,0,0,0]
+            :para dr: vector of distortion coefficients of right camera ; set to [0,0,0,0,0]
+        """
+        K, T = parse_K(self.ParaPath,self.img_left_name,self.img_right_name)
+        # print(type(K))
+        self.Kl = K[self.img_left_name]
+        self.Kr = K[self.img_right_name]
+        self.Kl_inv = np.linalg.inv(self.Kl)  # store inverse for fast access
+        self.Kr_inv = np.linalg.inv(self.Kr)  # store inverse for fast access
+        self.Tl = T[self.img_left_name]
+        self.Tr = T[self.img_right_name]
+        self.dl = np.zeros((1,5))
+        self.dr = np.zeros((1,5))
+
+    def LoadCorr(self,rightcorr,leftcorr):
+        """Load inliers corr infered by OANet
+        """
+        corr_left = np.load(leftcorr)
+        corr_right = np.load(rightcorr)
+        self.match_pts1 = corr_left
+        self.match_pts2 = corr_right
+
+
+    def LoadFMGT_KITTI(self):
         """Load the fundamental matrix file(.txt)
+            calculate the fundamental matrix from KITTI calibration file
+            accroding to the following formula:
+            F = K2^(-T)*R*[t]x*K1^(-1)
+        """
+        ParaPath = os.listdir(self.ParaPath)[1]
+        paser = KittiAnalyse(self.ImgPath,os.path.join(self.ParaPath,ParaPath),self.SavePath)
+        calib = paser.calib
+        f_cam = '0'
+        t_cam = '1'
+        K1, K2 = calib['K_0{}'.format(f_cam)], calib['K_0{}'.format(t_cam)]
+        R1, R2 = calib['R_0{}'.format(f_cam)], calib['R_0{}'.format(t_cam)]
+        # R1, R2 = self.calib['R_rect_0{}'.format(f_cam)], self.calib['R_rect_0{}'.format(t_cam)]
+        t1, t2 = calib['T_0{}'.format(f_cam)], calib['T_0{}'.format(t_cam)]
+
+        # print(f"K1: {K1}, K2: {K2}, R1: {R1}, R2: {R2}, t1: {t1}, t2: {t2}")
+
+        R = np.dot(R2, np.linalg.inv(R1))
+        t = t2 - t1
+        
+        T = np.array([
+            [0,     -t[2], t[1]],
+            [t[2],  0,     -t[0]],
+            [-t[1], t[0],  0]
+        ])
+        #compute
+        F = np.dot(np.linalg.inv(K2.T), np.dot(T, np.dot(R, np.linalg.inv(K1))))
+        F /= F[2,2]
+        # assert np.linalg.matrix_rank(F) == 2
+        # print(self.imgl.shape)
+        self.shape = np.array([512, 1392])
+        self.F = self.get_normalized_F(F, mean=[0,0], std=[np.sqrt(2.), np.sqrt(2.)], size=self.shape)
+        self.F = self.F.astype(np.float)
+        return self.F
+    
+
+    def get_normalized_F(self, F, mean, std, size=None):
+        """Normalize Fundamental matrix
 
         """
-        F = np.loadtxt(os.path.join(self.ParaPath,F_filename))
-        w, h = F.shape
-        if w*h != 9:
-            print("Fundamental matrix file Error!")
-            self.F = None
-        if w == h:
-            self.F = F
+        if size is None:
+            A_resize = np.eye(3)
         else:
-            self.F = F.reshape(3,3)
+            orig_w, orig_h = self.shape
+            new_w, new_h = size
+            A_resize = np.array([
+                [new_w/float(orig_w), 0.,  0.],
+                [0., new_h/float(orig_h), 0.],
+                [0., 0., 1.]
+            ])
+        A_center = np.array([
+            [1, 0, -mean[0]],
+            [0, 1, -mean[1]],
+            [0, 0, 1.]
+        ])
+        A_normvar = np.array([
+            [np.sqrt(2.)/std[0], 0, 0],
+            [0, np.sqrt(2.)/std[1], 0],
+            [0, 0, 1.]
+        ])
+        A = A_normvar.dot(A_center).dot(A_resize)
+        A_inv = np.linalg.inv(A) 
+        F = A_inv.T.dot(F).dot(A_inv)
+        F /= F[2,2]
+        return F
+
 
 
     def ExactGoodMatch(self,screening = False):
@@ -201,9 +292,9 @@ class SelfCalibration:
             try:
                 self.F.all()
             except AttributeError:
-                print("There is no F_GT, you can use LoadFMGT() to get it.\nWarning: Without screening good matches.")
+                print("There is no F_GT, you can use LoadFMGT_KITTI() to get it.\nWarning: Without screening good matches.")
                 return
-
+            print("Use F_GT to screening matching points")
             leftpoints = []
             rightpoints = []
 
@@ -211,7 +302,7 @@ class SelfCalibration:
                 hp1, hp2 = np.ones((3,1)), np.ones((3,1))
                 hp1[:2,0], hp2[:2,0] = p1, p2 
                 err = np.abs(np.dot(hp2.T, np.dot(self.F, hp1)))       
-                if err < 0.5:
+                if err < 0.1:
                     leftpoints.append(p1)
                     rightpoints.append(p2)
             
@@ -227,12 +318,14 @@ class SelfCalibration:
                 1.RANSAC
                 2.LMedS
                 3.DL(Deep Learning)
+                4.8Points
             :output 
                 change self.FE
         """
         try: 
             self.match_pts1.all()
         except AttributeError:
+            print('Exact matching points')
             self.ExactGoodMatch()
 
         if method == "RANSAC":
@@ -308,7 +401,7 @@ class SelfCalibration:
         sym_epi_dis = self.SymEpiDis(self.FE, self.match_pts1, self.match_pts2)
         print("Evaluate the estimated fundamental matrix")
         print("The quantities of matching points is %d" %len(self.match_pts2))
-        print("The epipolar constraint is : %d" %epi_cons ,"\nThe symmetry epipolar distance is: %d" %sym_epi_dis)
+        print("The epipolar constraint is : " ,float(epi_cons) ,"\nThe symmetry epipolar distance is: " ,float(sym_epi_dis))
         
 
 
@@ -344,9 +437,9 @@ class SelfCalibration:
                                                       lines2, self.match_pts2,
                                                       self.match_pts1)
 
-        cv2.imwrite(os.path.join(self.SavePath,"epipolarleft.jpg"),img1)
+        cv2.imwrite(os.path.join(self.SavePath+self.SavePrefix,"epipolarleft.jpg"),img1)
         # print("Saved in ",os.path.join(self.SavePath,"epipolarleft.jpg"))
-        cv2.imwrite(os.path.join(self.SavePath,"epipolarright.jpg"),img3)
+        cv2.imwrite(os.path.join(self.SavePath+self.SavePrefix,"epipolarright.jpg"),img3)
 
         cv2.startWindowThread()
         cv2.imshow("left", img1)
@@ -375,15 +468,36 @@ class SelfCalibration:
 
 
 
+    def LoadE(self,EPath):
+        """
+        Load the Essentric Matrix got by OANet
+        calculate the F by 
+            F = Kl_inv^T * E * Kr_inv
+        """
+        self.E = np.load(EPath).reshape(3,3)
+        print('Load E from %s as follow' %EPath)
+        print(self.E)
+        # self.FE = self.E
+        # e_gt = np.matmul(np.matmul(np.linalg.inv(K2).T, e_gt), np.linalg.inv(K1))
+        # e_gt_unnorm = np.matmul(np.matmul(np.linalg.inv(T2).T, e_gt), np.linalg.inv(T1))
+        # e_gt = e_gt_unnorm / np.linalg.norm(e_gt_unnorm)
+        self.FE = np.matmul(np.matmul(self.Kr_inv.T,self.E),self.Kl_inv)
+        self.FE /= self.FE[2,2] 
+        # print(self.FE)
+        # FE = np.matmul(np.matmul(np.linalg.inv(self.Tr).T,self.FE),np.linalg.inv(self.Tl))
+        # self.FE = FE / np.linalg.norm(FE)
+
+        
     def _Get_Essential_Matrix(self):
         """Get Essential Matrix from Fundamental Matrix
             E = Kl^T*F*Kr
         """
         self.E = self.Kl.T.dot(self.FE).dot(self.Kr)
     
-    def _Get_R_T(self):
+    def _Get_R_T(self,KITTI = False):
         """Get the [R|T] camera matrix
             After geting the R,T, need to determine whether the points are in front of the images
+            :para KITTI : if True means no need to use Fmask to screen cuz points are screened by F_GT
         """
         # decompose essential matrix into R, t (See Hartley and Zisserman 9.13)
         U, S, Vt = np.linalg.svd(self.E)
@@ -394,18 +508,28 @@ class SelfCalibration:
         # fundamental matrix
         first_inliers = []
         second_inliers = []
-        for i in range(len(self.Fmask)):
-            if self.Fmask[i]:
-                # normalize and homogenize the image coordinates
+        if not KITTI:
+            for i in range(len(self.Fmask)):
+                if self.Fmask[i]:
+                    # normalize and homogenize the image coordinates
+                    first_inliers.append(self.Kl_inv.dot([self.match_pts1[i][0],
+                                        self.match_pts1[i][1], 1.0]))
+                    second_inliers.append(self.Kr_inv.dot([self.match_pts2[i][0],
+                                        self.match_pts2[i][1], 1.0]))
+        else:
+            for i in range(self.match_pts1.shape[0]):
                 first_inliers.append(self.Kl_inv.dot([self.match_pts1[i][0],
-                                     self.match_pts1[i][1], 1.0]))
+                                        self.match_pts1[i][1], 1.0]))
                 second_inliers.append(self.Kr_inv.dot([self.match_pts2[i][0],
-                                      self.match_pts2[i][1], 1.0]))
- 
+                                        self.match_pts2[i][1], 1.0]))
+
+
         # Determine the correct choice of second camera matrix
         # only in one of the four configurations will all the points be in
         # front of both cameras
         # First choice: R = U * Wt * Vt, T = +u_3 (See Hartley Zisserman 9.19)
+        # R = U.dot(W.T).dot(Vt)
+        # T = - U[:, 2]
         R = U.dot(W).dot(Vt)
         T = U[:, 2]
         if not self._in_front_of_both_cameras(first_inliers, second_inliers,
@@ -450,36 +574,76 @@ class SelfCalibration:
  
         return True
 
-    def RectifyImg(self):
+    def RectifyImg(self,KITTI = False,Calib = False):
         """Rectify images using cv2.stereoRectify()
+            :para KITTI: for _Get_R_T
+            :para Calib: If true means rectify accroding to the calibration file
+
         """
         try:
             self.FE.all()
         except AttributeError:
             self.EstimateFM() # Using traditional method as default
 
-        self._Get_Essential_Matrix()
-        self._Get_R_T()
+        try:
+            self.E.all()
+        except AttributeError:
+            self._Get_Essential_Matrix() 
 
-        R = self.Rt2[:, :3]
-        T = self.Rt2[:, 3]
-        #perform the rectification
-        R1, R2, P1, P2, Q, roi1, roi2 = cv2.stereoRectify(self.Kl, self.dl,
-                                                          self.Kr, self.dr,
-                                                          self.imgl.shape[:2],
-                                                          R, T, alpha=0)
-        mapx1, mapy1 = cv2.initUndistortRectifyMap(self.Kl, self.dl, R1, P1,
-                                                   [self.imgl.shape[0],self.imgl.shape[1]],
-                                                   cv2.CV_32FC1)
-        mapx2, mapy2 = cv2.initUndistortRectifyMap(self.Kr, self.dr, R2, P2,
-                                                   [self.imgl.shape[0],self.imgl.shape[1]],
-                                                   cv2.CV_32FC1)
+        if not Calib:
+            self._Get_R_T(KITTI)
+
+            R = self.Rt2[:, :3]
+            T = self.Rt2[:, 3]
+            #perform the rectification
+            R1, R2, P1, P2, Q, roi1, roi2 = cv2.stereoRectify(self.Kl, self.dl,
+                                                            self.Kr, self.dr,
+                                                            (self.imgl.shape[1],self.imgl.shape[0]),
+                                                            R, T, alpha=0)
+            mapx1, mapy1 = cv2.initUndistortRectifyMap(self.Kl, self.dl, R1, P1,
+                                                    (self.imgl.shape[1],self.imgl.shape[0]),
+                                                    cv2.CV_32FC1)
+            mapx2, mapy2 = cv2.initUndistortRectifyMap(self.Kr, self.dr, R2, P2,
+                                                    (self.imgr.shape[1],self.imgr.shape[0]),
+                                                    cv2.CV_32FC1)
+        else:
+            R1 = self.Rl
+            P1 = self.Pl 
+            R2 = self.Rr 
+            P2 = self.Pr 
+
+            mapx1, mapy1 = cv2.initUndistortRectifyMap(self.Kl, self.dl, R1, P1,
+                                                    (self.imgl.shape[1],self.imgl.shape[0]),
+                                                    cv2.CV_32FC1)
+            mapx2, mapy2 = cv2.initUndistortRectifyMap(self.Kr, self.dr, R2, P2,
+                                                    (self.imgr.shape[1],self.imgr.shape[0]),
+                                                    cv2.CV_32FC1)
         img_rect1 = cv2.remap(self.imgl, mapx1, mapy1, cv2.INTER_LINEAR)
         img_rect2 = cv2.remap(self.imgr, mapx2, mapy2, cv2.INTER_LINEAR)
 
         # save
-        cv2.imwrite(os.path.join(self.SavePath,"RectedLeft.jpg"),img_rect1)
-        cv2.imwrite(os.path.join(self.SavePath,"RectedRight.jpg"),img_rect2)
+        cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"RectedLeft.jpg"),img_rect1)
+        cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"RectedRight.jpg"),img_rect2)
+
+        
+        # draw the images side by side
+        total_size = (max(img_rect1.shape[0], img_rect2.shape[0]),
+                      img_rect1.shape[1] + img_rect2.shape[1], 3)
+        img = np.zeros(total_size, dtype=np.uint8)
+        img[:img_rect1.shape[0], :img_rect1.shape[1]] = img_rect1
+        img[:img_rect2.shape[0], img_rect1.shape[1]:] = img_rect2
+ 
+        # draw horizontal lines every 25 px accross the side by side image
+        for i in range(20, img.shape[0], 25):
+            cv2.line(img, (0, i), (img.shape[1], i), (255, 0, 0))
+ 
+        cv2.imshow('imgRectified', img)
+        print(img_rect2.shape)
+        
+        k = cv2.waitKey()
+        if k == 27:
+            cv2.destroyAllWindows()
+        
 
 
     def RectifyImgUncalibrated(self):
@@ -493,34 +657,106 @@ class SelfCalibration:
         rectimg2 = cv2.warpPerspective(im2,H2,size)
         # rectifyim1,rectifyim2=getRectifystereo(H1,H2,im1,im2,size,self.FE)
         
-        cv2.imwrite(os.path.join(self.SavePath,"RectUncalibLeft.jpg"),rectimg1)
-        cv2.imwrite(os.path.join(self.SavePath,"RectUncalibRight.jpg"),rectimg2)
+        # cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"RectUncalibLeft.jpg"),rectimg1)
+        # cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"RectUncalibRight.jpg"),rectimg2)
 
         cv2.startWindowThread()
-        cv2.imshow("left", rectimg1)
-        cv2.imshow("right", rectimg2)
-        k = cv2.waitKey()
-        if k == 27:
-            cv2.destroyAllWindows()
+        # cv2.imshow("left", rectimg1)
+        # cv2.imshow("right", rectimg2)
+
+        # draw the images side by side
+        total_size = (max(rectimg1.shape[0], rectimg2.shape[0]),
+                      rectimg1.shape[1] + rectimg2.shape[1], 3)
+        img = np.zeros(total_size, dtype=np.uint8)
+        img[:rectimg1.shape[0], :rectimg1.shape[1]] = rectimg1
+        img[:rectimg2.shape[0], rectimg1.shape[1]:] = rectimg2
+ 
+        # draw horizontal lines every 25 px accross the side by side image
+        for i in range(20, img.shape[0], 25):
+            cv2.line(img, (0, i), (img.shape[1], i), (255, 0, 0))
+ 
+        cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"RectUncalib.jpg"),img)
+        
+        #show
+        # cv2.imshow('imgRectified', img)
+        
+   
+        # k = cv2.waitKey()
+        # if k == 27:
+        #     cv2.destroyAllWindows()
+        
 
     
 if __name__ == "__main__":
 
-    ImgPath = "/Users/zhangyesheng/Desktop/GraduationDesign/StereoVision/StereoCamera/pics/"
-    ParaPath = "/Users/zhangyesheng/Desktop/GraduationDesign/StereoVision/StereoCamera/calib_cam_to_cam.txt"
-    SavePath = "/Users/zhangyesheng/Desktop/GraduationDesign/StereoVision/StereoCamera/Res/"
-    img_nameL = "left.jpg"
-    img_nameR = "right.jpg"
+    
 
-    test = SelfCalibration(ImgPath,ParaPath,SavePath)
+    
+    #DataLoad---------------------
+        #--- YFCC100M
+    # prefix = 'big_ben_test/'
+    # img_nameL = "93734988_13580074803.jpg"
+    # img_nameR = "92689035_2333683024.jpg"
+    # EPath = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+"E.npy"
+    # leftcorr = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+"leftcorr.npy"
+    # rightcorr = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+"rightcorr.npy"
+    # SavePrefix = '_Model_'
+
+        #--- KITTI
+    prefix = 'KITTI48/'
+    img_nameL = "left.png"
+    img_nameR = "right.png"
+    EPath = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+"E.npy"
+    leftcorr = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+"leftcorr.npy"
+    rightcorr = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+"rightcorr.npy"
+    SavePrefix = '_Model_LMedS_'
+
+        #--- indoor
+    # img_nameL = 'left.jpg'
+    # img_nameR = 'right.jpg'
+    # EPath = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/RectTest/E.npy"
+    # leftcorr = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/RectTest/leftcorr.npy"
+    # rightcorr = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/RectTest/rightcorr.npy"
+
+    
+    #Mac
+    ImgPath = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/pics/"+prefix
+    ParaPath = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/calibration/"+prefix
+    SavePath = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/Res/"+prefix
+
+    #Linux
+    # ImgPath = "./pics/
+    # ParaPath = "./calibration/"
+    # SavePath = "./Res/"
+    # img_nameL = "40982537_3102972880.jpg"
+    # img_nameR = "42002003_1635942632.jpg"
+
+    test = SelfCalibration(ImgPath,ParaPath,SavePath,SavePrefix)
     
     test.load_image_pair(img_nameL, img_nameR)
     
-    test.LoadPara()
-    # test.Show()
+    
 
-    test.EstimateFM(method="RANSAC")
+    #-------------Tradition
+    test.LoadPara_KITTI()
+    # test.Show()
+    # test.FE = test.LoadFMGT_KITTI()
+    # print(test.FE)
+    # test.ExactGoodMatch(screening=True)
+    # test.EstimateFM(method="RANSAC")
     # test.Show()
     # test.DrawEpipolarLines()
+
+
+    #--------------DL
+    # test.LoadPara_YFCC()
+    # test.LoadPara_KITTI()
+    # test.LoadE(EPath)
+    test.LoadCorr(rightcorr,leftcorr)
+    # test.FMEvaluate()
+    test.EstimateFM(method="LMedS")
+
+
+    # test.RectifyImg(Calib=True)
     test.RectifyImgUncalibrated()
 
