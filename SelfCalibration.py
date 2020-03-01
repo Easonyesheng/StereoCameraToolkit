@@ -235,7 +235,7 @@ class SelfCalibration:
 
 
 
-    def ExactGoodMatch(self,screening = False):
+    def ExactGoodMatch(self,screening = False,point_lens = 0):
         """Get matching points & Use F_GT to get good matching points
             1.use SIFT to exact feature points 
             if screening
@@ -302,14 +302,16 @@ class SelfCalibration:
                 hp1, hp2 = np.ones((3,1)), np.ones((3,1))
                 hp1[:2,0], hp2[:2,0] = p1, p2 
                 err = np.abs(np.dot(hp2.T, np.dot(self.F, hp1)))       
-                if err < 0.1:
+                if err < 0.05:
                     leftpoints.append(p1)
                     rightpoints.append(p2)
             
             self.match_pts1 = np.array(leftpoints)
             self.match_pts2 = np.array(rightpoints)
 
-
+        if point_lens != 0:
+            self.match_pts1 = self.match_pts1[:point_lens]
+            self.match_pts2 = self.match_pts2[:point_lens]
 
 
     def EstimateFM(self,method="RANSAC"):
@@ -336,6 +338,10 @@ class SelfCalibration:
             self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1,
                                                     self.match_pts2,
                                                     cv2.FM_LMEDS, 0.1, 0.99)
+        elif method == "8Points":
+            self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1,
+                                                    self.match_pts2,
+                                                    cv2.FM_8POINT, 0.1, 0.99)
         elif method == "DL":
             # get the mask
             FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1,
@@ -395,13 +401,26 @@ class SelfCalibration:
         """Evaluate the fundamental matrix
             :output:
                 print the metrics
+                save as txt file
         """
+        file_name = os.path.join(self.SavePath,self.SavePrefix+"F_evaluate.txt")
 
         epi_cons = self.EpipolarConstraint(self.FE, self.match_pts1, self.match_pts2)
         sym_epi_dis = self.SymEpiDis(self.FE, self.match_pts1, self.match_pts2)
+        L1_loss = np.sum(np.abs(self.F - self.FE))/9
+        L2_loss = np.sum(np.power((self.F - self.FE),2))/9
+
         print("Evaluate the estimated fundamental matrix")
+        print("The L1 loss is: {:4f}".format(L1_loss),"\nThe L2 loss is: {:4f}".format(L2_loss))
         print("The quantities of matching points is %d" %len(self.match_pts2))
         print("The epipolar constraint is : " ,float(epi_cons) ,"\nThe symmetry epipolar distance is: " ,float(sym_epi_dis))
+
+        with open(file_name,'w') as f:
+            f.writelines("Evaluate the estimated fundamental matrix: "+str(self.SavePrefix)+"\n")
+            f.writelines("The L1 loss is: {:4f}".format(L1_loss)+"\nThe L2 loss is: {:4f}".format(L2_loss))
+            f.writelines("\nThe quantities of matching points is " +str(len(self.match_pts2))+"\n")
+            f.writelines("The epipolar constraint is : " +str(float(epi_cons))+"\nThe symmetry epipolar distance is: " +str(float(sym_epi_dis)))
+            
         
 
 
@@ -477,11 +496,11 @@ class SelfCalibration:
         self.E = np.load(EPath).reshape(3,3)
         print('Load E from %s as follow' %EPath)
         print(self.E)
-        # self.FE = self.E
+        self.FE = self.E
         # e_gt = np.matmul(np.matmul(np.linalg.inv(K2).T, e_gt), np.linalg.inv(K1))
         # e_gt_unnorm = np.matmul(np.matmul(np.linalg.inv(T2).T, e_gt), np.linalg.inv(T1))
         # e_gt = e_gt_unnorm / np.linalg.norm(e_gt_unnorm)
-        self.FE = np.matmul(np.matmul(self.Kr_inv.T,self.E),self.Kl_inv)
+        # self.FE = np.matmul(np.matmul(self.Kr_inv.T,self.E),self.Kl_inv)
         self.FE /= self.FE[2,2] 
         # print(self.FE)
         # FE = np.matmul(np.matmul(np.linalg.inv(self.Tr).T,self.FE),np.linalg.inv(self.Tl))
@@ -709,15 +728,16 @@ if __name__ == "__main__":
     EPath = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+"E.npy"
     leftcorr = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+"leftcorr.npy"
     rightcorr = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+"rightcorr.npy"
-    SavePrefix = '_Model_LMedS_'
+    SavePrefix = '_GT_'
 
-        #--- indoor
+    #     #--- indoor
+    # prefix = 'indoors/'
     # img_nameL = 'left.jpg'
     # img_nameR = 'right.jpg'
     # EPath = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/RectTest/E.npy"
     # leftcorr = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/RectTest/leftcorr.npy"
     # rightcorr = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/RectTest/rightcorr.npy"
-
+    # SavePrefix = '_indoors_'
     
     #Mac
     ImgPath = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/pics/"+prefix
@@ -738,12 +758,13 @@ if __name__ == "__main__":
     
 
     #-------------Tradition
-    test.LoadPara_KITTI()
+    # test.LoadPara_KITTI()
     # test.Show()
     # test.FE = test.LoadFMGT_KITTI()
     # print(test.FE)
-    # test.ExactGoodMatch(screening=True)
-    # test.EstimateFM(method="RANSAC")
+    # test.ExactGoodMatch(screening=True,point_lens=18)
+    test.ExactGoodMatch(screening=False)
+    test.EstimateFM(method="RANSAC")
     # test.Show()
     # test.DrawEpipolarLines()
 
@@ -752,10 +773,11 @@ if __name__ == "__main__":
     # test.LoadPara_YFCC()
     # test.LoadPara_KITTI()
     # test.LoadE(EPath)
-    test.LoadCorr(rightcorr,leftcorr)
+    # test.LoadCorr(rightcorr,leftcorr)
+    
+    # test.EstimateFM(method="8Points")
+    # test.ExactGoodMatch(screening=True,point_lens=18)
     # test.FMEvaluate()
-    test.EstimateFM(method="LMedS")
-
 
     # test.RectifyImg(Calib=True)
     test.RectifyImgUncalibrated()
