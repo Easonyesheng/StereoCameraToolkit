@@ -42,7 +42,9 @@ class SelfCalibration:
 
 
     def load_image_pair(self, img_nameL, img_nameR):
-        """Loads pair of images
+        """Loads pair of images 
+
+        Two view images in the same file
 
         This method loads the two images for which the 3D scene should be
         reconstructed. The two images should show the same real-world scene
@@ -69,6 +71,31 @@ class SelfCalibration:
             self.imgl = cv2.cvtColor(self.imgl, cv2.COLOR_GRAY2BGR)
             self.imgr = cv2.cvtColor(self.imgr, cv2.COLOR_GRAY2BGR)
     
+
+    def load_image_KITTI(self,index):
+        '''load the images in the format of KITTI
+            the images are in /ImgPath/image_00(left)/data/00000000xx.pmg
+            :para 
+                index : the image index
+
+        '''
+        # print(len(str(index).zfill(10-len(str(index)))))
+        self.img_left_name = os.path.join(self.ImgPath,'image_00/data/'+str(index).zfill(10)+'.png')
+        self.img_right_name = os.path.join(self.ImgPath,'image_01/data/'+str(index).zfill(10)+'.png')
+
+        self.imgl = cv2.imread(self.img_left_name)
+        self.imgr = cv2.imread(self.img_right_name)
+
+        # make sure images are valid
+        if self.imgl is None:
+            sys.exit("Image " +self.img_left_name + " could not be loaded.")
+        if self.imgr is None:
+            sys.exit("Image " + self.img_right_name + " could not be loaded.")
+
+        if len(self.imgl.shape) == 2:
+            self.imgl = cv2.cvtColor(self.imgl, cv2.COLOR_GRAY2BGR)
+            self.imgr = cv2.cvtColor(self.imgr, cv2.COLOR_GRAY2BGR)
+
              
     def Show(self):
         """Show all the dataset
@@ -108,7 +135,7 @@ class SelfCalibration:
             :para dr: vector of distortion coefficients of right camera
 
         """
-        ParaPath = os.listdir(self.ParaPath)[1]
+        ParaPath = os.listdir(self.ParaPath)[-1]
         print(ParaPath)
         paser = KittiAnalyse(self.ImgPath,os.path.join(self.ParaPath,ParaPath),self.SavePath)
         calib = paser.calib
@@ -160,10 +187,23 @@ class SelfCalibration:
     def LoadCorr(self,rightcorr,leftcorr):
         """Load inliers corr infered by OANet
         """
-        corr_left = np.load(leftcorr)
-        corr_right = np.load(rightcorr)
-        self.match_pts1 = corr_left
-        self.match_pts2 = corr_right
+        leftcorr = np.load(leftcorr)
+        rightcorr = np.load(rightcorr)
+        if leftcorr.shape[1] == 4:
+            points_quan = int(leftcorr.shape[0]*2)
+            corr_left = np.ones((points_quan,2),dtype=int)
+            corr_right = np.ones((points_quan,2),dtype=int)
+            corr_left[:points_quan//2,:] = leftcorr[:,:2]
+            corr_left[points_quan//2:points_quan] = leftcorr[:,2:4]
+            corr_right[:points_quan//2,:] = rightcorr[:,:2]
+            corr_right[points_quan//2:points_quan] = rightcorr[:,2:4]
+        else:
+            corr_left = leftcorr
+            corr_right = rightcorr
+        self.match_pts1 = corr_left.astype(np.int)
+        self.match_pts2 = corr_right.astype(np.int)
+        print("OANet get %d matching points" %len(self.match_pts1))
+
 
 
     def LoadFMGT_KITTI(self):
@@ -172,7 +212,7 @@ class SelfCalibration:
             accroding to the following formula:
             F = K2^(-T)*R*[t]x*K1^(-1)
         """
-        ParaPath = os.listdir(self.ParaPath)[1]
+        ParaPath = os.listdir(self.ParaPath)[-1]
         paser = KittiAnalyse(self.ImgPath,os.path.join(self.ParaPath,ParaPath),self.SavePath)
         calib = paser.calib
         f_cam = '0'
@@ -312,6 +352,7 @@ class SelfCalibration:
         if point_lens != 0:
             self.match_pts1 = self.match_pts1[:point_lens]
             self.match_pts2 = self.match_pts2[:point_lens]
+            print("len=",self.match_pts1.shape)
 
 
     def EstimateFM(self,method="RANSAC"):
@@ -331,17 +372,32 @@ class SelfCalibration:
             self.ExactGoodMatch()
 
         if method == "RANSAC":
+            print('Use RANSAC with %d points' %len(self.match_pts1))
             self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1,
                                                     self.match_pts2,
                                                     cv2.FM_RANSAC, 0.1, 0.99)
         elif method == "LMedS":
+            print('Use LMEDS with %d points' %len(self.match_pts1))
             self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1,
                                                     self.match_pts2,
                                                     cv2.FM_LMEDS, 0.1, 0.99)
         elif method == "8Points":
-            self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1,
-                                                    self.match_pts2,
+            print('Use 8 Points algorithm')
+            i = -1
+            while True:
+                # i = np.random.randint(0,len(self.match_pts1)-7)
+                i += 1
+                self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1[i:i+8],
+                                                    self.match_pts2[i:i+8],
                                                     cv2.FM_8POINT, 0.1, 0.99)
+                print('Points index: ',i)
+                try: 
+                    self.FE.all()
+                    break
+                except AttributeError:
+                    continue
+
+            
         elif method == "DL":
             # get the mask
             FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1,
@@ -352,7 +408,9 @@ class SelfCalibration:
         else:
             print("Method Error!")
             return
-        
+        print(self.FE)
+        self.FE = self.FE / self.FE.max()
+        return
 
     def DL_F_Es(self):
         """Use DL method to Estimate fundamental matrix
@@ -436,11 +494,11 @@ class SelfCalibration:
         try:
             self.match_pts1.all()
         except AttributeError:
-            self.ExactGoodMatch()
+            self.ExactGoodMatch(screening=True,point_lens=18)
 
         # Find epilines corresponding to points in right image (second image)
         # and drawing its lines on left image
-        pts2re = self.match_pts2.reshape(-1, 1, 2)
+        pts2re = self.match_pts2[:20].reshape(-1, 1, 2)
         lines1 = cv2.computeCorrespondEpilines(pts2re, 2, self.FE)
         lines1 = lines1.reshape(-1, 3)
         img3, img4 = self._draw_epipolar_lines_helper(self.imgl, self.imgr,
@@ -449,23 +507,23 @@ class SelfCalibration:
  
         # Find epilines corresponding to points in left image (first image) and
         # drawing its lines on right image
-        pts1re = self.match_pts1.reshape(-1, 1, 2)
+        pts1re = self.match_pts1[:20].reshape(-1, 1, 2)
         lines2 = cv2.computeCorrespondEpilines(pts1re, 1, self.FE)
         lines2 = lines2.reshape(-1, 3)
         img1, img2 = self._draw_epipolar_lines_helper(self.imgr, self.imgl,
                                                       lines2, self.match_pts2,
                                                       self.match_pts1)
 
-        cv2.imwrite(os.path.join(self.SavePath+self.SavePrefix,"epipolarleft.jpg"),img1)
-        # print("Saved in ",os.path.join(self.SavePath,"epipolarleft.jpg"))
-        cv2.imwrite(os.path.join(self.SavePath+self.SavePrefix,"epipolarright.jpg"),img3)
+        cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"epipolarleft.jpg"),img1)
+        print("Saved in ",os.path.join(self.SavePath,"epipolarleft.jpg"))
+        cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"epipolarright.jpg"),img3)
 
-        cv2.startWindowThread()
-        cv2.imshow("left", img1)
-        cv2.imshow("right", img3)
-        k = cv2.waitKey()
-        if k == 27:
-            cv2.destroyAllWindows()
+        # cv2.startWindowThread()
+        # cv2.imshow("left", img1)
+        # cv2.imshow("right", img3)
+        # k = cv2.waitKey()
+        # if k == 27:
+        #     cv2.destroyAllWindows()
        
 
     def _draw_epipolar_lines_helper(self, img1, img2, lines, pts1, pts2):
@@ -722,13 +780,13 @@ if __name__ == "__main__":
     # SavePrefix = '_Model_'
 
         #--- KITTI
-    prefix = 'KITTI48/'
+    prefix = 'KITTI_rected/'
     img_nameL = "left.png"
     img_nameR = "right.png"
     EPath = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+"E.npy"
     leftcorr = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+"leftcorr.npy"
     rightcorr = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+"rightcorr.npy"
-    SavePrefix = '_GT_'
+    SavePrefix = '_OANet_'
 
     #     #--- indoor
     # prefix = 'indoors/'
