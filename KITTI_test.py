@@ -3,8 +3,8 @@ import os
 
 
 if __name__ == "__main__":
-
-    for i in range(1):
+    FPath = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/Res/+PointNet/point_net_2/0.txt'
+    for i in range(7):
         prefix = 'KITTI_rected'
 
         #Mac
@@ -16,8 +16,8 @@ if __name__ == "__main__":
             
         EPath = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+str(i)+"/E.npy"
         leftcorr = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+str(i)+"/leftcorr.npy"
-        rightcorr = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+str(i)+"/rightcorr.npy"
-        SavePrefix = '_OANet_'+str(i)
+        rightcorr = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+str(i)+'+PointNet'+"/rightcorr.npy"
+        SavePrefix = '_RANSAC_'+str(i)
 
 
         # initialization
@@ -27,22 +27,26 @@ if __name__ == "__main__":
         test.load_image_KITTI(i) 
 
         # load calibration file
-        test.LoadPara_KITTI()
+        # test.LoadPara_KITTI()
 
         # load OANet output -- matching pairs
-        test.LoadCorr(rightcorr,leftcorr)
+        # test.LoadCorr(rightcorr,leftcorr)
 
         # Estimate F
-        test.EstimateFM(method="8Points")
+        test.EstimateFM(method="RANSAC")
 
         # load F_GT
+        # test.FE = 
         test.LoadFMGT_KITTI()
+
+        #load test F
+        # test.Load_F_test(FPath)
 
         # screen Good Match for Evaluation
         test.ExactGoodMatch(screening=True,point_lens=18)
 
         # Epipolar lines visualization
-        test.DrawEpipolarLines()
+        # test.DrawEpipolarLines()
 
         # Evaluate the F matrix
         test.FMEvaluate()

@@ -40,11 +40,17 @@ class SelfCalibration:
         self.dr = None
         self.dl = None
 
+        # create new folders to save
+        if not os.path.exists(self.SavePath):
+            print("Create Save Path: ",self.SavePath)
+            os.makedirs(self.SavePath)
+
+
 
     def load_image_pair(self, img_nameL, img_nameR):
         """Loads pair of images 
 
-        Two view images in the same file
+        Two view images in the same file -- ImgPath + img_namel/r
 
         This method loads the two images for which the 3D scene should be
         reconstructed. The two images should show the same real-world scene
@@ -96,10 +102,29 @@ class SelfCalibration:
             self.imgl = cv2.cvtColor(self.imgl, cv2.COLOR_GRAY2BGR)
             self.imgr = cv2.cvtColor(self.imgr, cv2.COLOR_GRAY2BGR)
 
-             
+
+    def load_img_test(self,Index):
+        """Load images in manual dataset
+            ImgPath should be .../ManualDataset/
+            Images are saved in: 
+                .../ManualDataset/Left/Index.png
+                .../ManualDataset/Right/Index.png
+        """
+        self.img_left_name = os.path.join(self.ImgPath+'/Left',str(Index)+'.png')
+        self.img_right_name = os.path.join(self.ImgPath+'/Right',str(Index)+'.png')
+
+        self.imgl = cv2.imread(self.img_left_name)
+        self.imgr = cv2.imread(self.img_right_name)
+
+        # make sure images are valid
+        if self.imgl is None:
+            sys.exit("Image " +self.img_left_name + " could not be loaded.")
+        if self.imgr is None:
+            sys.exit("Image " + self.img_right_name + " could not be loaded.")
+
+
     def Show(self):
         """Show all the dataset
-
         """
         print("Path: \nImgPath: %s \nParaPath: %s \nSavePath: %s" %(self.ImgPath,self.ParaPath,self.SavePath))
         print("Images: Showing")
@@ -204,7 +229,19 @@ class SelfCalibration:
         self.match_pts2 = corr_right.astype(np.int)
         print("OANet get %d matching points" %len(self.match_pts1))
 
-
+    def Load_F_test(self,FPath):
+        """load F to evaluate
+            :para
+                FPath : the F stored path
+            :output
+                 as self.FE
+        """
+        self.FE = np.loadtxt(FPath).reshape((3,3))
+        # if self.FE.shape[0] == 1:
+        #     self.FE = self.FE.reshape((3,3))
+        # if self.FE.shape[0]*self.FE.shape[1] != 9:
+        #     print('ERROR: Wrong Shape:'.self.FE.shape)
+        
 
     def LoadFMGT_KITTI(self):
         """Load the fundamental matrix file(.txt)
@@ -372,14 +409,16 @@ class SelfCalibration:
             self.ExactGoodMatch()
 
         if method == "RANSAC":
-            print('Use RANSAC with %d points' %len(self.match_pts1))
-            self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1,
-                                                    self.match_pts2,
+            limit_length = len(self.match_pts1)//6
+            print('Use RANSAC with %d points' %limit_length)
+            self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1[:limit_length],
+                                                    self.match_pts2[:limit_length],
                                                     cv2.FM_RANSAC, 0.1, 0.99)
         elif method == "LMedS":
+            limit_length = len(self.match_pts1)//6
             print('Use LMEDS with %d points' %len(self.match_pts1))
-            self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1,
-                                                    self.match_pts2,
+            self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1[:limit_length],
+                                                    self.match_pts2[:limit_length],
                                                     cv2.FM_LMEDS, 0.1, 0.99)
         elif method == "8Points":
             print('Use 8 Points algorithm')
@@ -479,8 +518,24 @@ class SelfCalibration:
             f.writelines("\nThe quantities of matching points is " +str(len(self.match_pts2))+"\n")
             f.writelines("The epipolar constraint is : " +str(float(epi_cons))+"\nThe symmetry epipolar distance is: " +str(float(sym_epi_dis)))
             
-        
+    def FMEvaluate_aggregate(self):
+        """Evaluate the fundamental matrix
+            :output
+                Metric Dictionary
+        """
+        # metric_dict = {}
+        epi_cons = self.EpipolarConstraint(self.FE, self.match_pts1, self.match_pts2)
+        sym_epi_dis = self.SymEpiDis(self.FE, self.match_pts1, self.match_pts2)
+        L1_loss = np.sum(np.abs(self.F - self.FE))/9
+        L2_loss = np.sum(np.power((self.F - self.FE),2))/9
 
+        metric_dict = {
+            'epi_cons' : epi_cons,
+            'sym_epi_dis' : sym_epi_dis,
+            'L1_loss' : L1_loss,
+            'L2_loss' : L2_loss
+        }
+        return metric_dict
 
     def DrawEpipolarLines(self):
         """For F Estimation visulization, drawing the epipolar lines
