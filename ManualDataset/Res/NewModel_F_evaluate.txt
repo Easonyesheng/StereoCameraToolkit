@@ -1,0 +1,8 @@
+Evaluate the estimated fundamental matrix by NewModel with 200 images
+The L1 loss is: 0.379380
+The L2 loss is: 0.647603
+The epipolar constraint is : 0.04465613323937952
+The symmetry epipolar distance is: 1.379444910799278
+The max symmetry epipolar distance is: [[27.38752878]]
+The min symmetry epipolar distance is: [[0.00033714]]
+The F-score is: 79.350000%

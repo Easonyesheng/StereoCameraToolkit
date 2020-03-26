@@ -245,6 +245,7 @@ class SelfCalibration:
 
     def LoadFMGT_KITTI(self):
         """Load the fundamental matrix file(.txt)
+            KITTI's rectified images!
             Calculate the F by 
             F = [e']P'P^+
             where e' = P'C
@@ -280,32 +281,7 @@ class SelfCalibration:
 
         return self.F
 
-        # K1, K2 = calib['K_0{}'.format(f_cam)], calib['K_0{}'.format(t_cam)]
-        # R1, R2 = calib['R_0{}'.format(f_cam)], calib['R_0{}'.format(t_cam)]
-        # # R1, R2 = self.calib['R_rect_0{}'.format(f_cam)], self.calib['R_rect_0{}'.format(t_cam)]
-        # t1, t2 = calib['T_0{}'.format(f_cam)], calib['T_0{}'.format(t_cam)]
-
-        # # print(f"K1: {K1}, K2: {K2}, R1: {R1}, R2: {R2}, t1: {t1}, t2: {t2}")
-
-        # R = np.dot(R2, np.linalg.inv(R1))
-        # t = t2 - t1
         
-        # T = np.array([
-        #     [0,     -t[2], t[1]],
-        #     [t[2],  0,     -t[0]],
-        #     [-t[1], t[0],  0]
-        # ])
-        # #compute
-        # F = np.dot(np.linalg.inv(K2.T), np.dot(T, np.dot(R, np.linalg.inv(K1))))
-        # # F /= F[2,2]
-        # F_abs = abs(F)
-        # # assert np.linalg.matrix_rank(F) == 2
-        # # print(self.imgl.shape)
-        # # self.shape = np.array([512, 1392])
-        # self.F = 
-        # # self.get_normalized_F(F, mean=[0,0], std=[np.sqrt(2.), np.sqrt(2.)], size=self.shape)
-        # self.F = self.F.astype(np.float)
-        # return self.F
     
 
     def get_normalized_F(self, F, mean, std, size=None):
@@ -433,7 +409,7 @@ class SelfCalibration:
             self.match_pts2 = self.match_pts2[:point_lens]
             print("len=",self.match_pts1.shape)
         
-        if self.match_pts1.shape[0] == 0:
+        if self.match_pts1.shape[0] < point_lens:
             return False
 
         return True
@@ -462,7 +438,7 @@ class SelfCalibration:
                                                     self.match_pts2[:limit_length],
                                                     cv2.FM_RANSAC)
         elif method == "LMedS":
-            limit_length = len(self.match_pts1)
+            limit_length = len(self.match_pts1)//6
             print('Use LMEDS with %d points' %len(self.match_pts1))
             self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1[:limit_length],
                                                     self.match_pts2[:limit_length],
@@ -534,15 +510,40 @@ class SelfCalibration:
         assert len(pts1) == len(pts2)
         print('Use ',len(pts1),' points to calculate epipolar distance.')
         err = 0.
+        max_dis = 0.
+        min_dis = np.Infinity
         for p1, p2 in zip(pts1, pts2):
             hp1, hp2 = np.ones((3,1)), np.ones((3,1))
             hp1[:2,0], hp2[:2,0] = p1, p2
             fp, fq = np.dot(F, hp1), np.dot(F.T, hp2)
             sym_jjt = 1./(fp[0]**2 + fp[1]**2 + epsilon) + 1./(fq[0]**2 + fq[1]**2 + epsilon)
-            err = err + ((np.dot(hp2.T, np.dot(F, hp1))**2) * (sym_jjt + epsilon))
+            dis = ((np.dot(hp2.T, np.dot(F, hp1))**2) * (sym_jjt + epsilon))
+            max_dis = max(max_dis, dis)
+            min_dis = min(min_dis, dis)
+            err = err + dis
 
-        return err / float(len(pts1))
+        return err / float(len(pts1)), max_dis, min_dis
 
+
+    def get_F_score(self, FE, pts1, pts2):
+        """Get the F-Score
+            Definition: the percentage of inliers points accroding to FE in GT matching pts 
+            inlier err: sym_dis < 0.01 
+        """
+        assert len(pts1) == len(pts2)
+        print('Use ',len(pts1),' points to calculate F-score.')
+        inliers = 0
+        epsilon = 1e-5
+        for p1, p2 in zip(pts1, pts2):
+            hp1, hp2 = np.ones((3,1)), np.ones((3,1))
+            hp1[:2,0], hp2[:2,0] = p1, p2
+            fp, fq = np.dot(FE, hp1), np.dot(FE.T, hp2)
+            sym_jjt = 1./(fp[0]**2 + fp[1]**2 + epsilon) + 1./(fq[0]**2 + fq[1]**2 + epsilon)
+            err = ((np.dot(hp2.T, np.dot(FE, hp1))**2) * (sym_jjt + epsilon))
+            if err < 0.01:
+                inliers += 1
+
+        return inliers/len(pts1)
 
     def FMEvaluate(self):
         """Evaluate the fundamental matrix
@@ -553,7 +554,7 @@ class SelfCalibration:
         file_name = os.path.join(self.SavePath,self.SavePrefix+"F_evaluate.txt")
 
         epi_cons = self.EpipolarConstraint(self.FE, self.match_pts1, self.match_pts2)
-        sym_epi_dis = self.SymEpiDis(self.FE, self.match_pts1, self.match_pts2)
+        sym_epi_dis, max_dis, min_dis = self.SymEpiDis(self.FE, self.match_pts1, self.match_pts2)
         L1_loss = np.sum(np.abs(self.F - self.FE))/9
         L2_loss = np.sum(np.power((self.F - self.FE),2))/9
 
@@ -567,7 +568,8 @@ class SelfCalibration:
             f.writelines("The L1 loss is: {:4f}".format(L1_loss)+"\nThe L2 loss is: {:4f}".format(L2_loss))
             f.writelines("\nThe quantities of matching points is " +str(len(self.match_pts2))+"\n")
             f.writelines("The epipolar constraint is : " +str(float(epi_cons))+"\nThe symmetry epipolar distance is: " +str(float(sym_epi_dis)))
-            
+
+
     def FMEvaluate_aggregate(self):
         """Evaluate the fundamental matrix
             :output
@@ -575,15 +577,19 @@ class SelfCalibration:
         """
         # metric_dict = {}
         epi_cons = self.EpipolarConstraint(self.FE, self.match_pts1, self.match_pts2)
-        sym_epi_dis = self.SymEpiDis(self.FE, self.match_pts1, self.match_pts2)
+        sym_epi_dis, max_dis, min_dis = self.SymEpiDis(self.FE, self.match_pts1, self.match_pts2)
         L1_loss = np.sum(np.abs(self.F - self.FE))/9
         L2_loss = np.sum(np.power((self.F - self.FE),2))/9
+        F_score = self.get_F_score(self.FE, self.match_pts1, self.match_pts2)
 
         metric_dict = {
             'epi_cons' : epi_cons,
             'sym_epi_dis' : sym_epi_dis,
+            'max_dis' : max_dis,
+            'min_dis' : min_dis,
             'L1_loss' : L1_loss,
-            'L2_loss' : L2_loss
+            'L2_loss' : L2_loss,
+            'F_score' : F_score
         }
         return metric_dict
 
