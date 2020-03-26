@@ -245,39 +245,67 @@ class SelfCalibration:
 
     def LoadFMGT_KITTI(self):
         """Load the fundamental matrix file(.txt)
-            calculate the fundamental matrix from KITTI calibration file
-            accroding to the following formula:
-            F = K2^(-T)*R*[t]x*K1^(-1)
+            Calculate the F by 
+            F = [e']P'P^+
+            where e' = P'C
+            where PC = 0  
         """
         ParaPath = os.listdir(self.ParaPath)[-1]
         paser = KittiAnalyse(self.ImgPath,os.path.join(self.ParaPath,ParaPath),self.SavePath)
         calib = paser.calib
         f_cam = '0'
         t_cam = '1'
-        K1, K2 = calib['K_0{}'.format(f_cam)], calib['K_0{}'.format(t_cam)]
-        R1, R2 = calib['R_0{}'.format(f_cam)], calib['R_0{}'.format(t_cam)]
-        # R1, R2 = self.calib['R_rect_0{}'.format(f_cam)], self.calib['R_rect_0{}'.format(t_cam)]
-        t1, t2 = calib['T_0{}'.format(f_cam)], calib['T_0{}'.format(t_cam)]
-
-        # print(f"K1: {K1}, K2: {K2}, R1: {R1}, R2: {R2}, t1: {t1}, t2: {t2}")
-
-        R = np.dot(R2, np.linalg.inv(R1))
-        t = t2 - t1
         
-        T = np.array([
-            [0,     -t[2], t[1]],
-            [t[2],  0,     -t[0]],
-            [-t[1], t[0],  0]
+        P, P_ = calib['P_rect_0{}'.format(f_cam)], calib['P_rect_0{}'.format(t_cam)]
+        P = P.reshape(3,4)
+        P_ = P_.reshape(3,4)
+        # print('P: ',P)
+        P_c = P[:,:3]
+        zero = P[:,3:]
+        zero = -1*zero
+        c = np.linalg.solve(P_c,zero)
+        C = np.ones([4,1])
+        C[:3,:] = c
+        e_ = np.dot(P_,C)
+        e_M = np.array([
+            [0, -e_[2,0], e_[1,0]],
+            [e_[2,0], 0, -e_[0,0]],
+            [-e_[1,0], e_[0,0], 0]
         ])
-        #compute
-        F = np.dot(np.linalg.inv(K2.T), np.dot(T, np.dot(R, np.linalg.inv(K1))))
-        F /= F[2,2]
-        # assert np.linalg.matrix_rank(F) == 2
-        # print(self.imgl.shape)
-        self.shape = np.array([512, 1392])
-        self.F = self.get_normalized_F(F, mean=[0,0], std=[np.sqrt(2.), np.sqrt(2.)], size=self.shape)
-        self.F = self.F.astype(np.float)
+        P = np.matrix(P)
+        P_wn = np.linalg.pinv(P)
+        F = np.dot(np.dot(e_M, P_),P_wn)
+        F_abs = abs(F)
+        self.F = F/ F_abs.max()
+
         return self.F
+
+        # K1, K2 = calib['K_0{}'.format(f_cam)], calib['K_0{}'.format(t_cam)]
+        # R1, R2 = calib['R_0{}'.format(f_cam)], calib['R_0{}'.format(t_cam)]
+        # # R1, R2 = self.calib['R_rect_0{}'.format(f_cam)], self.calib['R_rect_0{}'.format(t_cam)]
+        # t1, t2 = calib['T_0{}'.format(f_cam)], calib['T_0{}'.format(t_cam)]
+
+        # # print(f"K1: {K1}, K2: {K2}, R1: {R1}, R2: {R2}, t1: {t1}, t2: {t2}")
+
+        # R = np.dot(R2, np.linalg.inv(R1))
+        # t = t2 - t1
+        
+        # T = np.array([
+        #     [0,     -t[2], t[1]],
+        #     [t[2],  0,     -t[0]],
+        #     [-t[1], t[0],  0]
+        # ])
+        # #compute
+        # F = np.dot(np.linalg.inv(K2.T), np.dot(T, np.dot(R, np.linalg.inv(K1))))
+        # # F /= F[2,2]
+        # F_abs = abs(F)
+        # # assert np.linalg.matrix_rank(F) == 2
+        # # print(self.imgl.shape)
+        # # self.shape = np.array([512, 1392])
+        # self.F = 
+        # # self.get_normalized_F(F, mean=[0,0], std=[np.sqrt(2.), np.sqrt(2.)], size=self.shape)
+        # self.F = self.F.astype(np.float)
+        # return self.F
     
 
     def get_normalized_F(self, F, mean, std, size=None):
@@ -312,12 +340,15 @@ class SelfCalibration:
 
 
 
-    def ExactGoodMatch(self,screening = False,point_lens = 0):
+    def ExactGoodMatch(self,screening = False,point_lens = -1):
         """Get matching points & Use F_GT to get good matching points
             1.use SIFT to exact feature points 
             if screening
             2.calculate metrics use F_GT and screening good matches
             ! use it only you have the F_GT
+            :output
+                bool: 
+                    True for point_len == 0
         """
         # try:
         #     self.F.all()
@@ -358,8 +389,8 @@ class SelfCalibration:
 
         # mask 是之前的对应点中的内点的标注，为1则是内点。
         # select the inlier points
-        pts1 = pts1[mask.ravel() == 1]
-        pts2 = pts2[mask.ravel() == 1]
+        # pts1 = pts1[mask.ravel() == 1]
+        # pts2 = pts2[mask.ravel() == 1]
         self.match_pts1 = np.int32(pts1)
         self.match_pts2 = np.int32(pts2)
 
@@ -374,23 +405,38 @@ class SelfCalibration:
             print("Use F_GT to screening matching points")
             leftpoints = []
             rightpoints = []
-
-            for p1,p2 in zip(self.match_pts1, self.match_pts2):
+            sheld = 0.01
+            epsilon = 1e-5
+            # use sym_epi_dist to screen
+            for p1, p2 in zip(self.match_pts1, self.match_pts2):
                 hp1, hp2 = np.ones((3,1)), np.ones((3,1))
-                hp1[:2,0], hp2[:2,0] = p1, p2 
-                err = np.abs(np.dot(hp2.T, np.dot(self.F, hp1)))       
-                if err < 0.05:
+                hp1[:2,0], hp2[:2,0] = p1, p2
+                fp, fq = np.dot(F, hp1), np.dot(F.T, hp2)
+                sym_jjt = 1./(fp[0]**2 + fp[1]**2 + epsilon) + 1./(fq[0]**2 + fq[1]**2 + epsilon)
+                err = ((np.dot(hp2.T, np.dot(F, hp1))**2) * (sym_jjt + epsilon))
+                # print(err)
+                
+            # # use epi_cons to screen
+            # for p1,p2 in zip(self.match_pts1, self.match_pts2):
+            #     hp1, hp2 = np.ones((3,1)), np.ones((3,1))
+            #     hp1[:2,0], hp2[:2,0] = p1, p2 
+            #     err = np.abs(np.dot(hp2.T, np.dot(self.F, hp1)))     
+                if err < sheld:
                     leftpoints.append(p1)
-                    rightpoints.append(p2)
-            
+                    rightpoints.append(p2)            
+
             self.match_pts1 = np.array(leftpoints)
             self.match_pts2 = np.array(rightpoints)
 
-        if point_lens != 0:
+        if point_lens != -1 and point_lens <= len(self.match_pts1):
             self.match_pts1 = self.match_pts1[:point_lens]
             self.match_pts2 = self.match_pts2[:point_lens]
             print("len=",self.match_pts1.shape)
+        
+        if self.match_pts1.shape[0] == 0:
+            return False
 
+        return True
 
     def EstimateFM(self,method="RANSAC"):
         """Estimate the fundamental matrix 
@@ -402,6 +448,7 @@ class SelfCalibration:
             :output 
                 change self.FE
         """
+        
         try: 
             self.match_pts1.all()
         except AttributeError:
@@ -409,17 +456,17 @@ class SelfCalibration:
             self.ExactGoodMatch()
 
         if method == "RANSAC":
-            limit_length = len(self.match_pts1)//6
+            limit_length = len(self.match_pts1)
             print('Use RANSAC with %d points' %limit_length)
             self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1[:limit_length],
                                                     self.match_pts2[:limit_length],
-                                                    cv2.FM_RANSAC, 0.1, 0.99)
+                                                    cv2.FM_RANSAC)
         elif method == "LMedS":
-            limit_length = len(self.match_pts1)//6
+            limit_length = len(self.match_pts1)
             print('Use LMEDS with %d points' %len(self.match_pts1))
             self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1[:limit_length],
                                                     self.match_pts2[:limit_length],
-                                                    cv2.FM_LMEDS, 0.1, 0.99)
+                                                    cv2.FM_LMEDS)
         elif method == "8Points":
             print('Use 8 Points algorithm')
             i = -1
@@ -447,8 +494,11 @@ class SelfCalibration:
         else:
             print("Method Error!")
             return
-        print(self.FE)
-        self.FE = self.FE / self.FE.max()
+        # print(self.FE)
+        F_abs = abs(self.FE)
+        # self.shape = np.array([512, 1392])
+        self.FE = self.FE / F_abs.max()
+        # self.get_normalized_F(self.FE, mean=[0,0], std=[np.sqrt(2.), np.sqrt(2.)], size=self.shape)
         return
 
     def DL_F_Es(self):
