@@ -9,7 +9,7 @@ DatasetPath = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVisio
 ParaPath = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/ManualDataset/Para'
 SavePath = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/ManualDataset/Res'
 FPath = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/Res/+PointNet/point_net_2/5.txt'
-SavePrefix = 'LMedS'
+SavePrefix = 'NewModel' 
 
 epi_cons = 0.
 sym_epi_dis = 0.
@@ -26,7 +26,7 @@ heng = '*'*5
 
 for i in range(Index-nums,Index):
     print(heng,str(mark),heng)
-    eva = SelfCalibration(DatasetPath,ParaPath,SavePath,'-')
+    eva = SelfCalibration(DatasetPath,ParaPath,SavePath,SavePrefix)
     eva.load_img_test(i)
     if SavePrefix in ['RANSAC','LMedS','8Points']:
         eva.EstimateFM(method=SavePrefix)
@@ -37,14 +37,20 @@ for i in range(Index-nums,Index):
     # print('FE',eva.FE)
     eva.LoadFMGT_KITTI()
     # print('F_GT',eva.F)   
-    flag = eva.ExactGoodMatch(screening=True,point_lens=20)
+
+    flag = eva.ExactGoodMatch(screening=True,point_lens=40)
 
     if not flag: # if screening points length < point_lens : continue
         Index += 1
 
         continue
+    # draw epipolar lines
+    # eva.DrawEpipolarLines(i) 
 
+    '''Uncomment this part to evaluate'''
+    # evaluate
     dic = eva.FMEvaluate_aggregate()
+
     epi_cons += dic['epi_cons']
     sym_epi_dis += dic['sym_epi_dis']
     F_score += dic['F_score']
@@ -63,6 +69,7 @@ min_dis /= nums
 L1_loss /= nums
 L2_loss /= nums
 
+# Save evaluate file as txt
 file_name = os.path.join(SavePath,SavePrefix+"_F_evaluate.txt")
 with open(file_name,'w') as f:
     f.writelines("Evaluate the estimated fundamental matrix by "+str(SavePrefix)+" with {:d} images\n".format(nums))

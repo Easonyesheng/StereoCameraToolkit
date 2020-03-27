@@ -379,6 +379,7 @@ class SelfCalibration:
                 print("There is no F_GT, you can use LoadFMGT_KITTI() to get it.\nWarning: Without screening good matches.")
                 return
             print("Use F_GT to screening matching points")
+            print('Before screening, points length is {:d}'.format(len(self.match_pts1)))
             leftpoints = []
             rightpoints = []
             sheld = 0.01
@@ -403,7 +404,7 @@ class SelfCalibration:
 
             self.match_pts1 = np.array(leftpoints)
             self.match_pts2 = np.array(rightpoints)
-
+            print('After screening, points length is {:d}'.format(len(self.match_pts1)))
         if point_lens != -1 and point_lens <= len(self.match_pts1):
             self.match_pts1 = self.match_pts1[:point_lens]
             self.match_pts2 = self.match_pts2[:point_lens]
@@ -438,7 +439,7 @@ class SelfCalibration:
                                                     self.match_pts2[:limit_length],
                                                     cv2.FM_RANSAC)
         elif method == "LMedS":
-            limit_length = len(self.match_pts1)//6
+            limit_length = len(self.match_pts1)
             print('Use LMEDS with %d points' %len(self.match_pts1))
             self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1[:limit_length],
                                                     self.match_pts2[:limit_length],
@@ -593,10 +594,12 @@ class SelfCalibration:
         }
         return metric_dict
 
-    def DrawEpipolarLines(self):
+    def DrawEpipolarLines(self,i):
         """For F Estimation visulization, drawing the epipolar lines
             1. find epipolar lines
             2. draw lines
+            :para
+                i : index
         """
         try:
             self.FE.all()
@@ -625,9 +628,9 @@ class SelfCalibration:
                                                       lines2, self.match_pts2,
                                                       self.match_pts1)
 
-        cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"epipolarleft.jpg"),img1)
-        print("Saved in ",os.path.join(self.SavePath,"epipolarleft.jpg"))
-        cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"epipolarright.jpg"),img3)
+        cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+'_'+str(i)+"_epipolarleft.jpg"),img1)
+        # print("Saved in ",os.path.join(self.SavePath,"epipolarleft.jpg"))
+        cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+'_'+str(i)+"_epipolarright.jpg"),img3)
 
         # cv2.startWindowThread()
         # cv2.imshow("left", img1)
