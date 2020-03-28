@@ -11,6 +11,7 @@ from PIL import Image
 from kitti_ana import KittiAnalyse
 from rect import mathching, returnH1_H2, getRectifystereo, compute_epipole
 from LoadH5 import parse_K
+from math import sqrt, acos
 
 class SelfCalibration:
     """
@@ -506,24 +507,49 @@ class SelfCalibration:
     def SymEpiDis(self, F, pts1, pts2):
         """Symetric Epipolar distance
             calculate the Symetric Epipolar distance
+            To those epipolar lines going through points, calculate the included angle between it and GT line. (cos_all)
         """
+        try:
+            self.F.all()
+        except AttributeError:
+            print("There is no F_GT, Use LoadFMGT_KITTI() to get it.")
+            self.LoadFMGT_KITTI()
+
         epsilon = 1e-5
         assert len(pts1) == len(pts2)
         print('Use ',len(pts1),' points to calculate epipolar distance.')
         err = 0.
+        sheld = 0.1
         max_dis = 0.
         min_dis = np.Infinity
+        cos_all = 0. 
+        inliers = 0. 
         for p1, p2 in zip(pts1, pts2):
             hp1, hp2 = np.ones((3,1)), np.ones((3,1))
             hp1[:2,0], hp2[:2,0] = p1, p2
             fp, fq = np.dot(F, hp1), np.dot(F.T, hp2)
+            # print(fp[0],'\n',fq[0])
             sym_jjt = 1./(fp[0]**2 + fp[1]**2 + epsilon) + 1./(fq[0]**2 + fq[1]**2 + epsilon)
             dis = ((np.dot(hp2.T, np.dot(F, hp1))**2) * (sym_jjt + epsilon))
+            if dis < sheld:
+                # if inliers calculate the angle
+                inliers+=1
+                f_GT_p, f_GT_q = np.dot(self.F, hp1), np.dot(self.F, hp2)
+                
+                # print(f_GT_p,f_GT_q)
+                cos1 = (abs(fp[0]*f_GT_p[0]+fp[1]*f_GT_p[1]))/(sqrt(f_GT_p[0]**2+f_GT_p[1]**2+epsilon)*sqrt(fp[0]**2+fp[1]**2+epsilon))
+                cos2 = (abs(fq[0]*f_GT_q[0]+fq[1]*f_GT_q[1]))/(sqrt(f_GT_q[0]**2+f_GT_q[1]**2+epsilon)*sqrt(fq[0]**2+fq[1]**2+epsilon))
+                cos_all = (cos1 + cos2)/2 + cos_all
             max_dis = max(max_dis, dis)
             min_dis = min(min_dis, dis)
             err = err + dis
+        if inliers == 0:
+            angle = -1
+        else:
+            angle = (acos(cos_all/inliers)/3.1415926)*180
+        print('Average angle: ',angle)
 
-        return err / float(len(pts1)), max_dis, min_dis
+        return err / float(len(pts1)), max_dis, min_dis, angle
 
 
     def get_F_score(self, FE, pts1, pts2):
@@ -555,7 +581,7 @@ class SelfCalibration:
         file_name = os.path.join(self.SavePath,self.SavePrefix+"F_evaluate.txt")
 
         epi_cons = self.EpipolarConstraint(self.FE, self.match_pts1, self.match_pts2)
-        sym_epi_dis, max_dis, min_dis = self.SymEpiDis(self.FE, self.match_pts1, self.match_pts2)
+        sym_epi_dis, max_dis, min_dis, angle = self.SymEpiDis(self.FE, self.match_pts1, self.match_pts2)
         L1_loss = np.sum(np.abs(self.F - self.FE))/9
         L2_loss = np.sum(np.power((self.F - self.FE),2))/9
 
@@ -578,7 +604,7 @@ class SelfCalibration:
         """
         # metric_dict = {}
         epi_cons = self.EpipolarConstraint(self.FE, self.match_pts1, self.match_pts2)
-        sym_epi_dis, max_dis, min_dis = self.SymEpiDis(self.FE, self.match_pts1, self.match_pts2)
+        sym_epi_dis, max_dis, min_dis, angle = self.SymEpiDis(self.FE, self.match_pts1, self.match_pts2)
         L1_loss = np.sum(np.abs(self.F - self.FE))/9
         L2_loss = np.sum(np.power((self.F - self.FE),2))/9
         F_score = self.get_F_score(self.FE, self.match_pts1, self.match_pts2)
@@ -590,7 +616,8 @@ class SelfCalibration:
             'min_dis' : min_dis,
             'L1_loss' : L1_loss,
             'L2_loss' : L2_loss,
-            'F_score' : F_score
+            'F_score' : F_score,
+            'angle' : angle
         }
         return metric_dict
 
