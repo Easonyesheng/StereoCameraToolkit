@@ -503,7 +503,22 @@ class SelfCalibration:
         
         return err / float(len(pts1))
         
-    
+    def EpipolarGet(self,F):
+        '''compute the epipolar 
+            and get the reelative error
+            uncompleted
+        '''
+        a = F
+        b = np.zeros((3,1))
+        e = np.linalg.solve(a,b)
+        a_ = self.F
+        b_ = np.zeros((3,1))
+        e_GT = np.linalg.solve(a_,b_)
+        x_error = min((np.abs(e[0]-e_GT[0]))/(min(abs(e[0],e_GT[0]))),1)
+        y_error = min((np.abs(e[1]-e_GT[1]))/(min(abs(e[1],e_GT[1]))),1)
+        error = (x_error+y_error)/2
+        return error
+
     def SymEpiDis(self, F, pts1, pts2):
         """Symetric Epipolar distance
             calculate the Symetric Epipolar distance
@@ -608,6 +623,7 @@ class SelfCalibration:
         L1_loss = np.sum(np.abs(self.F - self.FE))/9
         L2_loss = np.sum(np.power((self.F - self.FE),2))/9
         F_score = self.get_F_score(self.FE, self.match_pts1, self.match_pts2)
+        epi_error = self.EpipolarGet(self.FE)
 
         metric_dict = {
             'epi_cons' : epi_cons,
@@ -617,7 +633,8 @@ class SelfCalibration:
             'L1_loss' : L1_loss,
             'L2_loss' : L2_loss,
             'F_score' : F_score,
-            'angle' : angle
+            'angle' : angle,
+            'epi_error' : epi_error
         }
         return metric_dict
 
@@ -952,7 +969,7 @@ if __name__ == "__main__":
 
     test = SelfCalibration(ImgPath,ParaPath,SavePath,SavePrefix)
     
-    test.load_image_pair(img_nameL, img_nameR)
+    # test.load_image_pair(img_nameL, img_nameR)
     
     
 
@@ -962,8 +979,8 @@ if __name__ == "__main__":
     # test.FE = test.LoadFMGT_KITTI()
     # print(test.FE)
     # test.ExactGoodMatch(screening=True,point_lens=18)
-    test.ExactGoodMatch(screening=False)
-    test.EstimateFM(method="RANSAC")
+    # test.ExactGoodMatch(screening=False)
+    # test.EstimateFM(method="RANSAC")
     # test.Show()
     # test.DrawEpipolarLines()
 
@@ -979,5 +996,8 @@ if __name__ == "__main__":
     # test.FMEvaluate()
 
     # test.RectifyImg(Calib=True)
-    test.RectifyImgUncalibrated()
+    # test.RectifyImgUncalibrated()
+    F = np.array([[2,3,4],[1,2,5],[2,4,10]])
+    e = test.EpipolarGet(F)
+    print(e)
 
