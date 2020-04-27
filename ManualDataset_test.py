@@ -9,7 +9,11 @@ DatasetPath = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVisio
 ParaPath = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/ManualDataset/Para'
 SavePath = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/ManualDataset/Res'
 FPath = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/Res/+PointNet/point_net_2/0.txt'
-SavePrefix = 'GT' 
+prefix = 'KITTI_rected'
+i = 3
+leftcorr = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+str(i)+"/leftcorr.npy"
+rightcorr = "/Users/zhangyesheng/Documents/GitHub/OANet/Rectify/ModelRes/"+prefix+str(i)+"/rightcorr.npy"
+SavePrefix = 'LMedS' 
 
 epi_cons = 0.
 sym_epi_dis = 0.
@@ -20,8 +24,8 @@ min_dis = 0.
 F_score = 0. 
 angle = 0. 
 
-Index = 600
-nums = 2
+Index = 400
+nums = 200
 mark = 0
 heng = '*'*5
 
@@ -31,6 +35,9 @@ for i in range(Index-nums,Index):
     eva.load_img_test(i)
     if SavePrefix in ['RANSAC','LMedS','8Points']:
         eva.EstimateFM(method=SavePrefix)
+    elif SavePrefix == 'OANet':
+        eva.LoadCorr(leftcorr, rightcorr)
+        eva.EstimateFM(method='LMedS')
     elif SavePrefix == 'GT':
         eva.FE = eva.LoadFMGT_KITTI()
     else:
@@ -59,7 +66,7 @@ for i in range(Index-nums,Index):
     min_dis += dic['min_dis']
     L1_loss += dic['L1_loss']
     L2_loss += dic['L2_loss']
-    epi_error += dic['epi_error']
+    # epi_error += dic['epi_error']
     if dic['angle'] > 0:
         angle += dic['angle']
     mark += 1
@@ -73,7 +80,7 @@ min_dis /= nums
 L1_loss /= nums
 L2_loss /= nums
 angle /= nums
-epi_error /= nums
+# epi_error /= nums
 # print(angle)
 
 # Save evaluate file as txt
@@ -85,4 +92,4 @@ with open(file_name,'w') as f:
     f.writelines('\nThe max symmetry epipolar distance is: '+str(max_dis)+'\nThe min symmetry epipolar distance is: '+str(min_dis))
     f.writelines('\nThe F-score is: {:4f}%'.format(F_score))
     f.writelines('\nThe inliers angle cosine is: {:4f} degrees '.format(angle))
-    f.writelines('\nThe epipolar ralative error is {:2f}'.format(epi_error))
+    # f.writelines('\nThe epipolar ralative error is {:2f}'.format(epi_error))

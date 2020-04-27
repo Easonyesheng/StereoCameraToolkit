@@ -623,7 +623,7 @@ class SelfCalibration:
         L1_loss = np.sum(np.abs(self.F - self.FE))/9
         L2_loss = np.sum(np.power((self.F - self.FE),2))/9
         F_score = self.get_F_score(self.FE, self.match_pts1, self.match_pts2)
-        epi_error = self.EpipolarGet(self.FE)
+        epi_error = 0#self.EpipolarGet(self.FE) -- need to be done
 
         metric_dict = {
             'epi_cons' : epi_cons,
@@ -633,8 +633,8 @@ class SelfCalibration:
             'L1_loss' : L1_loss,
             'L2_loss' : L2_loss,
             'F_score' : F_score,
-            'angle' : angle,
-            'epi_error' : epi_error
+            'angle' : angle
+            # 'epi_error' : epi_error
         }
         return metric_dict
 
