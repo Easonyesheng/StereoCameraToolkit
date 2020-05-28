@@ -10,14 +10,16 @@ import os
 import numpy
 import cv2
 
-Index = 20
+Index = 10
 # ImgPath = r'D:\F_Estimation_private\deepF_noCorrs\data\TUM\2020_05_27\long_office_household' # after processed
 ImgPath = r'F:\Dataset\FM_Dataset\TUM\rgbd_dataset_freiburg3_large_cabinet\Images' # before processed
 TxtFile = r'F:\Dataset\FM_Dataset\TUM\rgbd_dataset_freiburg3_large_cabinet\pairs_with_gt.txt' # before processed
 SavePath = r'D:\StereoCamera\Res\Eva_TUM'
 # FTxtFile = r'D:\F_Estimation_private\deepF_noCorrs\data\TUM\2020_05_27\long_office_household\F_gt.txt'
 ParaPath = ''
-SavePrefix = 'Eva_TUM_large_cabinet_LMedS_'
+# SavePrefix = 'Eva_TUM_large_cabinet_GT_'
+# SavePrefix = 'Eva_TUM_large_cabinet_LMedS_'
+SavePrefix = 'Eva_TUM_large_cabinet_RANSAC_'
 
 
 
@@ -28,11 +30,13 @@ Eva.load_img_TUM(Index,TxtFile)
 
 Eva.Load_F_index(TxtFile,Index)
 
-Eva.ExactGoodMatch(True)
 
-Eva.EstimateFM('LMedS')
+
+Eva.EstimateFM('RANSAC')
 # Eva.FE = Eva.F
 
+Eva.ExactGoodMatch(True)
 Eva.DrawEpipolarLines(Index)
+
 
 Eva.FMEvaluate()

@@ -1,0 +1,6 @@
+Evaluate the estimated fundamental matrix: Eva_TUM_large_cabinet_LMedS_
+The L1 loss is: 0.345270
+The L2 loss is: 0.481660
+The quantities of matching points is 4
+The epipolar constraint is : 0.10141139109196562
+The symmetry epipolar distance is: 26.07200931664863

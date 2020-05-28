@@ -441,8 +441,9 @@ class SelfCalibration:
             print('Before screening, points length is {:d}'.format(len(self.match_pts1)))
             leftpoints = []
             rightpoints = []
-            sheld = 0.01
+            sheld = 0.1
             epsilon = 1e-5
+            F = self.F
             # use sym_epi_dist to screen
             for p1, p2 in zip(self.match_pts1, self.match_pts2):
                 hp1, hp2 = np.ones((3,1)), np.ones((3,1))
