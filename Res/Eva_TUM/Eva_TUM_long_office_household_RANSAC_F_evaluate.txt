@@ -1,6 +1,0 @@
-Evaluate the estimated fundamental matrix: Eva_TUM_long_office_household_RANSAC_
-The L1 loss is: 0.409737
-The L2 loss is: 0.480193
-The quantities of matching points is 70
-The epipolar constraint is : 0.004067015591798223
-The symmetry epipolar distance is: 0.0062894948971768455

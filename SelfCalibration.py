@@ -22,6 +22,7 @@ class SelfCalibration:
                 .load_image_pair() -- one pair 
                 .load_image_KITTI(index) -- load from KITTI type folder
                 .load_img_test(index) -- load from ManualDataset type folder
+                .load_img_TUM(Index, TxtFile) -- load from TUM type folder
 
             2.读入参数 -- KITTI(txt) & YFCC(h5)
                 .LoadPara_KITTI()
@@ -134,6 +135,28 @@ class SelfCalibration:
         """
         self.img_left_name = os.path.join(self.ImgPath+'/Left',str(Index)+'.png')
         self.img_right_name = os.path.join(self.ImgPath+'/Right',str(Index)+'.png')
+
+        self.imgl = cv2.imread(self.img_left_name)
+        self.imgr = cv2.imread(self.img_right_name)
+
+        # make sure images are valid
+        if self.imgl is None:
+            sys.exit("Image " +self.img_left_name + " could not be loaded.")
+        if self.imgr is None:
+            sys.exit("Image " + self.img_right_name + " could not be loaded.")
+
+    def load_img_TUM(self, Index, TxtFile):
+        """Load from TUM type folder
+            -Images
+                -index
+        """
+        with open(TxtFile) as f:
+            f_list = f.readlines()
+        index_l = f_list[Index].split()[0]
+        index_r = f_list[Index].split()[1]
+
+        self.img_left_name = os.path.join(self.ImgPath, str(index_l).zfill(8)+'.jpg')
+        self.img_right_name = os.path.join(self.ImgPath, str(index_r).zfill(8)+'.jpg')
 
         self.imgl = cv2.imread(self.img_left_name)
         self.imgr = cv2.imread(self.img_right_name)
@@ -271,7 +294,8 @@ class SelfCalibration:
         with open(FTxtFile) as f:
             F_list = f.readlines()
         # print(F_list[Index])
-        F_gt = F_list[Index].split()#[2:]
+        F_gt = F_list[Index].split()[2:] # before processed to KITTI type
+        # F_gt = F_list[Index].split() # after processed to KITTI type
         # print(F_gt)
         self.F = np.array(F_gt,dtype=float).reshape((3,3))
         F_abs = abs(self.F)
