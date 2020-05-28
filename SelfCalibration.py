@@ -36,7 +36,7 @@ class SelfCalibration:
                 .EstimateFM(self,method="RANSAC")
 
             4.F评估 -- 可视化+量化
-                .FMEvaluate()
+                .FMEvaluate() 
                 .DrawEpipolarLines(index)
 
             5.校正
