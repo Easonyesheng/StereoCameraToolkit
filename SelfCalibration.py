@@ -7,7 +7,7 @@ import sys
 import os
 import tensorflow as tf 
 import cv2
-from PIL import Image
+# from PIL import Image
 from kitti_ana import KittiAnalyse
 from rect import mathching, returnH1_H2, getRectifystereo, compute_epipole
 from LoadH5 import parse_K
@@ -16,13 +16,30 @@ from math import sqrt, acos
 class SelfCalibration:
     """
     自标定系统
+    ! For Mac or Win, It has different path type ('data\00\' for Win & 'data/00/' for Mac )
         功能：
             1.读入图片
+                .load_image_pair() -- one pair 
+                .load_image_KITTI(index) -- load from KITTI type folder
+                .load_img_test(index) -- load from ManualDataset type folder
+
             2.读入参数 -- KITTI(txt) & YFCC(h5)
+                .LoadPara_KITTI()
+                .LoadPara_YFCC()
+                .LoadCorr() -- Inliers load
+                .Load_F_test(FPath) -- F_est(one for all) load 
+                .LoadFMGT_KITTI()
+                .Load_F_index(Index) -- F_gt(one for one) load
+
             3.估计F
+                .EstimateFM(self,method="RANSAC")
+
             4.F评估 -- 可视化+量化
+                .FMEvaluate()
+                .DrawEpipolarLines(index)
+
             5.校正
-            
+                .RectifyImgUncalibrated() -- Rectify by F only
    
     """
 
@@ -87,8 +104,12 @@ class SelfCalibration:
 
         '''
         # print(len(str(index).zfill(10-len(str(index)))))
-        self.img_left_name = os.path.join(self.ImgPath,'image_00/data/'+str(index).zfill(10)+'.png')
-        self.img_right_name = os.path.join(self.ImgPath,'image_01/data/'+str(index).zfill(10)+'.png')
+        # self.img_left_name = os.path.join(self.ImgPath,'image_00/data/'+str(index).zfill(10)+'.jpg')
+        # self.img_right_name = os.path.join(self.ImgPath,'image_01/data/'+str(index).zfill(10)+'.jpg')
+
+        # Windows version
+        self.img_left_name = os.path.join(self.ImgPath,'image_00\\data\\'+str(index).zfill(10)+'.jpg')
+        self.img_right_name = os.path.join(self.ImgPath,'image_01\\data\\'+str(index).zfill(10)+'.jpg')
 
         self.imgl = cv2.imread(self.img_left_name)
         self.imgr = cv2.imread(self.img_right_name)
@@ -243,6 +264,19 @@ class SelfCalibration:
         # if self.FE.shape[0]*self.FE.shape[1] != 9:
         #     print('ERROR: Wrong Shape:'.self.FE.shape)
         
+    def Load_F_index(self, FTxtFile, Index):
+        """Load F from FTxtFile
+           every line in FTxtFile is a single F for single pair of images with index [Index]
+        """
+        with open(FTxtFile) as f:
+            F_list = f.readlines()
+        # print(F_list[Index])
+        F_gt = F_list[Index].split()#[2:]
+        # print(F_gt)
+        self.F = np.array(F_gt,dtype=float).reshape((3,3))
+        F_abs = abs(self.F)
+        self.F = self.F/F_abs.max()
+        return self.F
 
     def LoadFMGT_KITTI(self):
         """Load the fundamental matrix file(.txt)
