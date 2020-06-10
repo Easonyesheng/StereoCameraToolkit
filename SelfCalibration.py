@@ -12,6 +12,7 @@ from kitti_ana import KittiAnalyse
 from rect import mathching, returnH1_H2, getRectifystereo, compute_epipole
 from LoadH5 import parse_K
 from math import sqrt, acos
+import time
 
 class SelfCalibration:
     """
@@ -281,7 +282,10 @@ class SelfCalibration:
             :output
                  as self.FE
         """
-        self.FE = np.loadtxt(FPath).reshape((3,3))
+        FE = np.loadtxt(FPath).reshape((3,3))
+        self.FE = FE
+        return FE
+
         # if self.FE.shape[0] == 1:
         #     self.FE = self.FE.reshape((3,3))
         # if self.FE.shape[0]*self.FE.shape[1] != 9:
@@ -484,8 +488,11 @@ class SelfCalibration:
                 4.8Points
             :output 
                 change self.FE
+                return time cost 
         """
-        
+        time_start = 0
+        time_end = 0
+
         try: 
             self.match_pts1.all()
         except AttributeError:
@@ -495,24 +502,33 @@ class SelfCalibration:
         if method == "RANSAC":
             limit_length = len(self.match_pts1)
             print('Use RANSAC with %d points' %limit_length)
+            time_start = time.time()
             self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1[:limit_length],
                                                     self.match_pts2[:limit_length],
                                                     cv2.FM_RANSAC)
+            time_end = time.time()
+
         elif method == "LMedS":
             limit_length = len(self.match_pts1)
             print('Use LMEDS with %d points' %len(self.match_pts1))
+            time_start = time.time()
             self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1[:limit_length],
                                                     self.match_pts2[:limit_length],
                                                     cv2.FM_LMEDS)
+            time_end = time.time()
+            
         elif method == "8Points":
             print('Use 8 Points algorithm')
             i = -1
             while True:
                 # i = np.random.randint(0,len(self.match_pts1)-7)
                 i += 1
+                time_start = time.time()
                 self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1[i:i+8],
                                                     self.match_pts2[i:i+8],
                                                     cv2.FM_8POINT, 0.1, 0.99)
+                time_end = time.time()
+                
                 print('Points index: ',i)
                 try: 
                     self.FE.all()
@@ -530,13 +546,13 @@ class SelfCalibration:
 
         else:
             print("Method Error!")
-            return
+            return 0
         # print(self.FE)
         F_abs = abs(self.FE)
         # self.shape = np.array([512, 1392])
         self.FE = self.FE / F_abs.max()
         # self.get_normalized_F(self.FE, mean=[0,0], std=[np.sqrt(2.), np.sqrt(2.)], size=self.shape)
-        return
+        return time_end - time_start
 
     def DL_F_Es(self):
         """Use DL method to Estimate fundamental matrix
