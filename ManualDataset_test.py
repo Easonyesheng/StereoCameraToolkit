@@ -1,11 +1,11 @@
 """Evaluate on Manual Dataset"""
 # threshold: sym_epi_dis < 0.01
-from SelfCalibration import SelfCalibration
+from Main import SelfCalibration
 import cv2
 import numpy as np 
 import os
 
-DatasetPath = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/ManualDataset'
+DatasetPath = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/ManualDataset'
 ParaPath = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/ManualDataset/Para'
 SavePath = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/ManualDataset/Res'
 # FPath = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/Res/Sia_opt/optimal/2.txt' # siamese_opt
