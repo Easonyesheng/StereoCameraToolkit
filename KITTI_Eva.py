@@ -1,5 +1,5 @@
 """
-Evaluate on TUM Dataset
+Evaluate on KITTI Dataset
 """
 
 import os
@@ -7,20 +7,20 @@ from SelfCalibration import SelfCalibration
 import cv2
 import numpy as np 
 
-ImgPath = r'D:\F_Estimation_private\deepF_noCorrs\data\Pred\Pred_TUM_06_02'
-ParaPath = r''
-F_gt_path = r'D:\F_Estimation_private\deepF_noCorrs\data\Pred\Pred_TUM_06_02' #+ F_gti.txt
-F_est_path = r'D:\F_Estimation_private\deepF_noCorrs\Pred_Result\TUM_DeepF' #+ i.txt
-SavePath = r'D:\F_Estimation_private\deepF_noCorrs\Pred_Result\TUM_DeepF\Res'
+ImgPath = r'D:\F_Estimation_private\deepF_noCorrs\data\Pred\Pred1_12_07'
+ParaPath = r'D:\F_Estimation_private\deepF_noCorrs\data\kitti\Para'
+# F_gt_path = r'D:\F_Estimation_private\deepF_noCorrs\data\Pred\Pred_TUM_06_02' #+ F_gti.txt
+F_est_path = r'D:\F_Estimation_private\deepF_noCorrs\Pred_Result\FE_without_loss' #+ i.txt
+SavePath = r'D:\F_Estimation_private\deepF_noCorrs\Pred_Result\FE_without_loss\Res'
 
-SavePrefix = 'TUM_0_model'
+# SavePrefix = 'TUM_0_model'
 # SavePrefix = 'TUM_0_GT'
 # SavePrefix = 'TUM_0_RANSAC'
 # SavePrefix = 'TUM_0_8Point'
-# SavePrefix = 'TUM_0_LMedS'
+SavePrefix = 'FE_without_loss'
 
-left_name = 'Image00'
-right_name = 'Image01'
+left_name = 'image_00\\data'
+right_name = 'image_01\\data'
 
 epi_cons = 0.
 sym_epi_dis = 0.
@@ -33,17 +33,17 @@ angle = 0.
 nums = 0
 time = 0.
 
-for i in range(10):
+for i in range(7):
 # i = 3
     Eva = SelfCalibration(ImgPath, ParaPath, SavePath, SavePrefix)
 
-    left_img = os.path.join(ImgPath,left_name+'\\'+str(i).zfill(10)+'.jpg')
-    right_img = os.path.join(ImgPath,right_name+'\\'+str(i).zfill(10)+'.jpg')
+    left_img = os.path.join(ImgPath,left_name+'\\'+str(i).zfill(10)+'.png')
+    right_img = os.path.join(ImgPath,right_name+'\\'+str(i).zfill(10)+'.png')
 
     Eva.load_image_pair(left_img,right_img)
 
     # load F_gt
-    Eva.F = Eva.Load_F_test(os.path.join(F_gt_path,'F_gt'+str(i)+'.txt'))
+    Eva.LoadFMGT_KITTI()
     # print(Eva.F)
 
     # load F_est model
