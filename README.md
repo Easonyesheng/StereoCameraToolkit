@@ -4,4 +4,4 @@
 
 ## Read Manual.md for more information
 
-## SelfCalibration.py is the main part.
+## Main.py is the main part.

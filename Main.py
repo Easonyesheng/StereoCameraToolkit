@@ -34,14 +34,18 @@ class SelfCalibration:
                 .Load_F_index(Index) -- F_gt(one for one) load
                 .load_F_form_Fs(self, F_file, line_index)
 
-            3.估计F
+            3.显示参数
+                .Show()
+
+            4.估计F
                 .EstimateFM(self,method="RANSAC")
 
-            4.F评估 -- 可视化+量化
+            5.F评估 -- 可视化+量化
                 .FMEvaluate() 
                 .DrawEpipolarLines(index)
 
-            5.校正
+            6.校正
+                .RectifyImg()
                 .RectifyImgUncalibrated() -- Rectify by F only
    
     """
@@ -60,6 +64,8 @@ class SelfCalibration:
         self.Kr = None
         self.dr = None
         self.dl = None
+        self.R_stereo = None
+        self.T_stereo = None
 
         # create new folders to save
         if not os.path.exists(self.SavePath):
@@ -82,8 +88,8 @@ class SelfCalibration:
             
         """
         self.img_left_name, self.img_right_name = img_nameL,img_nameR
-        self.imgl = cv2.imread(os.path.join(self.ImgPath,img_nameL), 0)
-        self.imgr = cv2.imread(os.path.join(self.ImgPath,img_nameR), 0)
+        self.imgl = cv2.imread(os.path.join(self.ImgPath,img_nameL), -1)
+        self.imgr = cv2.imread(os.path.join(self.ImgPath,img_nameR), -1)
         # print(self.imgl.shape)
         # self.imgl = cv2.resize(self.imgl,(256,256))
         # self.imgr = cv2.resize(self.imgr,(256,256))
@@ -189,7 +195,7 @@ class SelfCalibration:
         # print("Parameters: \n Kl:",self.Kl,"  \nKr: ",self.Kr," \ndl: ",self.dl," \ndr:",self.dr)
         try:
             self.Kr.all()
-            print("Parameters: \n Kl:",self.Kl,"  \nKr: ",self.Kr," \ndl: ",self.dl," \ndr:",self.dr)
+            print("Parameters: \n Kl:",self.Kl,"  \nKr: ",self.Kr," \ndl: ",self.dl," \ndr:",self.dr,'\nR',self.R_stereo,'\nT',self.T_stereo)
         except:
             print("Parameters are not loaded")
 
@@ -909,16 +915,19 @@ class SelfCalibration:
         except AttributeError:
             self.EstimateFM() # Using traditional method as default
 
-        try:
-            self.E.all()
-        except AttributeError:
-            self._Get_Essential_Matrix() 
+        # try:
+        #     self.E.all()
+        # except AttributeError:
+        #     self._Get_Essential_Matrix() 
 
         if not Calib:
-            self._Get_R_T(KITTI)
+            # self._Get_R_T(KITTI)
 
-            R = self.Rt2[:, :3]
-            T = self.Rt2[:, 3]
+            # R = self.Rt2[:, :3]
+            # T = self.Rt2[:, 3]
+            #
+            R = self.R_stereo
+            T = self.T_stereo
             #perform the rectification
             R1, R2, P1, P2, Q, roi1, roi2 = cv2.stereoRectify(self.Kl, self.dl,
                                                             self.Kr, self.dr,
@@ -973,33 +982,36 @@ class SelfCalibration:
     def RectifyImgUncalibrated(self):
         """Rectify imgs without the parameters
         """
+        start = time.time()
         im1, im2 = self.imgl, self.imgr
         size=im1.shape[1],im1.shape[0]
         points1, points2 = self.match_pts1, self.match_pts2
         H1,H2=returnH1_H2(points1,points2,self.FE,size)
         rectimg1 = cv2.warpPerspective(im1,H1,size)
         rectimg2 = cv2.warpPerspective(im2,H2,size)
+        end = time.time()
+        print('Rect time: %f' %(end-start))
         # rectifyim1,rectifyim2=getRectifystereo(H1,H2,im1,im2,size,self.FE)
         
-        # cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"RectUncalibLeft.jpg"),rectimg1)
-        # cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"RectUncalibRight.jpg"),rectimg2)
+        cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"RectUncalibLeft.jpg"),rectimg1)
+        cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"RectUncalibRight.jpg"),rectimg2)
 
-        cv2.startWindowThread()
-        # cv2.imshow("left", rectimg1)
-        # cv2.imshow("right", rectimg2)
+        # cv2.startWindowThread()
+        # # cv2.imshow("left", rectimg1)
+        # # cv2.imshow("right", rectimg2)
 
-        # draw the images side by side
-        total_size = (max(rectimg1.shape[0], rectimg2.shape[0]),
-                      rectimg1.shape[1] + rectimg2.shape[1], 3)
-        img = np.zeros(total_size, dtype=np.uint8)
-        img[:rectimg1.shape[0], :rectimg1.shape[1]] = rectimg1
-        img[:rectimg2.shape[0], rectimg1.shape[1]:] = rectimg2
+        # # draw the images side by side
+        # total_size = (max(rectimg1.shape[0], rectimg2.shape[0]),
+        #               rectimg1.shape[1] + rectimg2.shape[1], 3)
+        # img = np.zeros(total_size, dtype=np.uint8)
+        # img[:rectimg1.shape[0], :rectimg1.shape[1]] = rectimg1
+        # img[:rectimg2.shape[0], rectimg1.shape[1]:] = rectimg2
  
-        # draw horizontal lines every 25 px accross the side by side image
-        for i in range(20, img.shape[0], 25):
-            cv2.line(img, (0, i), (img.shape[1], i), (255, 0, 0))
+        # # draw horizontal lines every 25 px accross the side by side image
+        # for i in range(20, img.shape[0], 25):
+        #     cv2.line(img, (0, i), (img.shape[1], i), (255, 0, 0))
  
-        cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"RectUncalib.jpg"),img)
+        # cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"RectUncalib.jpg"),img)
         
         #show
         # cv2.imshow('imgRectified', img)
