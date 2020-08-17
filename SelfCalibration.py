@@ -32,6 +32,7 @@ class SelfCalibration:
                 .Load_F_test(FPath) -- F_est(one for all) load 
                 .LoadFMGT_KITTI()
                 .Load_F_index(Index) -- F_gt(one for one) load
+                .load_F_form_Fs(self, F_file, line_index)
 
             3.估计F
                 .EstimateFM(self,method="RANSAC")
@@ -291,6 +292,19 @@ class SelfCalibration:
         # if self.FE.shape[0]*self.FE.shape[1] != 9:
         #     print('ERROR: Wrong Shape:'.self.FE.shape)
         
+    def load_F_form_Fs(self, F_file, line_index):
+        """Get corresponding F from nx9 matrix
+            The i_th line 1x9 -> F correspond to the 'i_th.jpg' 
+        """
+        with open F_file as f:
+            f_list = f.readlines()
+        
+        F = np.array(f_list[line_index].split(),dtype=float).reshape((3,3))
+        F_abs = abs(F)
+        F = F / (F_abs.max()+1e-8)
+        self.FE = F
+        return F
+
     def Load_F_index(self, FTxtFile, Index):
         """Load F from FTxtFile
            every line in FTxtFile is a single F for single pair of images with index [Index]
@@ -713,7 +727,7 @@ class SelfCalibration:
         }
         return metric_dict
 
-    def DrawEpipolarLines(self,i):
+    def DrawEpipolarLines(self,i=0):
         """For F Estimation visulization, drawing the epipolar lines
             1. find epipolar lines
             2. draw lines
