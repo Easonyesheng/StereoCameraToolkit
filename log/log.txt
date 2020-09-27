@@ -1,135 +1,13 @@
 INFO:root:
-==========New=Turn===========
-
-INFO:root:
-Show attributes
-
-INFO:root:Camera name: camera
-INFO:root:Images: 
-WARNING:root:No Image
-INFO:root:Intrinsic Parameters: 
- K:[[0. 0. 0.]
- [0. 0. 0.]
- [0. 0. 0.]]
-INFO:root:Extrinsic Parameters: 
- EP:[[0. 0. 0. 0.]
- [0. 0. 0. 0.]
- [0. 0. 0. 0.]]
-INFO:root:R: [0. 0. 0.]
-INFO:root:t: [0.]
-INFO:root:Distortion Parameters: 
- D:[[0. 0. 0. 0. 0.]]
-INFO:root:The camera has been calibrated: False
-INFO:root:Load 54 images for calibration 
- The shape is: 1080 , 1920 
-INFO:root:In Mod: Calibration, Image loading DONE.
-self.Image shape is: (54, 1080, 1920)
-INFO:root:
-+++++++Calibration Start+++++++
-
-INFO:root:img for calibration shape: (54, 1080, 1920)
-INFO:root:chess_board_size: [ 6 13]
-INFO:root:Calibration done, and the error of intrinsic is 0.481455
-INFO:root:
-Show attributes
-
-INFO:root:Camera name: camera
-INFO:root:Images: 
-INFO:root:54 Images got.
-Shape is:(54, 1080, 1920)
-INFO:root:Intrinsic Parameters: 
- K:[[1.56223196e+03 0.00000000e+00 9.60948602e+02]
- [0.00000000e+00 1.56257106e+03 5.44699730e+02]
- [0.00000000e+00 0.00000000e+00 1.00000000e+00]]
-INFO:root:Extrinsic Parameters: 
- EP:[[0. 0. 0. 0.]
- [0. 0. 0. 0.]
- [0. 0. 0. 0.]]
-INFO:root:R: [[ 0.06382268]
- [-0.08001857]
- [-0.05788875]]
-INFO:root:t: [[-5.47136189]
- [-2.32956953]
- [28.66488778]]
-INFO:root:Distortion Parameters: 
- D:[[-3.10468883e-01  4.72306734e-01 -1.73406317e-03 -1.35323446e-03
-  -2.02162421e+00]]
-INFO:root:The camera has been calibrated: True
-INFO:root:
-Start evaluation calibration
-
-INFO:root:Calibration error (Reprojection) is:0.05074974982390311
-INFO:root:
-==========New=Turn===========
-
-INFO:root:
-Show attributes
-
-INFO:root:Camera name: camera
-INFO:root:Images: 
-WARNING:root:No Image
-INFO:root:Intrinsic Parameters: 
- K:[[0. 0. 0.]
- [0. 0. 0.]
- [0. 0. 0.]]
-INFO:root:Extrinsic Parameters: 
- EP:[[0. 0. 0. 0.]
- [0. 0. 0. 0.]
- [0. 0. 0. 0.]]
-INFO:root:R: [0. 0. 0.]
-INFO:root:t: [0.]
-INFO:root:Distortion Parameters: 
- D:[[0. 0. 0. 0. 0.]]
-INFO:root:The camera has been calibrated: False
-INFO:root:Load 54 images for calibration 
- The shape is: 1080 , 1920 
-INFO:root:In Mod: Calibration, Image loading DONE.
-self.Image shape is: (54, 1080, 1920)
-INFO:root:
-+++++++Calibration Start+++++++
-
-INFO:root:img for calibration shape: (54, 1080, 1920)
-INFO:root:chess_board_size: [ 6 13]
-INFO:root:Calibration done, and the error of intrinsic is 0.481455
-INFO:root:
-Show attributes
-
-INFO:root:Camera name: camera
-INFO:root:Images: 
-INFO:root:54 Images got.
-Shape is:(54, 1080, 1920)
-INFO:root:Intrinsic Parameters: 
- K:[[1.56223196e+03 0.00000000e+00 9.60948602e+02]
- [0.00000000e+00 1.56257106e+03 5.44699730e+02]
- [0.00000000e+00 0.00000000e+00 1.00000000e+00]]
-INFO:root:Extrinsic Parameters: 
- EP:[[0. 0. 0. 0.]
- [0. 0. 0. 0.]
- [0. 0. 0. 0.]]
-INFO:root:R: [[ 0.06382268]
- [-0.08001857]
- [-0.05788875]]
-INFO:root:t: [[-5.47136189]
- [-2.32956953]
- [28.66488778]]
-INFO:root:Distortion Parameters: 
- D:[[-3.10468883e-01  4.72306734e-01 -1.73406317e-03 -1.35323446e-03
-  -2.02162421e+00]]
-INFO:root:The camera has been calibrated: True
-INFO:root:
-Start evaluation calibration
-
-INFO:root:Calibration error (Reprojection) is:0.05074974982390311
-INFO:root:
 ==========================================
 
 INFO:root:
-==========New=leftTurn===========
+==========New=rightTurn===========
 
 INFO:root:
 Show attributes
 
-INFO:root:Camera name: left
+INFO:root:Camera name: right
 INFO:root:Images: 
 WARNING:root:No Image
 INFO:root:Intrinsic Parameters: 
@@ -154,36 +32,36 @@ INFO:root:
 
 INFO:root:img for calibration shape: (54, 1080, 1920)
 INFO:root:chess_board_size: [ 6 13]
-INFO:root:Calibration done, and the error of intrinsic is 0.481455
+INFO:root:Calibration done, and the error of intrinsic is 0.546110
 INFO:root:
 Show attributes
 
-INFO:root:Camera name: left
+INFO:root:Camera name: right
 INFO:root:Images: 
 INFO:root:54 Images got.
 Shape is:(54, 1080, 1920)
 INFO:root:Intrinsic Parameters: 
- K:[[1.56223196e+03 0.00000000e+00 9.60948602e+02]
- [0.00000000e+00 1.56257106e+03 5.44699730e+02]
+ K:[[1.58964721e+03 0.00000000e+00 9.62962623e+02]
+ [0.00000000e+00 1.58970202e+03 5.49435404e+02]
  [0.00000000e+00 0.00000000e+00 1.00000000e+00]]
 INFO:root:Extrinsic Parameters: 
  EP:[[0. 0. 0. 0.]
  [0. 0. 0. 0.]
  [0. 0. 0. 0.]]
-INFO:root:R: [[ 0.06382268]
- [-0.08001857]
- [-0.05788875]]
-INFO:root:t: [[-5.47136189]
- [-2.32956953]
- [28.66488778]]
+INFO:root:R: [[-0.10613493]
+ [-0.14392303]
+ [ 0.15293461]]
+INFO:root:t: [[-9.43161394]
+ [-3.67316783]
+ [30.83796769]]
 INFO:root:Distortion Parameters: 
- D:[[-3.10468883e-01  4.72306734e-01 -1.73406317e-03 -1.35323446e-03
-  -2.02162421e+00]]
+ D:[[-3.00246329e-01  1.43557966e-01 -1.37945149e-03 -2.04971248e-04
+  -5.31401509e-02]]
 INFO:root:The camera has been calibrated: True
 INFO:root:
 Start evaluation calibration
 
-INFO:root:Calibration error (Reprojection) is:0.05074974982390311
+INFO:root:Calibration error (Reprojection) is:0.05711304944255166
 INFO:root:
 ==========================================
 
@@ -248,3 +126,195 @@ INFO:root:
 Start evaluation calibration
 
 INFO:root:Calibration error (Reprojection) is:0.05711304944255166
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=rightTurn===========
+
+INFO:root:
+Show attributes
+
+INFO:root:Camera name: right
+INFO:root:Images: 
+WARNING:root:No Image
+INFO:root:Intrinsic Parameters: 
+ K:[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+INFO:root:Extrinsic Parameters: 
+ EP:[[0. 0. 0. 0.]
+ [0. 0. 0. 0.]
+ [0. 0. 0. 0.]]
+INFO:root:R: [0. 0. 0.]
+INFO:root:t: [0.]
+INFO:root:Distortion Parameters: 
+ D:[[0. 0. 0. 0. 0.]]
+INFO:root:The camera has been calibrated: False
+INFO:root:Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+INFO:root:In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+INFO:root:
++++++++Calibration Start+++++++
+
+INFO:root:img for calibration shape: (54, 1080, 1920)
+INFO:root:chess_board_size: [ 6 13]
+INFO:root:Calibration done, and the error of intrinsic is 0.546110
+INFO:root:
+Show attributes
+
+INFO:root:Camera name: right
+INFO:root:Images: 
+INFO:root:54 Images got.
+Shape is:(54, 1080, 1920)
+INFO:root:Intrinsic Parameters: 
+ K:[[1.58964721e+03 0.00000000e+00 9.62962623e+02]
+ [0.00000000e+00 1.58970202e+03 5.49435404e+02]
+ [0.00000000e+00 0.00000000e+00 1.00000000e+00]]
+INFO:root:Extrinsic Parameters: 
+ EP:[[0. 0. 0. 0.]
+ [0. 0. 0. 0.]
+ [0. 0. 0. 0.]]
+INFO:root:R: [[-0.10613493]
+ [-0.14392303]
+ [ 0.15293461]]
+INFO:root:t: [[-9.43161394]
+ [-3.67316783]
+ [30.83796769]]
+INFO:root:Distortion Parameters: 
+ D:[[-3.00246329e-01  1.43557966e-01 -1.37945149e-03 -2.04971248e-04
+  -5.31401509e-02]]
+INFO:root:The camera has been calibrated: True
+INFO:root:
+Start evaluation calibration
+
+INFO:root:Calibration error (Reprojection) is:0.05711304944255166
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=rightTurn===========
+
+INFO:root:
+Show attributes
+
+INFO:root:Camera name: right
+INFO:root:Images: 
+WARNING:root:No Image
+INFO:root:Intrinsic Parameters: 
+ K:[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+INFO:root:Extrinsic Parameters: 
+ EP:[[0. 0. 0. 0.]
+ [0. 0. 0. 0.]
+ [0. 0. 0. 0.]]
+INFO:root:R: [0. 0. 0.]
+INFO:root:t: [0.]
+INFO:root:Distortion Parameters: 
+ D:[[0. 0. 0. 0. 0.]]
+INFO:root:The camera has been calibrated: False
+INFO:root:Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+INFO:root:In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+INFO:root:
++++++++Calibration Start+++++++
+
+INFO:root:img for calibration shape: (54, 1080, 1920)
+INFO:root:chess_board_size: [ 6 13]
+INFO:root:Calibration done, and the error of intrinsic is 0.546110
+INFO:root:
+Show attributes
+
+INFO:root:Camera name: right
+INFO:root:Images: 
+INFO:root:54 Images got.
+Shape is:(54, 1080, 1920)
+INFO:root:Intrinsic Parameters: 
+ K:[[1.58964721e+03 0.00000000e+00 9.62962623e+02]
+ [0.00000000e+00 1.58970202e+03 5.49435404e+02]
+ [0.00000000e+00 0.00000000e+00 1.00000000e+00]]
+INFO:root:Extrinsic Parameters: 
+ EP:[[0. 0. 0. 0.]
+ [0. 0. 0. 0.]
+ [0. 0. 0. 0.]]
+INFO:root:R: [[-0.10613493]
+ [-0.14392303]
+ [ 0.15293461]]
+INFO:root:t: [[-9.43161394]
+ [-3.67316783]
+ [30.83796769]]
+INFO:root:Distortion Parameters: 
+ D:[[-3.00246329e-01  1.43557966e-01 -1.37945149e-03 -2.04971248e-04
+  -5.31401509e-02]]
+INFO:root:The camera has been calibrated: True
+INFO:root:
+Start evaluation calibration
+
+INFO:root:Calibration error (Reprojection) is:0.05711304944255166
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=leftTurn===========
+
+INFO:root:
+Show attributes
+
+INFO:root:Camera name: left
+INFO:root:Images: 
+WARNING:root:No Image
+INFO:root:Intrinsic Parameters: 
+ K:[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+INFO:root:Extrinsic Parameters: 
+ EP:[[0. 0. 0. 0.]
+ [0. 0. 0. 0.]
+ [0. 0. 0. 0.]]
+INFO:root:R: [0. 0. 0.]
+INFO:root:t: [0.]
+INFO:root:Distortion Parameters: 
+ D:[[0. 0. 0. 0. 0.]]
+INFO:root:The camera has been calibrated: False
+INFO:root:Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+INFO:root:In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+INFO:root:
++++++++Calibration Start+++++++
+
+INFO:root:img for calibration shape: (54, 1080, 1920)
+INFO:root:chess_board_size: [ 6 13]
+INFO:root:Calibration done, and the error of intrinsic is 0.481455
+INFO:root:
+Show attributes
+
+INFO:root:Camera name: left
+INFO:root:Images: 
+INFO:root:54 Images got.
+Shape is:(54, 1080, 1920)
+INFO:root:Intrinsic Parameters: 
+ K:[[1.56223196e+03 0.00000000e+00 9.60948602e+02]
+ [0.00000000e+00 1.56257106e+03 5.44699730e+02]
+ [0.00000000e+00 0.00000000e+00 1.00000000e+00]]
+INFO:root:Extrinsic Parameters: 
+ EP:[[0. 0. 0. 0.]
+ [0. 0. 0. 0.]
+ [0. 0. 0. 0.]]
+INFO:root:R: [[ 0.06382268]
+ [-0.08001857]
+ [-0.05788875]]
+INFO:root:t: [[-5.47136189]
+ [-2.32956953]
+ [28.66488778]]
+INFO:root:Distortion Parameters: 
+ D:[[-3.10468883e-01  4.72306734e-01 -1.73406317e-03 -1.35323446e-03
+  -2.02162421e+00]]
+INFO:root:The camera has been calibrated: True
+INFO:root:
+Start evaluation calibration
+
+INFO:root:Calibration error (Reprojection) is:0.05074974982390311

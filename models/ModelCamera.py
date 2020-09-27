@@ -74,7 +74,7 @@ class Camera(object):
 
     """
 
-    def __init__(self, config=None, camera_name='camera'):
+    def __init__(self, config=None):
         """name
             descriptor
         Args:
@@ -83,7 +83,7 @@ class Camera(object):
         Returns:
 
         """
-        self.name = camera_name
+        self.name = CAMERANAME
         self.task = TASK
 
         self.config = config
@@ -260,8 +260,9 @@ class Camera(object):
         img_show(dst, 'undistort')
 
         if save_flag:
-            test_dir_if_not_create(os.path.join(SAVEPATH,'undistort'))
-            save_img_with_prefix(dst, os.path.join(SAVEPATH,'undistort'), SAVEPREFIX+'_undistort')
+            save_path = os.path.join(os.path.join(SAVEPATH,'undistort'),self.name)
+            test_dir_if_not_create(save_path)
+            save_img_with_prefix(dst, save_path, SAVEPREFIX+'_undistort')
 
     def show_img(self, index = 0, save_flag=True):
         """name
@@ -274,8 +275,9 @@ class Camera(object):
         img_show(self.Image[index], 'img'+str(index))
 
         if save_flag:
-            test_dir_if_not_create(os.path.join(SAVEPATH,self.name+'_ori_img'))
-            save_img_with_prefix(self.Image[index], os.path.join(SAVEPATH,self.name+'_ori_img'), SAVEPREFIX+'ori_img')
+            save_path = os.path.join(os.path.join(SAVEPATH,'ori_img'), self.name)
+            test_dir_if_not_create(save_path)
+            save_img_with_prefix(self.Image[index], save_path, SAVEPREFIX+'ori_img')
 
     def write_log(self):
         """name
@@ -290,7 +292,7 @@ class Camera(object):
 
 if __name__ == "__main__":
 
-    test = Camera(camera_name=CAMERANAME)
+    test = Camera()
 
     test.show_attri()
 

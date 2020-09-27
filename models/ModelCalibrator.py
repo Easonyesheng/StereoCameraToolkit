@@ -118,7 +118,9 @@ class Calibrator(object):
             img_show(img_drawn, 'draw_corners')
 
         if save_flag:
-            save_img_with_prefix(img_drawn, SAVEPATH, SAVEPREFIX+'_DrawConners_'+str(index))
+            save_path = os.path.join(os.path.join(SAVEPATH,'draw_corner'),CAMERANAME)
+            test_dir_if_not_create(save_path)
+            save_img_with_prefix(img_drawn, save_path, SAVEPREFIX+'_DrawConners_'+str(index))
         
 
     def __calibrate(self):
