@@ -1,0 +1,50 @@
+INFO:root:
+Show attributes
+
+INFO:root:Camera name: camera
+INFO:root:Images: 
+WARNING:root:No Image
+INFO:root:Intrinsic Parameters: 
+ K:[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+INFO:root:Extrinsic Parameters: 
+ EP:[[0. 0. 0. 0.]
+ [0. 0. 0. 0.]
+ [0. 0. 0. 0.]]
+INFO:root:R: [[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+INFO:root:t: [[0.]
+ [0.]
+ [0.]]
+INFO:root:Distortion Parameters: 
+ D:[[0. 0. 0. 0. 0.]]
+INFO:root:The camera has been calibrated: False
+INFO:root:In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+INFO:root:
+Show attributes
+
+INFO:root:Camera name: camera
+INFO:root:Images: 
+INFO:root:54 Images got.
+Shape is:(54, 1080, 1920)
+INFO:root:Intrinsic Parameters: 
+ K:[[1.56223196e+03 0.00000000e+00 9.60948602e+02]
+ [0.00000000e+00 1.56257106e+03 5.44699730e+02]
+ [0.00000000e+00 0.00000000e+00 1.00000000e+00]]
+INFO:root:Extrinsic Parameters: 
+ EP:[[0. 0. 0. 0.]
+ [0. 0. 0. 0.]
+ [0. 0. 0. 0.]]
+WARNING:root:R is empty
+WARNING:root:t is empty
+INFO:root:Distortion Parameters: 
+ D:[[-3.10468883e-01  4.72306734e-01 -1.73406317e-03 -1.35323446e-03
+  -2.02162421e+00]]
+INFO:root:The camera has been calibrated: True
+INFO:root:
+Start evaluation calibration
+
+INFO:root:Calibration error (Reprojection) is:0.05074974982390311
