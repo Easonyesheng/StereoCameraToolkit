@@ -105,11 +105,14 @@ class Camera(object):
         self.Image_num = 0
 
         self.Loader = Loader()
+        self.img_path = ''
 
         self.Calibrator = Calibrator()
         self.flag_calib = False
 
         self.Evaluator = Evaluator()
+        self.save_path = ''
+        self.save_prefix = ''
 
         log_init(LOGFILE)
         logging.info('\n==========================================\n')
@@ -119,13 +122,34 @@ class Camera(object):
     
     def init_by_config(self, yaml_path):
         """name
+
             initialize with yaml file
+            set for stereo camera initialization
+            
         Args:
             
         
         Returns:
         """
-        pass
+
+        with open(yaml_path) as f:
+            logging.info('Initial camera from '+yaml_path)
+            config = yaml.load(f)
+            self.name = config['name']
+            self.task = config['task']
+            self.IntP = np.array(config['intrinsic_parameter']['matrix'])
+            self.fx = config['intrinsic_parameter']['fx']
+            self.fy = config['intrinsic_parameter']['fy']
+            self.cx = config['intrinsic_parameter']['cx']
+            self.cy = config['intrinsic_parameter']['cy']
+            self.R = np.array(config['extrinsic_parameter']['R'])
+            self.t = np.array(config['extrinsic_parameter']['t'])
+            self.ExtP = np.array(config['extrinsic_parameter']['matrix'])
+            self.DisP = np.array(config['distortion'])
+            self.img_path = config['img_path']
+            self.save_path = config['save_path']
+            self.save_prefix = config['save_prefix']
+            logging.info('Camera initialization done.')
 
 
     def load_images(self, image_path, load_mod_flag):
@@ -188,16 +212,27 @@ class Camera(object):
         else:
             logging.info("Extrinsic Parameters: \n EP:"+str(self.ExtP))
 
+        if len(self.R.shape) == 3:
+            if not check_numpy_array(self.R[0]):
+                logging.warning('R is empty')
+            else:
+                logging.info('R: '+str(self.R[0]))
+        elif len(self.R.shape) == 2:
+            if not check_numpy_array(self.R):
+                logging.warning('R is empty')
+            else:
+                logging.info('R: '+str(self.R))
 
-        if not check_numpy_array(self.R[0]):
-            logging.warning('R is empty')
-        else:
-            logging.info('R: '+str(self.R[0]))
-        
-        if not check_numpy_array(self.t[0]):
-            logging.warning('t is empty')
-        else:
-            logging.info('t: '+str(self.t[0]))
+        if len(self.t.shape) == 3:
+            if not check_numpy_array(self.t[0]):
+                logging.warning('t is empty')
+            else:
+                logging.info('t: '+str(self.t[0]))
+        elif len(self.t.shape) == 2:
+            if not check_numpy_array(self.t):
+                logging.warning('t is empty')
+            else:
+                logging.info('t: '+str(self.t))
 
         if not check_numpy_array(self.DisP):
             logging.warning("Disortion Parameters are not loaded")
@@ -296,15 +331,18 @@ if __name__ == "__main__":
 
     test.show_attri()
 
-    test.load_images(IMGPATH ,'Calibration')
+    yaml_path = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/BasicConfig.yaml'
+    test.init_by_config(yaml_path)
 
-    obj_points, img_points = test.calibrator()
+    # test.load_images(IMGPATH ,'Calibration')
+
+    # obj_points, img_points = test.calibrator()
     # print(test.R)
 
     test.show_attri()
 
-    test.evaluate_calibration(obj_points, img_points)
+    # test.evaluate_calibration(obj_points, img_points)
 
-    test.show_img(save_flag=True)
+    # test.show_img(save_flag=True)
 
-    test.undistort(save_flag=True)
+    # test.undistort(save_flag=True)

@@ -318,3 +318,178 @@ INFO:root:
 Start evaluation calibration
 
 INFO:root:Calibration error (Reprojection) is:0.05074974982390311
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=leftTurn===========
+
+INFO:root:
+Show attributes
+
+INFO:root:Camera name: left
+INFO:root:Images: 
+WARNING:root:No Image
+INFO:root:Intrinsic Parameters: 
+ K:[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+INFO:root:Extrinsic Parameters: 
+ EP:[[0. 0. 0. 0.]
+ [0. 0. 0. 0.]
+ [0. 0. 0. 0.]]
+INFO:root:R: [0. 0. 0.]
+INFO:root:t: [0.]
+INFO:root:Distortion Parameters: 
+ D:[[0. 0. 0. 0. 0.]]
+INFO:root:The camera has been calibrated: False
+INFO:root:Initial camera from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/BasicConfig.yaml
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=leftTurn===========
+
+INFO:root:
+Show attributes
+
+INFO:root:Camera name: left
+INFO:root:Images: 
+WARNING:root:No Image
+INFO:root:Intrinsic Parameters: 
+ K:[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+INFO:root:Extrinsic Parameters: 
+ EP:[[0. 0. 0. 0.]
+ [0. 0. 0. 0.]
+ [0. 0. 0. 0.]]
+INFO:root:R: [0. 0. 0.]
+INFO:root:t: [0.]
+INFO:root:Distortion Parameters: 
+ D:[[0. 0. 0. 0. 0.]]
+INFO:root:The camera has been calibrated: False
+INFO:root:Initial camera from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/BasicConfig.yaml
+INFO:root:Camera initialization done.
+INFO:root:
+Show attributes
+
+INFO:root:Camera name: Left
+INFO:root:Images: 
+WARNING:root:No Image
+INFO:root:Intrinsic Parameters: 
+ K:[[1 0 0]
+ [0 1 0]
+ [0 0 1]]
+INFO:root:Extrinsic Parameters: 
+ EP:[[1 0 0]
+ [0 1 0]
+ [0 0 1]
+ [0 0 0]]
+INFO:root:R: [1 0 0]
+INFO:root:t: [0]
+INFO:root:Distortion Parameters: 
+ D:[0 0 0 0 0]
+INFO:root:The camera has been calibrated: False
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=leftTurn===========
+
+INFO:root:
+Show attributes
+
+INFO:root:Camera name: left
+INFO:root:Images: 
+WARNING:root:No Image
+INFO:root:Intrinsic Parameters: 
+ K:[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+INFO:root:Extrinsic Parameters: 
+ EP:[[0. 0. 0. 0.]
+ [0. 0. 0. 0.]
+ [0. 0. 0. 0.]]
+INFO:root:R: [0. 0. 0.]
+INFO:root:t: [0.]
+INFO:root:Distortion Parameters: 
+ D:[[0. 0. 0. 0. 0.]]
+INFO:root:The camera has been calibrated: False
+INFO:root:Initial camera from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/BasicConfig.yaml
+INFO:root:Camera initialization done.
+INFO:root:
+Show attributes
+
+INFO:root:Camera name: Left
+INFO:root:Images: 
+WARNING:root:No Image
+INFO:root:Intrinsic Parameters: 
+ K:[[1 0 0]
+ [0 1 0]
+ [0 0 1]]
+INFO:root:Extrinsic Parameters: 
+ EP:[[1 0 0]
+ [0 1 0]
+ [0 0 1]
+ [0 0 0]]
+INFO:root:R: [1 0 0]
+INFO:root:t: [1.]
+INFO:root:Distortion Parameters: 
+ D:[0 0 0 0 0]
+INFO:root:The camera has been calibrated: False
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=leftTurn===========
+
+INFO:root:
+Show attributes
+
+INFO:root:Camera name: left
+INFO:root:Images: 
+WARNING:root:No Image
+INFO:root:Intrinsic Parameters: 
+ K:[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+INFO:root:Extrinsic Parameters: 
+ EP:[[0. 0. 0. 0.]
+ [0. 0. 0. 0.]
+ [0. 0. 0. 0.]]
+INFO:root:R: [[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+INFO:root:t: [[0.]
+ [0.]
+ [0.]]
+INFO:root:Distortion Parameters: 
+ D:[[0. 0. 0. 0. 0.]]
+INFO:root:The camera has been calibrated: False
+INFO:root:Initial camera from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/BasicConfig.yaml
+INFO:root:Camera initialization done.
+INFO:root:
+Show attributes
+
+INFO:root:Camera name: Left
+INFO:root:Images: 
+WARNING:root:No Image
+INFO:root:Intrinsic Parameters: 
+ K:[[1 0 0]
+ [0 1 0]
+ [0 0 1]]
+INFO:root:Extrinsic Parameters: 
+ EP:[[1 0 0]
+ [0 1 0]
+ [0 0 1]
+ [0 0 0]]
+INFO:root:R: [[1 0 0]
+ [0 1 0]
+ [0 0 1]]
+INFO:root:t: [[1. ]
+ [0.3]
+ [0.5]]
+INFO:root:Distortion Parameters: 
+ D:[0 0 0 0 0]
+INFO:root:The camera has been calibrated: False

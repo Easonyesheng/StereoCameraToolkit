@@ -23,9 +23,9 @@ from tqdm import tqdm
 import yaml
 import logging
 
-from settings import *
+from Set.settings import *
 from Util.util import *
-
+from ModelCamera import Camera
 
 class StereoCamera(object):
     """class of binocular camera
@@ -45,3 +45,6 @@ class StereoCamera(object):
 
             
     """
+    def __init__(self, config_left=None, config_right=None):
+        self.camera_left = Camera(config=config_left)
+        self.camera_right = Camera(config=config_right)
