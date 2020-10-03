@@ -61,7 +61,8 @@ def save_img_with_prefix(img, path, name):
     cv2.imwrite(os.path.join(path,name+'.jpg'), img)
 
 def img_show(img, name):
-
+    """
+    """
     cv2.startWindowThread()
     img = img / np.max(img)
     cv2.imshow(name, img)

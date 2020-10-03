@@ -86,8 +86,6 @@ class Camera(object):
         self.name = CAMERANAME
         self.task = TASK
 
-        self.config = config
-
         self.IntP = np.zeros((3,3))
         self.fx = 0.0
         self.fy = 0.0

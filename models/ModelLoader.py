@@ -27,6 +27,7 @@ import logging
 
 from Set.settings import *
 from Util.util import *
+from Util.kitti_ana import KittiAnalyse
 
 
 
@@ -35,7 +36,7 @@ class Loader(object):
 
         A function room.
         Never initialization.
-        All the func should be without input args and return imgs.
+        All the func for imgs load should be without input args and return imgs.
 
     Attributes:
 
@@ -110,5 +111,78 @@ class Loader(object):
         
         return img, N
 
-
+    def Load_F_txt(self,FPath):
+        """load F to evaluate from a txt file
+            :para
+                FPath : the F stored path
+            :output
+                FE
+        """
+        FE = np.loadtxt(FPath).reshape((3,3))
+        return FE
+    
+    def load_F_form_Fs(self, F_file, line_index):
+        """Get corresponding F from nx9 matrix
+            The i_th line 1x9 -> F correspond to the 'i_th.jpg' 
+        """
+        with open F_file as f:
+            f_list = f.readlines()
         
+        F = np.array(f_list[line_index].split(),dtype=float).reshape((3,3))
+        F_abs = abs(F)
+        F = F / (F_abs.max()+1e-8)
+        return F
+    
+    def Load_F_index(self, FTxtFile, Index):
+        """Load F from FTxtFile
+           every line in FTxtFile is a single F for single pair of images with index [Index]
+        """
+        with open(FTxtFile) as f:
+            F_list = f.readlines()
+        # print(F_list[Index])
+        F_gt = F_list[Index].split()[2:] # before processed to KITTI type
+        # F_gt = F_list[Index].split() # after processed to KITTI type
+        # print(F_gt)
+        F = np.array(F_gt,dtype=float).reshape((3,3))
+        F_abs = abs(F)
+        F = F/F_abs.max()
+        return F
+    
+    def LoadFMGT_KITTI(self, F_file):
+        """Load the fundamental matrix file(.txt)
+            KITTI's rectified images!
+            Calculate the F by 
+            F = [e']P'P^+
+            where e' = P'C
+            where PC = 0  
+        """
+        paser = KittiAnalyse('', F_file, '')
+        calib = paser.calib
+        f_cam = '0'
+        t_cam = '1'
+        
+        P, P_ = calib['P_rect_0{}'.format(f_cam)], calib['P_rect_0{}'.format(t_cam)]
+        P = P.reshape(3,4)
+        P_ = P_.reshape(3,4)
+        # print('P: ',P)
+        P_c = P[:,:3]
+        zero = P[:,3:]
+        zero = -1*zero
+        c = np.linalg.solve(P_c,zero)
+        C = np.ones([4,1])
+        C[:3,:] = c
+        e_ = np.dot(P_,C)
+        e_M = np.array([
+            [0, -e_[2,0], e_[1,0]],
+            [e_[2,0], 0, -e_[0,0]],
+            [-e_[1,0], e_[0,0], 0]
+        ])
+        P = np.matrix(P)
+        P_wn = np.linalg.pinv(P)
+        F = np.dot(np.dot(e_M, P_),P_wn)
+        F_abs = abs(F)
+        F = F/ F_abs.max()
+
+        return F
+
+    
