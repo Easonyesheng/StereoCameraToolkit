@@ -41,6 +41,7 @@ class StereoCamera(object):
         FM: Fundamental matrix [3x3]
         FE: Estimated Fundamental matrix [3x3]
         EM: Essencial matrix [3x3]
+        match_pts: matching points
         R_relate: 
         t_relate: 
 
@@ -56,6 +57,9 @@ class StereoCamera(object):
 
         self.FM = None
         self.FE = None
+        self.match_pts1 = None
+        self.match_pts2 = None
+
         self.EM = None
 
         self.R_relate = None
@@ -123,21 +127,13 @@ class StereoCamera(object):
 
     def __sift_and_find_match(self, img1, img2):
         """
+        Args:
+            img1
+            img2
+        Returns:
+            pts1
+            pts2
         """
-
-    def ExactGoodMatch(self,screening = False,point_lens = -1):
-        """Get matching points & Use F_GT to get good matching points
-            1.use SIFT to exact feature points 
-            if screening
-            2.calculate metrics use F_GT and screening good matches
-            ! use it only you have the F_GT
-            :output
-                bool: 
-                    True for point_len == 0
-        """
-        img1 = self.camera_left.Image  #queryimage # left image
-        img2 = self.camera_right.Image #trainimage # right image
-
         sift = cv2.xfeatures2d.SIFT_create()
 
         # find the keypoints and descriptors with SIFT
@@ -172,53 +168,79 @@ class StereoCamera(object):
         # pts2 = pts2[mask.ravel() == 1]
         self.match_pts1 = np.int32(pts1)
         self.match_pts2 = np.int32(pts2)
+        return match_pts1, match_pts2
 
-
-        # use F_GT to select good match
-        if screening:
-            try:
-                self.F.all()
-            except AttributeError:
-                print("There is no F_GT, you can use LoadFMGT_KITTI() to get it.\nWarning: Without screening good matches.")
-                return
-            print("Use F_GT to screening matching points")
-            print('Before screening, points length is {:d}'.format(len(self.match_pts1)))
-            leftpoints = []
-            rightpoints = []
-            sheld = 0.1
-            epsilon = 1e-5
-            F = self.F
-            # use sym_epi_dist to screen
-            for p1, p2 in zip(self.match_pts1, self.match_pts2):
-                hp1, hp2 = np.ones((3,1)), np.ones((3,1))
-                hp1[:2,0], hp2[:2,0] = p1, p2
-                fp, fq = np.dot(F, hp1), np.dot(F.T, hp2)
-                sym_jjt = 1./(fp[0]**2 + fp[1]**2 + epsilon) + 1./(fq[0]**2 + fq[1]**2 + epsilon)
-                err = ((np.dot(hp2.T, np.dot(F, hp1))**2) * (sym_jjt + epsilon))
-                # print(err)
-                
-            # # use epi_cons to screen
-            # for p1,p2 in zip(self.match_pts1, self.match_pts2):
-            #     hp1, hp2 = np.ones((3,1)), np.ones((3,1))
-            #     hp1[:2,0], hp2[:2,0] = p1, p2 
-            #     err = np.abs(np.dot(hp2.T, np.dot(self.F, hp1)))     
-                if err < sheld:
-                    leftpoints.append(p1)
-                    rightpoints.append(p2)            
+    def __matching_points_filter(self, point_len = -1):
+        """name
+            description
+        Args:
+            point_len - the pre-set matches length
+        Returns:
+            flag - True for the filtered matches is enough as the points_len set
+        """
+        try:
+            self.FM.all()
+        except AttributeError:
+            sys.exit("Warning: Finding good matches without F_gt.")
+            
+        print("Use F_GT to screening matching points")
+        print('Before screening, points length is {:d}'.format(len(match_pts1)))
+        leftpoints = []
+        rightpoints = []
+        sheld = 0.1
+        epsilon = 1e-5
+        F = self.FM
+        # use sym_epi_dist to screen
+        for p1, p2 in zip(self.match_pts1, self.match_pts2):
+            hp1, hp2 = np.ones((3,1)), np.ones((3,1))
+            hp1[:2,0], hp2[:2,0] = p1, p2
+            fp, fq = np.dot(F, hp1), np.dot(F.T, hp2)
+            sym_jjt = 1./(fp[0]**2 + fp[1]**2 + epsilon) + 1./(fq[0]**2 + fq[1]**2 + epsilon)
+            err = ((np.dot(hp2.T, np.dot(F, hp1))**2) * (sym_jjt + epsilon))
+            # print(err)
+            
+            if err < sheld:
+                leftpoints.append(p1)
+                rightpoints.append(p2)            
 
             self.match_pts1 = np.array(leftpoints)
             self.match_pts2 = np.array(rightpoints)
             print('After screening, points length is {:d}'.format(len(self.match_pts1)))
-        if point_lens != -1 and point_lens <= len(self.match_pts1):
+
+        # control the length of matching points
+        if point_len != -1 and point_len <= len(self.match_pts1):
             self.match_pts1 = self.match_pts1[:point_lens]
             self.match_pts2 = self.match_pts2[:point_lens]
             print("len=",self.match_pts1.shape)
         
-        if self.match_pts1.shape[0] < point_lens:
+        if self.match_pts1.shape[0] < point_len:
             return False
 
         return True
 
+
+
+    def ExactGoodMatch(self,filter = False,point_len = -1):
+        """Get matching points & Use F_GT to get good matching points
+            1.use SIFT to exact feature points 
+            if filter
+            2.calculate metrics use F_GT and screening good matches
+            ! use it only you have the F_GT
+            :output
+                bool - filter success or failed cause the matches are not enough
+        """
+        img1 = self.camera_left.Image   # left image
+        img2 = self.camera_right.Image  # right image
+
+        self.__sift_and_find_match(img1, img2)
+
+        # use F_GT to select good match
+        if filter:
+            flag = self.__matching_points_filter(point_len=point_len)
+            return flag
+        
+        return True
+        
     def EstimateFM(self,method="RANSAC"):
         """Estimate the fundamental matrix 
             :para method: which method you use
