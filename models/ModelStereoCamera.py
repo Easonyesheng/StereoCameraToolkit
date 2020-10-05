@@ -22,6 +22,7 @@ import numpy as np
 from tqdm import tqdm
 import yaml
 import logging
+import glob
 
 from Set.settings import *
 from Util.util import *
@@ -125,6 +126,19 @@ class StereoCamera(object):
         F /= F[2,2]
         return F
 
+    def __get_max_norm_F(self, F):
+        """name
+            description
+        Args:
+                    
+                
+        Returns:
+
+        """
+        F_abs = abs(F)
+        F_res = F / F_abs.max()
+        return F_res
+
     def __sift_and_find_match(self, img1, img2):
         """
         Args:
@@ -218,18 +232,22 @@ class StereoCamera(object):
 
         return True
 
-    def camera_load_img(self, load_mod, load_path):
+    def camera_load_imgs(self, load_mod, load_path):
         """name
             description
         Args:
             load_path:
-                load_path/left
-                load_path/right
+                load_path/left/*.jpg
+                load_path/right/*.jpg
                 
         Returns:
 
         """
-
+        left_path = os.path.join(load_path, 'left')
+        right_path = os.path.join(load_path, 'right')
+        logging.info('load images from %s /left & /right'% load_path)
+        self.camera_left.load_images(left_path, 'imgs')
+        self.camera_right.load_images(right_path, 'imgs')
 
     def ExactGoodMatch(self,filter = False,point_len = -1, index = 0):
         """Get matching points & Use F_GT to get good matching points
@@ -277,13 +295,13 @@ class StereoCamera(object):
             self.match_pts1.all()
         except AttributeError:
             print('Exact matching points')
-            self.ExactGoodMatch()
+            self.ExactGoodMatch(index=index)
 
         if method == "RANSAC":
             limit_length = len(self.match_pts1)
             print('Use RANSAC with %d points' %limit_length)
             time_start = time.time()
-            self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1[:limit_length],
+            FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1[:limit_length],
                                                     self.match_pts2[:limit_length],
                                                     cv2.FM_RANSAC)
             time_end = time.time()
@@ -292,7 +310,7 @@ class StereoCamera(object):
             limit_length = len(self.match_pts1)
             print('Use LMEDS with %d points' %len(self.match_pts1))
             time_start = time.time()
-            self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1[:limit_length],
+            FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1[:limit_length],
                                                     self.match_pts2[:limit_length],
                                                     cv2.FM_LMEDS)
             time_end = time.time()
@@ -304,14 +322,14 @@ class StereoCamera(object):
                 # i = np.random.randint(0,len(self.match_pts1)-7)
                 i += 1
                 time_start = time.time()
-                self.FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1[i:i+8],
+                FE, self.Fmask = cv2.findFundamentalMat(self.match_pts1[i:i+8],
                                                     self.match_pts2[i:i+8],
                                                     cv2.FM_8POINT, 0.1, 0.99)
                 time_end = time.time()
                 
                 print('Points index: ',i)
                 try: 
-                    self.FE.all()
+                    FE.all()
                     break
                 except AttributeError:
                     continue
@@ -327,9 +345,27 @@ class StereoCamera(object):
         else:
             print("Method Error!")
             return 0
-        # print(self.FE)
-        F_abs = abs(self.FE)
-        # self.shape = np.array([512, 1392])
-        self.FE = self.FE / F_abs.max()
-        # self.get_normalized_F(self.FE, mean=[0,0], std=[np.sqrt(2.), np.sqrt(2.)], size=self.shape)
+
+        self.FE = self.__get_max_norm_F(FE)
+
         return time_end - time_start
+
+    def EstimateFMs(self, method='RANSAC'):
+        """name
+            description
+        Args:
+                    
+                
+        Returns:
+
+        """
+        F_temp = np.zeros((3,3))
+        for i in range(self.camera_right.Image_num):
+            self.ExactGoodMatch(index=i)
+            self.EstimateFM(method=method)
+            F_temp += self.FE
+        
+        F_temp /= self.camera_right.Image_num
+
+        self.FE = F_temp
+        

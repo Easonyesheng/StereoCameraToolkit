@@ -120,6 +120,21 @@ class Loader(object):
         Returns:
 
         """
+        img_names = glob.glob(os.path.join(self.image_path,'*.jpg'))
+        N = len(img_names)
+
+        img_temp = cv2.imread(img_names[0])
+        if len(img_temp.shape) == 3:
+            img = np.zeros((N,H,W,3))
+        else:
+            img = np.zeros((N,H,W))
+
+        for i in tqdm(range(N)):
+            img_temp = cv2.imread(img_names[i])
+            
+            img[i] = img_temp
+        
+        return img, N
 
 
     def Load_F_txt(self,FPath):
