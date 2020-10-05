@@ -111,6 +111,17 @@ class Loader(object):
         
         return img, N
 
+    def load_images(self):
+        """name
+            description
+        Args:
+                    
+                
+        Returns:
+
+        """
+
+
     def Load_F_txt(self,FPath):
         """load F to evaluate from a txt file
             :para

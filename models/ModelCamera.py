@@ -166,6 +166,9 @@ class Camera(object):
             self.Image_num = 1
         if load_mod_flag == 'Calibration':
             self.Image, self.Image_num = self.Loader.load_images_calibration()
+        if load_mod_flag == 'imgs':
+            self.Image, self.Image_num = self.Loader.load_images()
+            
 
 
         

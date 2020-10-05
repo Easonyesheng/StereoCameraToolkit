@@ -218,9 +218,20 @@ class StereoCamera(object):
 
         return True
 
+    def camera_load_img(self, load_mod, load_path):
+        """name
+            description
+        Args:
+            load_path:
+                load_path/left
+                load_path/right
+                
+        Returns:
+
+        """
 
 
-    def ExactGoodMatch(self,filter = False,point_len = -1):
+    def ExactGoodMatch(self,filter = False,point_len = -1, index = 0):
         """Get matching points & Use F_GT to get good matching points
             1.use SIFT to exact feature points 
             if filter
@@ -229,8 +240,12 @@ class StereoCamera(object):
             :output
                 bool - filter success or failed cause the matches are not enough
         """
-        img1 = self.camera_left.Image   # left image
-        img2 = self.camera_right.Image  # right image
+        if self.camera_left.Image_num > 1:
+            img1 = self.camera_left.Image[index]   # left image
+            img2 = self.camera_right.Image[index]  # right image
+        else:
+            img1 = self.camera_left.Image   
+            img2 = self.camera_right.Image
 
         self.__sift_and_find_match(img1, img2)
 
@@ -240,14 +255,17 @@ class StereoCamera(object):
             return flag
         
         return True
-        
-    def EstimateFM(self,method="RANSAC"):
+
+    def EstimateFM(self,method="RANSAC", index = 0):
         """Estimate the fundamental matrix 
-            :para method: which method you use
-                1.RANSAC
-                2.LMedS
-                3.DL(Deep Learning)
-                4.8Points
+            :para 
+                method: which method you use
+                    1.RANSAC
+                    2.LMedS
+                    3.DL(Deep Learning)
+                    4.8Points
+                index:
+                    which image you use
             :output 
                 change self.FE
                 return time cost 
