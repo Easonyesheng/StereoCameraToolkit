@@ -58,10 +58,16 @@ class StereoCamera(object):
         self.camera_right = Camera()
 
         self.FM = np.zeros((3,3))
+
         self.FE = np.zeros((3,3))
-        self.F_calib = np.zeros((3,3))
         self.match_pts1 = None
         self.match_pts2 = None
+        self.epi_cons = 0.0
+        self.sym_epi_dis = 0.0
+        self.epi_angle = 0.0
+
+        self.F_calib = np.zeros((3,3))
+
 
         self.EE = np.zeros((3,3))
         self.E_calib = np.zeros((3,3))
@@ -81,6 +87,30 @@ class StereoCamera(object):
         """
         self.camera_left.init_by_config(config_left)
         self.camera_right.init_by_config(config_right)
+
+    def init_stereo_by_config(self, config_path):
+        """name
+            description
+        Args:
+                    
+                
+        Returns:
+
+        """
+        with open(config_path) as f:
+            logging.info('Initial stereo parameters from '+config_path)
+            config = yaml.load(f)
+            self.FE = np.array(config['Estimated_F'])
+            self.E_calib = np.array(config['Calibrated_E'])
+            self.F_calib = np.array(config['Calibrated_F'])
+            self.EE = np.array(config['Estimated_E'])
+            self.FM = np.array(config['F_GT'])
+            self.R_relate = np.array(config['R'])
+            self.t_relate = np.array(config['t']) 
+            self.stereo_calib_err = config['stereo_calib_err']
+            self.stereo_calib_flag = config['stereo_calib_flag']
+            
+            logging.info('Stereo parameters load done.')
 
     def load_FM(self, load_FM_mod = 'txt', F_flie='', index = 0):
         """name
@@ -238,7 +268,7 @@ class StereoCamera(object):
 
         return True
 
-    def cameras_load_imgs(self, load_mod, load_path):
+    def cameras_load_imgs(self, load_mod='', load_path):
         """name
             description
         Args:
@@ -450,8 +480,8 @@ class StereoCamera(object):
             self.camera_right.calibrate_camera()
 
             if write_yaml_flag:
-                self.camera_left.write_yaml()
-                self.camera_right.write_yaml()
+                self.camera_left.write_yaml('_stereo_need')
+                self.camera_right.write_yaml('_stereo_need')
         
         # find the points!
         self.chess_board_size = np.array(CHESSBOARDSIZE)
@@ -495,10 +525,10 @@ class StereoCamera(object):
         flags = 0
         flags |= cv2.CALIB_FIX_INTRINSIC
         # flags |= cv2.CALIB_FIX_PRINCIPAL_POINT
-        flags |= cv2.CALIB_USE_INTRINSIC_GUESS
-        flags |= cv2.CALIB_FIX_FOCAL_LENGTH
+        # flags |= cv2.CALIB_USE_INTRINSIC_GUESS
+        # flags |= cv2.CALIB_FIX_FOCAL_LENGTH
         # flags |= cv2.CALIB_FIX_ASPECT_RATIO
-        flags |= cv2.CALIB_ZERO_TANGENT_DIST
+        # flags |= cv2.CALIB_ZERO_TANGENT_DIST
         # flags |= cv2.CALIB_RATIONAL_MODEL
         # flags |= cv2.CALIB_SAME_FOCAL_LENGTH
         # flags |= cv2.CALIB_FIX_K3
@@ -516,7 +546,43 @@ class StereoCamera(object):
         self.stereo_calib_flag = True
         logging.info('Stereo Calibration Done')
 
-    def write_yaml(self):
+    def EpipolarConstraint(self,F,pts1,pts2):
+        '''Epipolar Constraint
+            calculate the epipolar constraint 
+            x^T*F*x
+            :output 
+                err_permatch
+        '''
+       
+        print('Use ',len(pts1),' points to calculate epipolar constraints.')
+        assert len(pts1) == len(pts2)
+        err = 0.0
+        for p1, p2 in zip(pts1, pts2):
+            hp1, hp2 = np.ones((3,1)), np.ones((3,1))
+            hp1[:2,0], hp2[:2,0] = p1, p2
+            err += np.abs(np.dot(hp2.T, np.dot(F, hp1)))
+        
+        return err / float(len(pts1))
+
+    def evaluate_F(self, whichF='est'):
+        """name
+            Evaluate Fundamental matrix
+        Args:
+                
+        Returns:
+
+        """
+
+        F_dict = {
+            'calib': self.F_calib,
+            'GT': self.FM,
+            'est': self.FE
+        }
+        F = F_dict[whichF]
+        
+        
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+    def write_yaml(self, postfix=''):
         """name
             description
         Args:
@@ -528,14 +594,17 @@ class StereoCamera(object):
             'Estimated_F': self.FE.tolist(),
             'F_GT': self.FM.tolist(),
             'Calibrated_E': self.E_calib.tolist(),
-            'Eetimated_E': self.EE.tolist(),
+            'Estimated_E': self.EE.tolist(),
             'R': self.R_relate.tolist(),
             't': self.t_relate.tolist(),
             'stereo_calib_err': self.stereo_calib_err,
-            'stereo_calib_flag': self.stereo_calib_flag
+            'stereo_calib_flag': self.stereo_calib_flag,
+            'epipolar_constraint': self.epi_cons,
+            'symmetric_epipolar_distance': self.sym_epi_dis,
+            'epipolar_angle': self.epi_angle
 
         }
-        yaml_file = os.path.join(CONFIGPATH, 'Stereo_camera'+'.yaml')
+        yaml_file = os.path.join(CONFIGPATH, 'Stereo_camera'+postfix+'.yaml')
         file = open(yaml_file, 'w', encoding='utf-8')
         yaml.dump(camera_model, file)
         file.close()
@@ -552,22 +621,33 @@ if __name__ == "__main__":
     test.camera_left.name = 'left'
     test.camera_right.name = 'right'
 
-    test.camera_left.load_images(os.path.join(STEREOIMGPATH,'left'), 'Calibration')
-    test.camera_right.load_images(os.path.join(STEREOIMGPATH,'right'), 'Calibration')
+    # test.camera_left.load_images(os.path.join(STEREOIMGPATH,'left'), 'Calibration')
+    # test.camera_right.load_images(os.path.join(STEREOIMGPATH,'right'), 'Calibration')
 
-    test.camera_left.calibrate_camera()
-    test.camera_left.write_yaml()
+    # test.camera_left.calibrate_camera()
+    # test.camera_left.evaluate_calibration()
 
-    test.camera_right.calibrate_camera()
-    test.camera_right.write_yaml()
+    # test.camera_right.calibrate_camera()
+    # test.camera_right.evaluate_calibration()
 
-    test.camera_left.init_by_config(os.path.join(CONFIGPATH,'camera_left.yaml'))
-    test.camera_right.init_by_config(os.path.join(CONFIGPATH,'camera_right.yaml'))
+    # test.camera_left.write_yaml('_before_stereo')
+    # test.camera_right.write_yaml('_before_stereo')
+
+    # test.camera_left.init_by_config(os.path.join(CONFIGPATH,'camera_left.yaml'))
+    # test.camera_right.init_by_config(os.path.join(CONFIGPATH,'camera_right.yaml'))
 
     test.stereo_calibration(True)
 
 
     test.cameras_load_imgs('',STEREOIMGPATH)
-    test.EstimateFM()
+    # test.EstimateFMs()
+    # test.init_stereo_by_config(os.path.join(CONFIGPATH, 'Stereo_camera_Intrin_fix_Fs.yaml'))
 
-    test.write_yaml()
+    # test.camera_right.evaluate_calibration()
+    # test.camera_left.evaluate_calibration()
+    
+
+    # test.write_yaml('_Intrin_fix_Fs')
+    # test.camera_left.write_yaml('after_stereo')
+    # test.camera_right.write_yaml('after_stereo')
+

@@ -261,9 +261,9 @@ class Camera(object):
         self.ExtP[:,3:] = self.t[0]
         self.flag_calib = True
 
-        return self.obj_pts, self.img_pts
+        # return self.obj_pts, self.img_pts
 
-    def evaluate_calibration(self, obj_points, img_points):
+    def evaluate_calibration(self):
         """name
             through reprojection error
         Args:
@@ -275,7 +275,7 @@ class Camera(object):
         self.Evaluator = Evaluator()
         self.Evaluator.save_path = SAVEPATH
         self.Evaluator.save_prefix = SAVEPREFIX
-        error = self.Evaluator.evaluate_calibration(obj_points, img_points, self.R, self.t, self.IntP, self.DisP)
+        error = self.Evaluator.evaluate_calibration(self.obj_pts, self.img_pts, self.R, self.t, self.IntP, self.DisP)
         self.Reproject_err = error
         logging.info("Calibration error (Reprojection) is:"+str(error))
 
@@ -317,7 +317,7 @@ class Camera(object):
             test_dir_if_not_create(save_path)
             save_img_with_prefix(self.Image[index], save_path, SAVEPREFIX+'ori_img')
 
-    def write_yaml(self):
+    def write_yaml(self, postfix=''):
         """name
             description
         Args:
@@ -340,7 +340,7 @@ class Camera(object):
             'Calibration_err': self.IntError,
             'Reproject_err': self.Reproject_err
         }
-        yaml_file = os.path.join(CONFIGPATH, 'camera_'+self.name+'.yaml')
+        yaml_file = os.path.join(CONFIGPATH, 'camera_'+self.name+postfix+'.yaml')
         file = open(yaml_file, 'w', encoding='utf-8')
         yaml.dump(camera_model, file)
         file.close()
