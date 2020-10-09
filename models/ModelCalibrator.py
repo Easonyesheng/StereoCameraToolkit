@@ -162,7 +162,7 @@ class Calibrator(object):
         self.criteria = self.__pre_set()
         objp_temp = self.__get_object_point()
 
-        print("Calibration...")
+        logging.info("Calibration...")
         for i in tqdm(range(self.img.shape[0])):
             gray = self.img[i,:,:]
             gray = gray.astype(np.uint8)

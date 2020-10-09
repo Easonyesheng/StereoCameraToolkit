@@ -125,9 +125,12 @@ class Loader(object):
         N = len(img_names)
 
         img_temp = cv2.imread(img_names[0])
+
         if len(img_temp.shape) == 3:
+            H, W, _ = img_temp.shape
             img = np.zeros((N,H,W,3))
         else:
+            H, W = img_temp.shape
             img = np.zeros((N,H,W))
 
         for i in tqdm(range(N)):

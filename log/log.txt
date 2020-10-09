@@ -567,3 +567,163 @@ INFO:root:
 INFO:root:img for calibration shape: (54, 1080, 1920)
 INFO:root:chess_board_size: [ 6 13]
 INFO:root:Calibration done, and the error of intrinsic is 0.546110
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=test=Turn==========
+
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=test=Turn==========
+
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=test=Turn==========
+
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=test=Turn==========
+
+INFO:root:load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=test=Turn==========
+
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=test=Turn==========
+
+INFO:root:load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+INFO:root:In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+INFO:root:In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=test=Turn==========
+
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=test=Turn==========
+
+INFO:root:load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+INFO:root:In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+INFO:root:In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=test=Turn==========
+
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=test=Turn==========
+
+INFO:root:load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+INFO:root:In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+INFO:root:In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=test=Turn==========
+
+INFO:root:
+==========================================
+
+INFO:root:
+==========New=test=Turn==========
+
+INFO:root:Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+INFO:root:In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+INFO:root:Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+INFO:root:In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+INFO:root:
++++++++Calibration Start+++++++
+
+INFO:root:img for calibration shape: (54, 1080, 1920)
+INFO:root:chess_board_size: [ 6 13]
+INFO:root:Calibration done, and the error of intrinsic is 0.481455
+INFO:root:
++++++++Calibration Start+++++++
+
+INFO:root:img for calibration shape: (54, 1080, 1920)
+INFO:root:chess_board_size: [ 6 13]
+INFO:root:Calibration done, and the error of intrinsic is 0.546110
+INFO:root:Initial camera from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left.yaml
+INFO:root:Camera initialization done.
+INFO:root:Initial camera from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right.yaml
+INFO:root:Camera initialization done.
+INFO:root:load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+INFO:root:Stereo images loading...
+INFO:root:In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+INFO:root:In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 11:07:41 - root - INFO: - 
+==========================================
+
+2020-10-09 11:07:41 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 11:07:41 - root - INFO: - 
+==========================================
+
+2020-10-09 11:07:41 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 11:07:41 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 11:07:42 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 11:07:42 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 11:07:43 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 11:07:43 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 11:07:43 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 11:07:43 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 11:07:54 - root - INFO: - Calibration done, and the error of intrinsic is 0.481455
+2020-10-09 11:07:54 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 11:07:54 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 11:07:54 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 11:08:00 - root - INFO: - Calibration done, and the error of intrinsic is 0.546110
+2020-10-09 11:08:00 - root - INFO: - Initial camera from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left.yaml
+2020-10-09 11:08:00 - root - INFO: - Camera initialization done.
+2020-10-09 11:08:00 - root - INFO: - Initial camera from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right.yaml
+2020-10-09 11:08:00 - root - INFO: - Camera initialization done.
+2020-10-09 11:08:03 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 11:08:03 - root - INFO: - Stereo images loading...
+2020-10-09 11:08:06 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 11:08:10 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)

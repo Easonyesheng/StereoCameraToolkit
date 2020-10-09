@@ -23,6 +23,7 @@ from tqdm import tqdm
 import yaml
 import logging
 import glob
+import time
 
 from Set.settings import *
 from Util.util import *
@@ -187,7 +188,7 @@ class StereoCamera(object):
         # pts2 = pts2[mask.ravel() == 1]
         self.match_pts1 = np.int32(pts1)
         self.match_pts2 = np.int32(pts2)
-        return match_pts1, match_pts2
+        return self.match_pts1, self.match_pts2
 
     def __matching_points_filter(self, point_len = -1):
         """name
@@ -251,6 +252,7 @@ class StereoCamera(object):
         left_path = os.path.join(load_path, 'left')
         right_path = os.path.join(load_path, 'right')
         logging.info('load images from %s /left & /right'% load_path)
+        logging.info('Stereo images loading...')
         self.camera_left.load_images(left_path, 'imgs')
         self.camera_right.load_images(right_path, 'imgs')
 
@@ -264,11 +266,11 @@ class StereoCamera(object):
                 bool - filter success or failed cause the matches are not enough
         """
         if self.camera_left.Image_num > 1:
-            img1 = self.camera_left.Image[index]   # left image
-            img2 = self.camera_right.Image[index]  # right image
+            img1 = self.camera_left.Image[index].astype(np.uint8)   # left image
+            img2 = self.camera_right.Image[index].astype(np.uint8)  # right image
         else:
-            img1 = self.camera_left.Image   
-            img2 = self.camera_right.Image
+            img1 = self.camera_left.Image.astype(np.uint8)   
+            img2 = self.camera_right.Image.astype(np.uint8)
 
         self.__sift_and_find_match(img1, img2)
 
@@ -495,30 +497,35 @@ class StereoCamera(object):
         file = open(yaml_file, 'w', encoding='utf-8')
         yaml.dump(camera_model, file)
         file.close()
+        logging.info('Write stereo camera model into '+yaml_file)
 
         
 
 if __name__ == "__main__":
+
+    log_init(LOGFILE)
+
     test = StereoCamera()
 
-    # test.camera_left.name = 'left'
-    # test.camera_right.name = 'right'
+    test.camera_left.name = 'left'
+    test.camera_right.name = 'right'
 
-    # test.camera_left.load_images(os.path.join(STEREOIMGPATH,'left'), 'Calibration')
-    # test.camera_right.load_images(os.path.join(STEREOIMGPATH,'right'), 'Calibration')
+    test.camera_left.load_images(os.path.join(STEREOIMGPATH,'left'), 'Calibration')
+    test.camera_right.load_images(os.path.join(STEREOIMGPATH,'right'), 'Calibration')
 
-    # test.camera_left.calibrate_camera()
-    # test.camera_left.write_yaml()
+    test.camera_left.calibrate_camera()
+    test.camera_left.write_yaml()
 
-    # test.camera_right.calibrate_camera()
-    # test.camera_right.write_yaml()
+    test.camera_right.calibrate_camera()
+    test.camera_right.write_yaml()
 
-    # test.camera_left.init_by_config(os.path.join(CONFIGPATH,'camera_left.yaml'))
-    # test.camera_right.init_by_config(os.path.join(CONFIGPATH,'camera_right.yaml'))
+    test.camera_left.init_by_config(os.path.join(CONFIGPATH,'camera_left.yaml'))
+    test.camera_right.init_by_config(os.path.join(CONFIGPATH,'camera_right.yaml'))
 
-    # test.stereo_calibration(True)
+    test.stereo_calibration(True)
 
-    test.cameras_load_imgs()
+
+    test.cameras_load_imgs('',STEREOIMGPATH)
     test.EstimateFM()
 
     test.write_yaml()

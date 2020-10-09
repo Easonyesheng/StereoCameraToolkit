@@ -113,10 +113,11 @@ class Camera(object):
         self.img_pts = []
 
         self.Evaluator = Evaluator()
+        self.Reproject_err = 0.
         self.save_path = ''
         self.save_prefix = ''
 
-        log_init(LOGFILE)
+        # log_init(LOGFILE)
         logging.info('\n==========================================\n')
 
         logging.info('\n==========New='+self.name+'=Turn==========\n')
@@ -275,6 +276,7 @@ class Camera(object):
         self.Evaluator.save_path = SAVEPATH
         self.Evaluator.save_prefix = SAVEPREFIX
         error = self.Evaluator.evaluate_calibration(obj_points, img_points, self.R, self.t, self.IntP, self.DisP)
+        self.Reproject_err = error
         logging.info("Calibration error (Reprojection) is:"+str(error))
 
     def undistort(self, index = 0, save_flag=False):
@@ -334,12 +336,15 @@ class Camera(object):
             'calib_img_num': self.Image_num,
             'img_path': self.img_path,
             'save_path': self.save_path,
-            'save_prefix': self.save_prefix 
+            'save_prefix': self.save_prefix,
+            'Calibration_err': self.IntError,
+            'Reproject_err': self.Reproject_err
         }
         yaml_file = os.path.join(CONFIGPATH, 'camera_'+self.name+'.yaml')
         file = open(yaml_file, 'w', encoding='utf-8')
         yaml.dump(camera_model, file)
         file.close()
+        logging.info('Write camera model into '+yaml_file)
 
 
 
