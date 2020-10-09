@@ -56,17 +56,22 @@ class StereoCamera(object):
         self.camera_left = Camera()
         self.camera_right = Camera()
 
-        self.FM = None
-        self.FE = None
+        self.FM = np.zeros((3,3))
+        self.FE = np.zeros((3,3))
+        self.F_calib = np.zeros((3,3))
         self.match_pts1 = None
         self.match_pts2 = None
 
-        self.EM = None
+        self.EE = np.zeros((3,3))
+        self.E_calib = np.zeros((3,3))
 
-        self.R_relate = None
-        self.t_relate = None
+        self.R_relate = np.zeros((3,3))
+        self.t_relate = np.zeros((3,1))
 
         self.loader = Loader()
+
+        self.stereo_calib_err = 0.
+        self.stereo_calib_flag = False
 
         self.Evaluator = Evaluator()
     
@@ -87,13 +92,13 @@ class StereoCamera(object):
 
         """
 
-        if load_FM_mod = 'txt':
+        if load_FM_mod == 'txt':
             self.FM = self.loader.Load_F_txt(F_flie)
-        if load_FM_mod = 'f_list':
+        if load_FM_mod == 'f_list':
             self.FM = self.loader.load_F_form_Fs(F_flie, index)
-        if load_FM_mod = 'f_index_list':
+        if load_FM_mod == 'f_index_list':
             self.FM = self.loader.Load_F_index(F_flie, index)
-        if load_FM_mod = 'KITTI':
+        if load_FM_mod == 'KITTI':
             self.FM = self.loader.LoadFMGT_KITTI(F_flie)
         
     def __get_normalized_F(self, F, mean, std, size=None):
@@ -232,7 +237,7 @@ class StereoCamera(object):
 
         return True
 
-    def camera_load_imgs(self, load_mod, load_path):
+    def cameras_load_imgs(self, load_mod, load_path):
         """name
             description
         Args:
@@ -369,3 +374,151 @@ class StereoCamera(object):
 
         self.FE = F_temp
         
+
+    def __get_object_point(self):
+        """name
+            description
+        Args:
+
+        Returns:
+
+        """
+        objp = np.zeros((self.chess_board_size[0]*self.chess_board_size[1],3), np.float32)
+        objp[:,:2] = np.mgrid[0:self.chess_board_size[1],0:self.chess_board_size[0]].T.reshape(-1,2)
+        return objp
+
+    def __find_corners(self, gray):
+        """name
+            description
+        Args:
+
+        Returns:
+            ret: whether we find all the corners
+        """
+        ret, corners = cv2.findChessboardCorners(gray, (self.chess_board_size[1],self.chess_board_size[0]),None)
+        return ret, corners
+
+    def __find_corners_subpix(self, img, corners):
+        """name
+            description
+        Args:
+
+        Returns:
+        """
+        corners2 = cv2.cornerSubPix(img,corners,(11,11), (-1,-1), self.criteria)
+        return corners2
+
+
+    def stereo_calibration(self, write_yaml_flag=False):
+        """name
+            need to calibrate monocular camera first
+            cause we need the points
+        Args:
+                    
+                
+        Returns:
+
+        """
+        if (not self.camera_left.flag_calib) or (not self.camera_right.flag_calib):
+            left_path = os.path.join(STEREOIMGPATH, 'left')
+            right_path = os.path.join(STEREOIMGPATH, 'right')
+
+            self.camera_left.load_images(left_path, 'Calibration')
+            self.camera_right.load_images(right_path, 'Calibration')
+            
+            self.camera_left.chess_board_size = np.array(CHESSBOARDSIZE)
+            self.camera_right.chess_board_size = np.array(CHESSBOARDSIZE)
+
+            # monocular calibration
+            self.camera_left.calibrate_camera()
+            self.camera_right.calibrate_camera()
+
+            if write_yaml_flag:
+                self.camera_left.write_yaml()
+                self.camera_right.write_yaml()
+        
+        # find the points!
+
+
+
+        print('Start Stereo Calibration')
+
+        stereocalib_criteria = (cv2.TERM_CRITERIA_MAX_ITER+cv2.TERM_CRITERIA_EPS, 100, 1e-5)
+        # print(stereocalib_criteria)
+
+        flags = 0
+        flags |= cv2.CALIB_FIX_INTRINSIC
+        # flags |= cv2.CALIB_FIX_PRINCIPAL_POINT
+        flags |= cv2.CALIB_USE_INTRINSIC_GUESS
+        flags |= cv2.CALIB_FIX_FOCAL_LENGTH
+        # flags |= cv2.CALIB_FIX_ASPECT_RATIO
+        flags |= cv2.CALIB_ZERO_TANGENT_DIST
+        # flags |= cv2.CALIB_RATIONAL_MODEL
+        # flags |= cv2.CALIB_SAME_FOCAL_LENGTH
+        # flags |= cv2.CALIB_FIX_K3
+        # flags |= cv2.CALIB_FIX_K4
+        # flags |= cv2.CALIB_FIX_K5
+        # print(flags)
+
+
+        self.stereo_calib_err, self.camera_left.IntP, self.camera_left.DisP, \
+                                self.camera_right.IntP, self.camera_right.DisP, \
+                                self.R_relate, self.t_relate, self.E_calib, self.F_calib = cv2.stereoCalibrate(
+            self.camera_left.obj_pts, self.camera_left.img_pts,
+            self.camera_right.img_pts, self.camera_left.IntP, self.camera_left.DisP, self.camera_right.IntP,
+            self.camera_right.DisP, tuple(self.camera_left.gary_img_shape),
+            criteria=stereocalib_criteria, flags=flags) 
+
+        self.stereo_calib_flag = True
+        print('Stereo Calibration Done')
+
+    def write_yaml(self):
+        """name
+            description
+        Args:
+            
+        Returns:
+        """
+        camera_model = {
+            'Calibrated_F': self.F_calib.tolist(),
+            'Estimated_F': self.FE.tolist(),
+            'F_GT': self.FM.tolist(),
+            'Calibrated_E': self.E_calib.tolist(),
+            'Eetimated_E': self.EE.tolist(),
+            'R': self.R_relate.tolist(),
+            't': self.t_relate.tolist(),
+            'stereo_calib_err': self.stereo_calib_err,
+            'stereo_calib_flag': self.stereo_calib_flag
+
+        }
+        yaml_file = os.path.join(CONFIGPATH, 'Stereo_camera'+'.yaml')
+        file = open(yaml_file, 'w', encoding='utf-8')
+        yaml.dump(camera_model, file)
+        file.close()
+
+        
+
+if __name__ == "__main__":
+    test = StereoCamera()
+
+    # test.camera_left.name = 'left'
+    # test.camera_right.name = 'right'
+
+    # test.camera_left.load_images(os.path.join(STEREOIMGPATH,'left'), 'Calibration')
+    # test.camera_right.load_images(os.path.join(STEREOIMGPATH,'right'), 'Calibration')
+
+    # test.camera_left.calibrate_camera()
+    # test.camera_left.write_yaml()
+
+    # test.camera_right.calibrate_camera()
+    # test.camera_right.write_yaml()
+
+    # test.camera_left.init_by_config(os.path.join(CONFIGPATH,'camera_left.yaml'))
+    # test.camera_right.init_by_config(os.path.join(CONFIGPATH,'camera_right.yaml'))
+
+    # test.stereo_calibration(True)
+
+    test.cameras_load_imgs()
+    test.EstimateFM()
+
+    test.write_yaml()

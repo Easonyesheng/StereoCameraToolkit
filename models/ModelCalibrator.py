@@ -30,7 +30,7 @@ from Util.util import *
 
 
 class Calibrator(object):
-    """The class for camera calibration 
+    """The class for monocular camera calibration 
         
         use images to get the parameters
         https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_calib3d/py_calibration/py_calibration.html#calibration
@@ -58,7 +58,6 @@ class Calibrator(object):
         self.object_points = [] # 3d point in real world space
         self.img_points = [] # 2d points in image plane.
 
-    
     def __pre_set(self):
         """name
             termination criteria
@@ -122,7 +121,6 @@ class Calibrator(object):
             test_dir_if_not_create(save_path)
             save_img_with_prefix(img_drawn, save_path, SAVEPREFIX+'_DrawConners_'+str(index))
         
-
     def __calibrate(self):
         """name
             Draw and display the corners
@@ -155,7 +153,7 @@ class Calibrator(object):
         if not check_numpy_array(self.chess_board_size):
             # print("Chess board size not input !")
             # print('chess_board_size: ', type(self.chess_board_size))
-            sys.exit("Chess board size not input!")
+            sys.exit("Chess board size not load!")
             
 
         logging.info('img for calibration shape: '+str(self.img.shape))

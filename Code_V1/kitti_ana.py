@@ -30,8 +30,7 @@ class KittiAnalyse(object):
         self.match_pts1 = None
         self.match_pts2 = None 
         self.F = None
-        
-    
+         
     def load_img_patch(self):
         '''
         load images and use a vessel to save them
@@ -187,7 +186,6 @@ class KittiAnalyse(object):
         self.F = F
         return F
 
-
     def drawlines(self,imgl, imgr, lines, pts1, pts2 ):
         '''
         draw lines
@@ -296,7 +294,6 @@ class KittiAnalyse(object):
         self.match_pts1 = np.array(leftpts)
         self.match_pts2 = np.array(rightpts)
 
-
     def draw_epipolar_lines(self,img_index ,save_prefix = 'index_0_F_GT_Rect_'):
         '''
         draw the epipolar lines of the [img_index]th image pair
@@ -352,7 +349,6 @@ class KittiAnalyse(object):
 
         cv2.imwrite(os.path.join(save_path,save_prefix+'Right.jpg'),img3)
 
-
     def metrics_ep_cons(self,img_index):
         '''
         calculate the epipolar constraint of the [img_index]th image pair
@@ -382,12 +378,8 @@ class KittiAnalyse(object):
         
         return err / float(len(pts1))
 
-
     def half_sym_epipolar_dist(self,img_index):
         pass
-
-
-
 
     def metrics_ep_dist(self,img_index):
         '''
@@ -420,7 +412,6 @@ class KittiAnalyse(object):
 
         return err / float(len(pts1))
     
-
     def MP_move(self, dist=1):
         '''
         move matching points to test metric

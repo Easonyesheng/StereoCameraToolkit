@@ -93,6 +93,7 @@ class Loader(object):
         # img_show(img_temp,'temp')
         # print('Shape', img_temp.shape)
         H, W, _ = img_temp.shape
+        grayimg_shape = np.array([W, H])
 
         img = np.zeros((N,H,W))
 
@@ -109,7 +110,7 @@ class Loader(object):
             # img_temp_gray = cv2.cvtColor(img_temp, cv2.COLOR_BGR2GRAY)
             img[i,:,:] = img_temp_gray
         
-        return img, N
+        return img, N, grayimg_shape
 
     def load_images(self):
         """name
@@ -136,7 +137,6 @@ class Loader(object):
         
         return img, N
 
-
     def Load_F_txt(self,FPath):
         """load F to evaluate from a txt file
             :para
@@ -151,7 +151,7 @@ class Loader(object):
         """Get corresponding F from nx9 matrix
             The i_th line 1x9 -> F correspond to the 'i_th.jpg' 
         """
-        with open F_file as f:
+        with open(F_file) as f:
             f_list = f.readlines()
         
         F = np.array(f_list[line_index].split(),dtype=float).reshape((3,3))

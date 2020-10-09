@@ -31,7 +31,7 @@ from Util.util import *
 from Set.settings import *
 
 class Camera(object):
-    """Top class Camera
+    """Basic class Camera
 
         Base class. 
         Can be initialized by config file or settings.
@@ -106,7 +106,11 @@ class Camera(object):
         self.img_path = ''
 
         self.Calibrator = Calibrator()
+        self.chess_board_size = np.array(CHESSBOARDSIZE)
+        self.gary_img_shape = None
         self.flag_calib = False
+        self.obj_pts = []
+        self.img_pts = []
 
         self.Evaluator = Evaluator()
         self.save_path = ''
@@ -115,9 +119,8 @@ class Camera(object):
         log_init(LOGFILE)
         logging.info('\n==========================================\n')
 
-        logging.info('\n==========New='+self.name+'Turn===========\n')
+        logging.info('\n==========New='+self.name+'=Turn==========\n')
 
-    
     def init_by_config(self, yaml_path):
         """name
 
@@ -135,20 +138,21 @@ class Camera(object):
             config = yaml.load(f)
             self.name = config['name']
             self.task = config['task']
-            self.IntP = np.array(config['intrinsic_parameter']['matrix'])
-            self.fx = config['intrinsic_parameter']['fx']
-            self.fy = config['intrinsic_parameter']['fy']
-            self.cx = config['intrinsic_parameter']['cx']
-            self.cy = config['intrinsic_parameter']['cy']
-            self.R = np.array(config['extrinsic_parameter']['R'])
-            self.t = np.array(config['extrinsic_parameter']['t'])
-            self.ExtP = np.array(config['extrinsic_parameter']['matrix'])
+            self.flag_calib = config['flag_calib']
+            self.chess_board_size = np.array(config['chess_board_size'])
+            self.IntP = np.array(config['intrinsic_matrix'])
+            self.fx = self.IntP[0,0]
+            self.fy = self.IntP[1,1]
+            self.cx = self.IntP[0,2]
+            self.cy = self.IntP[1,2]
+            self.ExtP = np.array(config['extrinsic_matrix'])
+            self.R = self.ExtP[:,:-1]
+            self.t = self.ExtP[:,3]
             self.DisP = np.array(config['distortion'])
             self.img_path = config['img_path']
             self.save_path = config['save_path']
             self.save_prefix = config['save_prefix']
             logging.info('Camera initialization done.')
-
 
     def load_images(self, image_path, load_mod_flag):
         """name
@@ -165,14 +169,10 @@ class Camera(object):
             self.Image = self.Loader.load_image_single()
             self.Image_num = 1
         if load_mod_flag == 'Calibration':
-            self.Image, self.Image_num = self.Loader.load_images_calibration()
+            self.Image, self.Image_num, self.gary_img_shape = self.Loader.load_images_calibration()
         if load_mod_flag == 'imgs':
             self.Image, self.Image_num = self.Loader.load_images()
             
-
-
-        
-
         logging.info('In Mod: %s, Image loading DONE.\nself.Image shape is: ' %load_mod_flag+str(self.Image.shape))
     
     def show_attri(self, show_img_flag=False):
@@ -243,8 +243,7 @@ class Camera(object):
 
         logging.info('The camera has been calibrated: '+str(self.flag_calib))
 
-
-    def calibrator(self):
+    def calibrate_camera(self):
         """name
             description
         Args:
@@ -254,12 +253,14 @@ class Camera(object):
             img_points: used for evaluation
         """
         self.Calibrator.img = self.Image
-        self.Calibrator.chess_board_size = np.array(CHESSBOARDSIZE)
+        self.Calibrator.chess_board_size = self.chess_board_size
 
-        self.IntError, self.IntP, self.DisP, self.R, self.t, obj_points, img_points = self.Calibrator.run(save_flag=True)
+        self.IntError, self.IntP, self.DisP, self.R, self.t, self.obj_pts, self.img_pts = self.Calibrator.run(save_flag=True)
+        self.ExtP[:,:3] = self.R[0]
+        self.ExtP[:,3:] = self.t[0]
         self.flag_calib = True
 
-        return obj_points, img_points
+        return self.obj_pts, self.img_pts
 
     def evaluate_calibration(self, obj_points, img_points):
         """name
@@ -275,7 +276,6 @@ class Camera(object):
         self.Evaluator.save_prefix = SAVEPREFIX
         error = self.Evaluator.evaluate_calibration(obj_points, img_points, self.R, self.t, self.IntP, self.DisP)
         logging.info("Calibration error (Reprojection) is:"+str(error))
-
 
     def undistort(self, index = 0, save_flag=False):
         """name
@@ -315,14 +315,31 @@ class Camera(object):
             test_dir_if_not_create(save_path)
             save_img_with_prefix(self.Image[index], save_path, SAVEPREFIX+'ori_img')
 
-    def write_log(self):
+    def write_yaml(self):
         """name
             description
         Args:
             
         Returns:
         """
-        pass
+        camera_model = {
+            'name': self.name,
+            'task': self.task,
+            'flag_calib': self.flag_calib,
+            'chess_board_size': self.chess_board_size.tolist(),
+            'intrinsic_matrix': self.IntP.tolist(),
+            'extrinsic_matrix': self.ExtP.tolist(),
+            'distortion': self.DisP.tolist(),
+            'calib_img_shape': self.gary_img_shape.tolist(),
+            'calib_img_num': self.Image_num,
+            'img_path': self.img_path,
+            'save_path': self.save_path,
+            'save_prefix': self.save_prefix 
+        }
+        yaml_file = os.path.join(CONFIGPATH, 'camera_'+self.name+'.yaml')
+        file = open(yaml_file, 'w', encoding='utf-8')
+        yaml.dump(camera_model, file)
+        file.close()
 
 
 
@@ -330,18 +347,19 @@ if __name__ == "__main__":
 
     test = Camera()
 
-    test.show_attri()
+    # test.show_attri()
 
-    yaml_path = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/BasicConfig.yaml'
+    yaml_path = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_Left.yaml'
     test.init_by_config(yaml_path)
 
     # test.load_images(IMGPATH ,'Calibration')
 
-    # obj_points, img_points = test.calibrator()
+    # obj_points, img_points = test.calibrate_camera()
     # print(test.R)
 
     test.show_attri()
-
+    
+    # test.write_yaml()
     # test.evaluate_calibration(obj_points, img_points)
 
     # test.show_img(save_flag=True)

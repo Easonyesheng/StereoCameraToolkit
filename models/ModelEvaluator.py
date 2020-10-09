@@ -49,7 +49,6 @@ class Evaluator(object):
         self.save_path = ''
         self.save_prefix = ''
     
-
     def evaluate_calibration(self, objpoints, imgpoints, rvecs, tvecs, mtx, dist):
         """name
             use Re-projection Error as metric

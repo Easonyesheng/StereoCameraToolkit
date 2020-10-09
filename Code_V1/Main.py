@@ -72,8 +72,6 @@ class SelfCalibration:
             print("Create Save Path: ",self.SavePath)
             os.makedirs(self.SavePath)
 
-
-
     def load_image_pair(self, img_nameL, img_nameR):
         """Loads pair of images 
 
@@ -104,7 +102,6 @@ class SelfCalibration:
             self.imgl = cv2.cvtColor(self.imgl, cv2.COLOR_GRAY2BGR)
             self.imgr = cv2.cvtColor(self.imgr, cv2.COLOR_GRAY2BGR)
     
-
     def load_image_KITTI(self,index):
         '''load the images in the format of KITTI
             the images are in /ImgPath/image_00(left)/data/00000000xx.pmg
@@ -132,7 +129,6 @@ class SelfCalibration:
         if len(self.imgl.shape) == 2:
             self.imgl = cv2.cvtColor(self.imgl, cv2.COLOR_GRAY2BGR)
             self.imgr = cv2.cvtColor(self.imgr, cv2.COLOR_GRAY2BGR)
-
 
     def load_img_test(self,Index):
         """Load images in manual dataset
@@ -175,7 +171,6 @@ class SelfCalibration:
         if self.imgr is None:
             sys.exit("Image " + self.img_right_name + " could not be loaded.")
 
-
     def Show(self):
         """Show all the dataset
         """
@@ -200,8 +195,7 @@ class SelfCalibration:
             print("Parameters are not loaded")
 
         print("F: \nF_GT:",self.F,"\nFE:",self.FE)
-
-            
+           
     def LoadPara_KITTI(self):
         """Load the camera parameters from KITTI's calib_file
 
@@ -364,9 +358,6 @@ class SelfCalibration:
 
         return self.F
 
-        
-    
-
     def get_normalized_F(self, F, mean, std, size=None):
         """Normalize Fundamental matrix
 
@@ -396,8 +387,6 @@ class SelfCalibration:
         F = A_inv.T.dot(F).dot(A_inv)
         F /= F[2,2]
         return F
-
-
 
     def ExactGoodMatch(self,screening = False,point_lens = -1):
         """Get matching points & Use F_GT to get good matching points
@@ -661,7 +650,6 @@ class SelfCalibration:
 
         return err / float(len(pts1)), max_dis, min_dis, angle
 
-
     def get_F_score(self, FE, pts1, pts2):
         """Get the F-Score
             Definition: the percentage of inliers points accroding to FE in GT matching pts 
@@ -705,7 +693,6 @@ class SelfCalibration:
             f.writelines("The L1 loss is: {:4f}".format(L1_loss)+"\nThe L2 loss is: {:4f}".format(L2_loss))
             f.writelines("\nThe quantities of matching points is " +str(len(self.match_pts2))+"\n")
             f.writelines("The epipolar constraint is : " +str(float(epi_cons))+"\nThe symmetry epipolar distance is: " +str(float(sym_epi_dis)))
-
 
     def FMEvaluate_aggregate(self):
         """Evaluate the fundamental matrix
@@ -778,7 +765,6 @@ class SelfCalibration:
         # if k == 27:
         #     cv2.destroyAllWindows()
        
-
     def _draw_epipolar_lines_helper(self, img1, img2, lines, pts1, pts2):
         """Helper method to draw epipolar lines and features """
         if img1.shape[2] == 1:
@@ -795,8 +781,6 @@ class SelfCalibration:
             cv2.circle(img1, tuple(pt1), 5, color, -1)
             cv2.circle(img2, tuple(pt2), 5, color, -1)
         return img1, img2
-
-
 
     def LoadE(self,EPath):
         """
@@ -816,8 +800,7 @@ class SelfCalibration:
         # print(self.FE)
         # FE = np.matmul(np.matmul(np.linalg.inv(self.Tr).T,self.FE),np.linalg.inv(self.Tl))
         # self.FE = FE / np.linalg.norm(FE)
-
-        
+    
     def _Get_Essential_Matrix(self):
         """Get Essential Matrix from Fundamental Matrix
             E = Kl^T*F*Kr
@@ -882,8 +865,6 @@ class SelfCalibration:
         self.match_inliers2 = second_inliers
         self.Rt1 = np.hstack((np.eye(3), np.zeros((3, 1)))) # as defaluted RT 
         self.Rt2 = np.hstack((R, T.reshape(3, 1)))
-
-
 
     def _in_front_of_both_cameras(self, first_points, second_points, rot,
                                   trans):
@@ -977,8 +958,6 @@ class SelfCalibration:
         if k == 27:
             cv2.destroyAllWindows()
         
-
-
     def RectifyImgUncalibrated(self):
         """Rectify imgs without the parameters
         """
@@ -1021,8 +1000,6 @@ class SelfCalibration:
         # if k == 27:
         #     cv2.destroyAllWindows()
         
-
-    
 if __name__ == "__main__":
 
     
