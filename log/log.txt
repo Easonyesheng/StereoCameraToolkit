@@ -727,3 +727,43 @@ self.Image shape is: (54, 1080, 1920)
 self.Image shape is: (54, 1080, 1920, 3)
 2020-10-09 11:08:10 - root - INFO: - In Mod: imgs, Image loading DONE.
 self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 11:40:35 - root - INFO: - 
+==========================================
+
+2020-10-09 11:40:35 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 11:40:35 - root - INFO: - 
+==========================================
+
+2020-10-09 11:40:35 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 11:40:35 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 11:40:36 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 11:40:37 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 11:40:38 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 11:40:38 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 11:40:39 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 11:40:39 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 11:40:39 - root - INFO: - Calibration...
+2020-10-09 11:40:49 - root - INFO: - Calibration done, and the error of intrinsic is 0.481455
+2020-10-09 11:40:49 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left.yaml
+2020-10-09 11:40:49 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 11:40:49 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 11:40:49 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 11:40:49 - root - INFO: - Calibration...
+2020-10-09 11:40:56 - root - INFO: - Calibration done, and the error of intrinsic is 0.546110
+2020-10-09 11:40:56 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right.yaml
+2020-10-09 11:40:56 - root - INFO: - Initial camera from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left.yaml
+2020-10-09 11:40:56 - root - INFO: - Camera initialization done.
+2020-10-09 11:40:56 - root - INFO: - Initial camera from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right.yaml
+2020-10-09 11:40:56 - root - INFO: - Camera initialization done.

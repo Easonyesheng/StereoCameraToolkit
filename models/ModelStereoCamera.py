@@ -376,6 +376,17 @@ class StereoCamera(object):
 
         self.FE = F_temp
         
+    def __pre_set(self):
+        """name
+            termination criteria
+        Args:
+            
+
+        Returns:
+
+        """
+        criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
+        return criteria
 
     def __get_object_point(self):
         """name
@@ -410,10 +421,13 @@ class StereoCamera(object):
         corners2 = cv2.cornerSubPix(img,corners,(11,11), (-1,-1), self.criteria)
         return corners2
 
-
     def stereo_calibration(self, write_yaml_flag=False):
         """name
-            need to calibrate monocular camera first
+            if not calibrated:
+                need to calibrate monocular camera first
+            
+            need to find points together
+
             cause we need the points
         Args:
                     
@@ -440,13 +454,38 @@ class StereoCamera(object):
                 self.camera_right.write_yaml()
         
         # find the points!
+        obj_pts = []
+        img_pts_l = []
+        img_pts_r = []
 
+        if self.camera_left.Image_num != self.camera_right.Image_num:
+            logging.error('Cameras have different images and cannot perform stereo calibration!')
+        
+        objp_temp = self.__get_object_point()
+        self.criteria = self.__pre_set()
+        
+        logging.info('Finding object points...')
+        for i in tqdm(range(self.camera_right.Image_num)):
+            gray_l = self.camera_left.Image[i]
+            assert len(gray_l.shape) == 2
+            gray_r = self.camera_right.Image[i]
 
+            ret_l, corners_temp_l = self.__find_corners(gray_l)
+            ret_r, corners_temp_r = self.__find_corners(gray_r)
 
-        print('Start Stereo Calibration')
+            if ret_l and ret_r:
+                obj_pts.append(objp_temp)
+                
+                corners_l = self.__find_corners_subpix(gray_l, corners_temp_l)
+                corners_r = self.__find_corners_subpix(gray_r, corners_temp_r)
+
+                img_pts_l.append(corners_l)
+                img_pts_r.append(corners_r)
+        logging.info('Finding points done.')
+
+        logging.info('Start Stereo Calibration')
 
         stereocalib_criteria = (cv2.TERM_CRITERIA_MAX_ITER+cv2.TERM_CRITERIA_EPS, 100, 1e-5)
-        # print(stereocalib_criteria)
 
         flags = 0
         flags |= cv2.CALIB_FIX_INTRINSIC
@@ -460,19 +499,17 @@ class StereoCamera(object):
         # flags |= cv2.CALIB_FIX_K3
         # flags |= cv2.CALIB_FIX_K4
         # flags |= cv2.CALIB_FIX_K5
-        # print(flags)
-
 
         self.stereo_calib_err, self.camera_left.IntP, self.camera_left.DisP, \
                                 self.camera_right.IntP, self.camera_right.DisP, \
                                 self.R_relate, self.t_relate, self.E_calib, self.F_calib = cv2.stereoCalibrate(
-            self.camera_left.obj_pts, self.camera_left.img_pts,
-            self.camera_right.img_pts, self.camera_left.IntP, self.camera_left.DisP, self.camera_right.IntP,
+            obj_pts, img_pts_l, img_pts_r, 
+            self.camera_left.IntP, self.camera_left.DisP, self.camera_right.IntP,
             self.camera_right.DisP, tuple(self.camera_left.gary_img_shape),
             criteria=stereocalib_criteria, flags=flags) 
 
         self.stereo_calib_flag = True
-        print('Stereo Calibration Done')
+        logging.info('Stereo Calibration Done')
 
     def write_yaml(self):
         """name
