@@ -454,6 +454,7 @@ class StereoCamera(object):
                 self.camera_right.write_yaml()
         
         # find the points!
+        self.chess_board_size = np.array(CHESSBOARDSIZE)
         obj_pts = []
         img_pts_l = []
         img_pts_r = []
@@ -467,9 +468,13 @@ class StereoCamera(object):
         logging.info('Finding object points...')
         for i in tqdm(range(self.camera_right.Image_num)):
             gray_l = self.camera_left.Image[i]
+            gray_l = gray_l.astype(np.uint8)
             assert len(gray_l.shape) == 2
-            gray_r = self.camera_right.Image[i]
 
+            gray_r = self.camera_right.Image[i]
+            gray_r = gray_r.astype(np.uint8)
+            assert len(gray_r.shape) == 2
+            
             ret_l, corners_temp_l = self.__find_corners(gray_l)
             ret_r, corners_temp_r = self.__find_corners(gray_r)
 

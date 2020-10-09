@@ -767,3 +767,95 @@ self.Image shape is: (54, 1080, 1920)
 2020-10-09 11:40:56 - root - INFO: - Camera initialization done.
 2020-10-09 11:40:56 - root - INFO: - Initial camera from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right.yaml
 2020-10-09 11:40:56 - root - INFO: - Camera initialization done.
+2020-10-09 11:43:28 - root - INFO: - 
+==========================================
+
+2020-10-09 11:43:28 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 11:43:28 - root - INFO: - 
+==========================================
+
+2020-10-09 11:43:28 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 11:43:28 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 11:43:29 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 11:43:30 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 11:43:31 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 11:43:31 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 11:43:31 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 11:43:31 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 11:43:31 - root - INFO: - Calibration...
+2020-10-09 11:43:41 - root - INFO: - Calibration done, and the error of intrinsic is 0.481455
+2020-10-09 11:43:41 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left.yaml
+2020-10-09 11:43:41 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 11:43:42 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 11:43:42 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 11:43:42 - root - INFO: - Calibration...
+2020-10-09 11:43:48 - root - INFO: - Calibration done, and the error of intrinsic is 0.546110
+2020-10-09 11:43:48 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right.yaml
+2020-10-09 11:43:48 - root - INFO: - Initial camera from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left.yaml
+2020-10-09 11:43:48 - root - INFO: - Camera initialization done.
+2020-10-09 11:43:48 - root - INFO: - Initial camera from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right.yaml
+2020-10-09 11:43:48 - root - INFO: - Camera initialization done.
+2020-10-09 11:43:48 - root - INFO: - Finding object points...
+2020-10-09 11:45:11 - root - INFO: - 
+==========================================
+
+2020-10-09 11:45:11 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 11:45:11 - root - INFO: - 
+==========================================
+
+2020-10-09 11:45:11 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 11:45:11 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 11:45:12 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 11:45:12 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 11:45:13 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 11:45:13 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 11:45:13 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 11:45:13 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 11:45:13 - root - INFO: - Calibration...
+2020-10-09 11:45:23 - root - INFO: - Calibration done, and the error of intrinsic is 0.481455
+2020-10-09 11:45:23 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left.yaml
+2020-10-09 11:45:23 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 11:45:23 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 11:45:23 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 11:45:23 - root - INFO: - Calibration...
+2020-10-09 11:45:30 - root - INFO: - Calibration done, and the error of intrinsic is 0.546110
+2020-10-09 11:45:30 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right.yaml
+2020-10-09 11:45:30 - root - INFO: - Initial camera from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left.yaml
+2020-10-09 11:45:30 - root - INFO: - Camera initialization done.
+2020-10-09 11:45:30 - root - INFO: - Initial camera from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right.yaml
+2020-10-09 11:45:30 - root - INFO: - Camera initialization done.
+2020-10-09 11:45:30 - root - INFO: - Finding object points...
+2020-10-09 11:45:39 - root - INFO: - Finding points done.
+2020-10-09 11:45:39 - root - INFO: - Start Stereo Calibration
+2020-10-09 11:45:42 - root - INFO: - Stereo Calibration Done
+2020-10-09 11:45:42 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 11:45:42 - root - INFO: - Stereo images loading...
+2020-10-09 11:45:45 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 11:45:48 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 11:45:51 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera.yaml
