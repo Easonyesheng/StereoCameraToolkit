@@ -20,6 +20,7 @@ Attributes:
 import cv2
 import numpy as np
 from tqdm import tqdm
+import sys
 import yaml
 import logging
 import glob
@@ -65,6 +66,10 @@ class StereoCamera(object):
         self.epi_cons = 0.0
         self.sym_epi_dis = 0.0
         self.epi_angle = 0.0
+        self.obj_pts = None
+        self.img_pts_l = None
+        self.img_pts_r = None
+        self.stereo_pts_flag = False
 
         self.F_calib = np.zeros((3,3))
 
@@ -268,7 +273,7 @@ class StereoCamera(object):
 
         return True
 
-    def cameras_load_imgs(self, load_mod='', load_path):
+    def cameras_load_imgs(self, load_path, load_mod = 'norm'):
         """name
             description
         Args:
@@ -283,8 +288,12 @@ class StereoCamera(object):
         right_path = os.path.join(load_path, 'right')
         logging.info('load images from %s /left & /right'% load_path)
         logging.info('Stereo images loading...')
-        self.camera_left.load_images(left_path, 'imgs')
-        self.camera_right.load_images(right_path, 'imgs')
+        if load_mod == 'norm':  
+            self.camera_left.load_images(left_path, 'imgs')
+            self.camera_right.load_images(right_path, 'imgs')
+        elif load_mod == 'gray':
+            self.camera_left.load_images(left_path,'Calibration')
+            self.camera_right.load_images(left_path,'Calibration')
 
     def ExactGoodMatch(self,filter = False,point_len = -1, index = 0):
         """Get matching points & Use F_GT to get good matching points
@@ -451,6 +460,51 @@ class StereoCamera(object):
         corners2 = cv2.cornerSubPix(img,corners,(11,11), (-1,-1), self.criteria)
         return corners2
 
+    def __stereo_find_points(self):
+        """
+        """
+        self.chess_board_size = np.array(CHESSBOARDSIZE)
+        obj_pts = []
+        img_pts_l = []
+        img_pts_r = []
+
+        if (self.camera_left.Image_num != self.camera_right.Image_num) and (self.camera_left.Image_num!=0):
+            logging.error('Cameras have different images and cannot perform stereo calibration!')
+            sys.exit('Error in log.')
+
+        objp_temp = self.__get_object_point()
+        self.criteria = self.__pre_set()
+        
+        logging.info('Finding object points...')
+        for i in tqdm(range(self.camera_right.Image_num)):
+            gray_l = self.camera_left.Image[i]
+            gray_l = gray_l.astype(np.uint8)
+            # print(gray_l.shape)
+            assert len(gray_l.shape) == 2
+
+            gray_r = self.camera_right.Image[i]
+            gray_r = gray_r.astype(np.uint8)
+            assert len(gray_r.shape) == 2
+            
+            ret_l, corners_temp_l = self.__find_corners(gray_l)
+            ret_r, corners_temp_r = self.__find_corners(gray_r)
+
+            if ret_l and ret_r:
+                obj_pts.append(objp_temp)
+                
+                corners_l = self.__find_corners_subpix(gray_l, corners_temp_l)
+                corners_r = self.__find_corners_subpix(gray_r, corners_temp_r)
+
+                img_pts_l.append(corners_l)
+                img_pts_r.append(corners_r)
+        logging.info('Finding points done.')
+        
+        self.obj_pts = obj_pts
+        self.img_pts_l = img_pts_l
+        self.img_pts_r = img_pts_r
+        self.stereo_pts_flag = True
+        
+
     def stereo_calibration(self, write_yaml_flag=False):
         """name
             if not calibrated:
@@ -484,39 +538,8 @@ class StereoCamera(object):
                 self.camera_right.write_yaml('_stereo_need')
         
         # find the points!
-        self.chess_board_size = np.array(CHESSBOARDSIZE)
-        obj_pts = []
-        img_pts_l = []
-        img_pts_r = []
-
-        if self.camera_left.Image_num != self.camera_right.Image_num:
-            logging.error('Cameras have different images and cannot perform stereo calibration!')
-        
-        objp_temp = self.__get_object_point()
-        self.criteria = self.__pre_set()
-        
-        logging.info('Finding object points...')
-        for i in tqdm(range(self.camera_right.Image_num)):
-            gray_l = self.camera_left.Image[i]
-            gray_l = gray_l.astype(np.uint8)
-            assert len(gray_l.shape) == 2
-
-            gray_r = self.camera_right.Image[i]
-            gray_r = gray_r.astype(np.uint8)
-            assert len(gray_r.shape) == 2
-            
-            ret_l, corners_temp_l = self.__find_corners(gray_l)
-            ret_r, corners_temp_r = self.__find_corners(gray_r)
-
-            if ret_l and ret_r:
-                obj_pts.append(objp_temp)
-                
-                corners_l = self.__find_corners_subpix(gray_l, corners_temp_l)
-                corners_r = self.__find_corners_subpix(gray_r, corners_temp_r)
-
-                img_pts_l.append(corners_l)
-                img_pts_r.append(corners_r)
-        logging.info('Finding points done.')
+        if not self.stereo_pts_flag:
+            self.__stereo_find_points()
 
         logging.info('Start Stereo Calibration')
 
@@ -525,44 +548,26 @@ class StereoCamera(object):
         flags = 0
         flags |= cv2.CALIB_FIX_INTRINSIC
         # flags |= cv2.CALIB_FIX_PRINCIPAL_POINT
-        # flags |= cv2.CALIB_USE_INTRINSIC_GUESS
+        flags |= cv2.CALIB_USE_INTRINSIC_GUESS
         # flags |= cv2.CALIB_FIX_FOCAL_LENGTH
-        # flags |= cv2.CALIB_FIX_ASPECT_RATIO
-        # flags |= cv2.CALIB_ZERO_TANGENT_DIST
-        # flags |= cv2.CALIB_RATIONAL_MODEL
-        # flags |= cv2.CALIB_SAME_FOCAL_LENGTH
-        # flags |= cv2.CALIB_FIX_K3
-        # flags |= cv2.CALIB_FIX_K4
-        # flags |= cv2.CALIB_FIX_K5
+        flags |= cv2.CALIB_FIX_ASPECT_RATIO
+        flags |= cv2.CALIB_ZERO_TANGENT_DIST
+        flags |= cv2.CALIB_RATIONAL_MODEL
+        flags |= cv2.CALIB_SAME_FOCAL_LENGTH
+        flags |= cv2.CALIB_FIX_K3
+        flags |= cv2.CALIB_FIX_K4
+        flags |= cv2.CALIB_FIX_K5
 
         self.stereo_calib_err, self.camera_left.IntP, self.camera_left.DisP, \
                                 self.camera_right.IntP, self.camera_right.DisP, \
                                 self.R_relate, self.t_relate, self.E_calib, self.F_calib = cv2.stereoCalibrate(
-            obj_pts, img_pts_l, img_pts_r, 
+            self.obj_pts, self.img_pts_l, self.img_pts_r, 
             self.camera_left.IntP, self.camera_left.DisP, self.camera_right.IntP,
             self.camera_right.DisP, tuple(self.camera_left.gary_img_shape),
             criteria=stereocalib_criteria, flags=flags) 
 
         self.stereo_calib_flag = True
         logging.info('Stereo Calibration Done')
-
-    def EpipolarConstraint(self,F,pts1,pts2):
-        '''Epipolar Constraint
-            calculate the epipolar constraint 
-            x^T*F*x
-            :output 
-                err_permatch
-        '''
-       
-        print('Use ',len(pts1),' points to calculate epipolar constraints.')
-        assert len(pts1) == len(pts2)
-        err = 0.0
-        for p1, p2 in zip(pts1, pts2):
-            hp1, hp2 = np.ones((3,1)), np.ones((3,1))
-            hp1[:2,0], hp2[:2,0] = p1, p2
-            err += np.abs(np.dot(hp2.T, np.dot(F, hp1)))
-        
-        return err / float(len(pts1))
 
     def evaluate_F(self, whichF='est'):
         """name
@@ -579,8 +584,32 @@ class StereoCamera(object):
             'est': self.FE
         }
         F = F_dict[whichF]
+
+        evaluator = Evaluator()
+        evaluator.save_path = SAVEPATH
+        evaluator.save_prefix = whichF+'_F_'
+
         
-        
+
+        if whichF == 'calib':
+            if self.camera_left.Image_num == 0:
+                self.cameras_load_imgs(STEREOIMGPATH, 'gray')
+
+            if not self.stereo_pts_flag:
+                self.__stereo_find_points()
+
+            pts1 = np.zeros((self.camera_left.Image_num, self.chess_board_size[0]*self.chess_board_size[1], 2))
+            pts2 = np.zeros((self.camera_left.Image_num, self.chess_board_size[0]*self.chess_board_size[1], 2))
+
+            for i in range(self.camera_left.Image_num):
+                pts1[i] = np.array(self.img_pts_l)[i,:,0,:] 
+                pts2[i] = np.array(self.img_pts_r)[i,:,0,:] 
+
+            pts1 = np.int32(pts1)
+            pts2 = np.int32(pts2)
+            print(pts1.shape)
+            # sys.exit('N')
+            evaluator.Evaluate_F(self.F_calib, pts1, pts2, self.camera_left.Image_num)
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
     def write_yaml(self, postfix=''):
         """name
@@ -636,18 +665,20 @@ if __name__ == "__main__":
     # test.camera_left.init_by_config(os.path.join(CONFIGPATH,'camera_left.yaml'))
     # test.camera_right.init_by_config(os.path.join(CONFIGPATH,'camera_right.yaml'))
 
-    test.stereo_calibration(True)
+    # test.stereo_calibration()
 
 
-    test.cameras_load_imgs('',STEREOIMGPATH)
+    # test.cameras_load_imgs(STEREOIMGPATH)
     # test.EstimateFMs()
-    # test.init_stereo_by_config(os.path.join(CONFIGPATH, 'Stereo_camera_Intrin_fix_Fs.yaml'))
+    test.init_stereo_by_config(os.path.join(CONFIGPATH, 'Stereo_cameraIntrin_guess.yaml'))
+
+    test.evaluate_F('calib')
 
     # test.camera_right.evaluate_calibration()
     # test.camera_left.evaluate_calibration()
     
 
-    # test.write_yaml('_Intrin_fix_Fs')
-    # test.camera_left.write_yaml('after_stereo')
-    # test.camera_right.write_yaml('after_stereo')
+    # test.write_yaml('_test')
+    # test.camera_left.write_yaml('_after_stereo')
+    # test.camera_right.write_yaml('_after_stereo')
 

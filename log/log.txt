@@ -1223,3 +1223,967 @@ Start evaluation calibration
 
 2020-10-09 14:59:02 - root - INFO: - Calibration error (Reprojection) is:0.05074974982390311
 2020-10-09 14:59:02 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 16:22:57 - root - INFO: - 
+==========================================
+
+2020-10-09 16:22:57 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 16:22:57 - root - INFO: - 
+==========================================
+
+2020-10-09 16:22:57 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 16:22:57 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 16:22:59 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 16:22:59 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 16:23:00 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 16:23:00 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 16:23:00 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 16:23:00 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 16:23:00 - root - INFO: - Calibration...
+2020-10-09 16:23:10 - root - INFO: - Calibration done, and the error of intrinsic is 0.481455
+2020-10-09 16:23:10 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 16:23:10 - root - INFO: - Calibration error (Reprojection) is:0.05074974982390311
+2020-10-09 16:23:10 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 16:23:10 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 16:23:10 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 16:23:10 - root - INFO: - Calibration...
+2020-10-09 16:23:17 - root - INFO: - Calibration done, and the error of intrinsic is 0.546110
+2020-10-09 16:23:17 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 16:23:17 - root - INFO: - Calibration error (Reprojection) is:0.05711304944255166
+2020-10-09 16:23:17 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left_before_stereo.yaml
+2020-10-09 16:23:17 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right_before_stereo.yaml
+2020-10-09 16:23:17 - root - INFO: - Finding object points...
+2020-10-09 16:23:25 - root - INFO: - Finding points done.
+2020-10-09 16:23:25 - root - INFO: - Start Stereo Calibration
+2020-10-09 16:23:28 - root - INFO: - Stereo Calibration Done
+2020-10-09 16:23:55 - root - INFO: - 
+==========================================
+
+2020-10-09 16:23:55 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 16:23:55 - root - INFO: - 
+==========================================
+
+2020-10-09 16:23:55 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 16:23:55 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 16:23:56 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 16:23:56 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 16:23:57 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 16:23:57 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 16:23:57 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 16:23:57 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 16:23:57 - root - INFO: - Calibration...
+2020-10-09 16:24:08 - root - INFO: - Calibration done, and the error of intrinsic is 0.481455
+2020-10-09 16:24:08 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 16:24:08 - root - INFO: - Calibration error (Reprojection) is:0.05074974982390311
+2020-10-09 16:24:08 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 16:24:08 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 16:24:08 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 16:24:08 - root - INFO: - Calibration...
+2020-10-09 16:24:14 - root - INFO: - Calibration done, and the error of intrinsic is 0.546110
+2020-10-09 16:24:14 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 16:24:14 - root - INFO: - Calibration error (Reprojection) is:0.05711304944255166
+2020-10-09 16:24:14 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left_before_stereo.yaml
+2020-10-09 16:24:14 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right_before_stereo.yaml
+2020-10-09 16:24:14 - root - INFO: - Finding object points...
+2020-10-09 16:24:23 - root - INFO: - Finding points done.
+2020-10-09 16:24:23 - root - INFO: - Start Stereo Calibration
+2020-10-09 16:24:26 - root - INFO: - Stereo Calibration Done
+2020-10-09 16:24:26 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 16:24:26 - root - INFO: - Stereo images loading...
+2020-10-09 16:24:29 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 16:24:32 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 16:24:32 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Flag_liu.yaml
+2020-10-09 16:24:32 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left_after_stereo.yaml
+2020-10-09 16:24:32 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right_after_stereo.yaml
+2020-10-09 16:26:30 - root - INFO: - 
+==========================================
+
+2020-10-09 16:26:30 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 16:26:30 - root - INFO: - 
+==========================================
+
+2020-10-09 16:26:30 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 16:26:30 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 16:26:31 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 16:26:31 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 16:26:32 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 16:26:32 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 16:26:32 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 16:26:32 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 16:26:32 - root - INFO: - Calibration...
+2020-10-09 16:26:42 - root - INFO: - Calibration done, and the error of intrinsic is 0.481455
+2020-10-09 16:26:42 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 16:26:42 - root - INFO: - Calibration error (Reprojection) is:0.05074974982390311
+2020-10-09 16:26:42 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 16:26:42 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 16:26:42 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 16:26:42 - root - INFO: - Calibration...
+2020-10-09 16:26:49 - root - INFO: - Calibration done, and the error of intrinsic is 0.546110
+2020-10-09 16:26:49 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 16:26:49 - root - INFO: - Calibration error (Reprojection) is:0.05711304944255166
+2020-10-09 16:26:49 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left_before_stereo.yaml
+2020-10-09 16:26:49 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right_before_stereo.yaml
+2020-10-09 16:26:49 - root - INFO: - Finding object points...
+2020-10-09 16:26:57 - root - INFO: - Finding points done.
+2020-10-09 16:26:57 - root - INFO: - Start Stereo Calibration
+2020-10-09 16:27:08 - root - INFO: - Stereo Calibration Done
+2020-10-09 16:27:08 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 16:27:08 - root - INFO: - Stereo images loading...
+2020-10-09 16:27:11 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 16:27:14 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 16:27:14 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Flag_liu.yaml
+2020-10-09 16:27:14 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left_after_stereo.yaml
+2020-10-09 16:27:14 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right_after_stereo.yaml
+2020-10-09 16:29:58 - root - INFO: - 
+==========================================
+
+2020-10-09 16:29:58 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 16:29:58 - root - INFO: - 
+==========================================
+
+2020-10-09 16:29:58 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 16:29:58 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 16:29:59 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 16:29:59 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 16:30:00 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 16:30:00 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 16:30:00 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 16:30:00 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 16:30:00 - root - INFO: - Calibration...
+2020-10-09 16:30:10 - root - INFO: - Calibration done, and the error of intrinsic is 0.481455
+2020-10-09 16:30:10 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 16:30:10 - root - INFO: - Calibration error (Reprojection) is:0.05074974982390311
+2020-10-09 16:30:10 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 16:30:10 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 16:30:10 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 16:30:10 - root - INFO: - Calibration...
+2020-10-09 16:30:16 - root - INFO: - Calibration done, and the error of intrinsic is 0.546110
+2020-10-09 16:30:16 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 16:30:16 - root - INFO: - Calibration error (Reprojection) is:0.05711304944255166
+2020-10-09 16:30:16 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left_before_stereo.yaml
+2020-10-09 16:30:16 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right_before_stereo.yaml
+2020-10-09 16:30:16 - root - INFO: - Finding object points...
+2020-10-09 16:30:25 - root - INFO: - Finding points done.
+2020-10-09 16:30:25 - root - INFO: - Start Stereo Calibration
+2020-10-09 16:30:36 - root - INFO: - Stereo Calibration Done
+2020-10-09 16:30:36 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 16:30:36 - root - INFO: - Stereo images loading...
+2020-10-09 16:30:38 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 16:30:42 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 16:30:42 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 16:30:42 - root - INFO: - Calibration error (Reprojection) is:53.36915653697229
+2020-10-09 16:30:42 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 16:30:42 - root - INFO: - Calibration error (Reprojection) is:13.027360760440333
+2020-10-09 16:30:42 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Flag_liu.yaml
+2020-10-09 16:30:42 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left_after_stereo.yaml
+2020-10-09 16:30:42 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right_after_stereo.yaml
+2020-10-09 17:04:28 - root - INFO: - 
+==========================================
+
+2020-10-09 17:04:28 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 17:04:28 - root - INFO: - 
+==========================================
+
+2020-10-09 17:04:28 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 17:04:28 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 17:04:29 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 17:04:29 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 17:04:30 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 17:04:30 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 17:04:30 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 17:04:30 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 17:04:30 - root - INFO: - Calibration...
+2020-10-09 17:04:40 - root - INFO: - Calibration done, and the error of intrinsic is 0.481455
+2020-10-09 17:04:40 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 17:04:40 - root - INFO: - Calibration error (Reprojection) is:3.958480486264445
+2020-10-09 17:04:40 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 17:04:41 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 17:04:41 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 17:04:41 - root - INFO: - Calibration...
+2020-10-09 17:04:47 - root - INFO: - Calibration done, and the error of intrinsic is 0.546110
+2020-10-09 17:04:47 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 17:04:47 - root - INFO: - Calibration error (Reprojection) is:4.454817856519028
+2020-10-09 17:04:47 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left_before_stereo.yaml
+2020-10-09 17:04:47 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right_before_stereo.yaml
+2020-10-09 17:04:47 - root - INFO: - Finding object points...
+2020-10-09 17:04:55 - root - INFO: - Finding points done.
+2020-10-09 17:04:55 - root - INFO: - Start Stereo Calibration
+2020-10-09 17:05:06 - root - INFO: - Stereo Calibration Done
+2020-10-09 17:05:06 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 17:05:06 - root - INFO: - Stereo images loading...
+2020-10-09 17:05:09 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 17:05:13 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 17:05:13 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 17:05:13 - root - INFO: - Calibration error (Reprojection) is:4162.79420988384
+2020-10-09 17:05:13 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 17:05:13 - root - INFO: - Calibration error (Reprojection) is:1016.1341393143463
+2020-10-09 17:05:13 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Flag_liu.yaml
+2020-10-09 17:05:13 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left_after_stereo.yaml
+2020-10-09 17:05:13 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right_after_stereo.yaml
+2020-10-09 17:10:59 - root - INFO: - 
+==========================================
+
+2020-10-09 17:10:59 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 17:10:59 - root - INFO: - 
+==========================================
+
+2020-10-09 17:10:59 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 17:10:59 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 17:11:00 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 17:11:00 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 17:11:01 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 17:11:01 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 17:11:01 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 17:11:01 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 17:11:01 - root - INFO: - Calibration...
+2020-10-09 17:11:12 - root - INFO: - Calibration done, and the error of intrinsic is 0.481455
+2020-10-09 17:11:12 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 17:11:12 - root - INFO: - Calibration error (Reprojection) is:0.05074974982390311
+2020-10-09 17:11:12 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 17:11:12 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 17:11:12 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 17:11:12 - root - INFO: - Calibration...
+2020-10-09 17:11:18 - root - INFO: - Calibration done, and the error of intrinsic is 0.546110
+2020-10-09 17:11:18 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 17:11:18 - root - INFO: - Calibration error (Reprojection) is:0.05711304944255166
+2020-10-09 17:11:18 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left_before_stereo.yaml
+2020-10-09 17:11:18 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right_before_stereo.yaml
+2020-10-09 17:11:18 - root - INFO: - Finding object points...
+2020-10-09 17:11:27 - root - INFO: - Finding points done.
+2020-10-09 17:11:27 - root - INFO: - Start Stereo Calibration
+2020-10-09 17:11:38 - root - INFO: - Stereo Calibration Done
+2020-10-09 17:11:38 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 17:11:38 - root - INFO: - Stereo images loading...
+2020-10-09 17:11:41 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 17:11:45 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 17:11:45 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 17:11:45 - root - INFO: - Calibration error (Reprojection) is:53.36915653697229
+2020-10-09 17:11:45 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 17:11:45 - root - INFO: - Calibration error (Reprojection) is:13.027360760440333
+2020-10-09 17:11:45 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Flag_liu.yaml
+2020-10-09 17:11:45 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left_after_stereo.yaml
+2020-10-09 17:11:45 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right_after_stereo.yaml
+2020-10-09 17:40:44 - root - INFO: - 
+==========================================
+
+2020-10-09 17:40:44 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 17:40:44 - root - INFO: - 
+==========================================
+
+2020-10-09 17:40:44 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 17:40:44 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 17:40:45 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 17:40:45 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 17:40:47 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 17:40:47 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 17:40:47 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 17:40:47 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 17:40:47 - root - INFO: - Calibration...
+2020-10-09 17:40:57 - root - INFO: - Calibration done, and the error of intrinsic is 0.481455
+2020-10-09 17:40:57 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 17:40:57 - root - INFO: - Calibration error (Reprojection) is:0.05074974982390311
+2020-10-09 17:40:57 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-09 17:40:57 - root - INFO: - img for calibration shape: (54, 1080, 1920)
+2020-10-09 17:40:57 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-09 17:40:57 - root - INFO: - Calibration...
+2020-10-09 17:41:04 - root - INFO: - Calibration done, and the error of intrinsic is 0.546110
+2020-10-09 17:41:04 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 17:41:04 - root - INFO: - Calibration error (Reprojection) is:0.05711304944255166
+2020-10-09 17:41:04 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left_before_stereo.yaml
+2020-10-09 17:41:04 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right_before_stereo.yaml
+2020-10-09 17:41:04 - root - INFO: - Finding object points...
+2020-10-09 17:41:13 - root - INFO: - Finding points done.
+2020-10-09 17:41:13 - root - INFO: - Start Stereo Calibration
+2020-10-09 17:41:16 - root - INFO: - Stereo Calibration Done
+2020-10-09 17:41:16 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 17:41:16 - root - INFO: - Stereo images loading...
+2020-10-09 17:41:20 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 17:41:23 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 17:41:23 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 17:41:23 - root - INFO: - Calibration error (Reprojection) is:0.05711304944255166
+2020-10-09 17:41:23 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-09 17:41:23 - root - INFO: - Calibration error (Reprojection) is:0.05074974982390311
+2020-10-09 17:41:23 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_test.yaml
+2020-10-09 17:41:23 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_left_after_stereo.yaml
+2020-10-09 17:41:23 - root - INFO: - Write camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_right_after_stereo.yaml
+2020-10-09 18:59:04 - root - INFO: - 
+==========================================
+
+2020-10-09 18:59:04 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 18:59:04 - root - INFO: - 
+==========================================
+
+2020-10-09 18:59:04 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 18:59:04 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 18:59:04 - root - INFO: - Stereo images loading...
+2020-10-09 18:59:07 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 18:59:10 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 18:59:10 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 18:59:10 - root - INFO: - Stereo parameters load done.
+2020-10-09 18:59:10 - root - INFO: - Finding object points...
+2020-10-09 19:04:52 - root - INFO: - 
+==========================================
+
+2020-10-09 19:04:52 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:04:52 - root - INFO: - 
+==========================================
+
+2020-10-09 19:04:52 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:04:52 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:04:52 - root - INFO: - Stereo images loading...
+2020-10-09 19:04:55 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 19:04:58 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 19:04:58 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:04:58 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:04:58 - root - INFO: - Finding object points...
+2020-10-09 19:06:16 - root - INFO: - 
+==========================================
+
+2020-10-09 19:06:16 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:06:16 - root - INFO: - 
+==========================================
+
+2020-10-09 19:06:16 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:06:16 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:06:16 - root - INFO: - Stereo images loading...
+2020-10-09 19:06:19 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 19:06:22 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 19:06:22 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:06:22 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:06:22 - root - INFO: - Finding object points...
+2020-10-09 19:09:45 - root - INFO: - 
+==========================================
+
+2020-10-09 19:09:45 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:09:45 - root - INFO: - 
+==========================================
+
+2020-10-09 19:09:45 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:09:45 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:09:45 - root - INFO: - Stereo images loading...
+2020-10-09 19:09:48 - root - INFO: - In Mod: imgs, Image loading DONE.
+self.Image shape is: (54, 1080, 1920, 3)
+2020-10-09 19:10:15 - root - INFO: - 
+==========================================
+
+2020-10-09 19:10:15 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:10:15 - root - INFO: - 
+==========================================
+
+2020-10-09 19:10:15 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:10:15 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:10:15 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:10:15 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:10:15 - root - INFO: - Stereo images loading...
+2020-10-09 19:10:15 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:10:16 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:10:16 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:10:17 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:10:17 - root - INFO: - Finding object points...
+2020-10-09 19:10:39 - root - INFO: - 
+==========================================
+
+2020-10-09 19:10:39 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:10:39 - root - INFO: - 
+==========================================
+
+2020-10-09 19:10:39 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:10:39 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:10:39 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:10:39 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:10:39 - root - INFO: - Stereo images loading...
+2020-10-09 19:10:39 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:10:40 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:10:40 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:10:41 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:10:41 - root - INFO: - Finding object points...
+2020-10-09 19:10:55 - root - INFO: - Finding points done.
+2020-10-09 19:13:52 - root - INFO: - 
+==========================================
+
+2020-10-09 19:13:52 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:13:52 - root - INFO: - 
+==========================================
+
+2020-10-09 19:13:52 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:13:52 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:13:52 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:13:52 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:13:52 - root - INFO: - Stereo images loading...
+2020-10-09 19:13:52 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:13:53 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:13:53 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:13:55 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:13:55 - root - INFO: - Finding object points...
+2020-10-09 19:14:08 - root - INFO: - Finding points done.
+2020-10-09 19:17:10 - root - INFO: - 
+==========================================
+
+2020-10-09 19:17:10 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:17:10 - root - INFO: - 
+==========================================
+
+2020-10-09 19:17:10 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:17:10 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:17:10 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:17:10 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:17:10 - root - INFO: - Stereo images loading...
+2020-10-09 19:17:10 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:17:11 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:17:11 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:17:12 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:17:12 - root - INFO: - Finding object points...
+2020-10-09 19:17:25 - root - INFO: - Finding points done.
+2020-10-09 19:18:53 - root - INFO: - 
+==========================================
+
+2020-10-09 19:18:53 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:18:53 - root - INFO: - 
+==========================================
+
+2020-10-09 19:18:53 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:18:53 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:18:53 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:18:53 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:18:53 - root - INFO: - Stereo images loading...
+2020-10-09 19:18:53 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:18:54 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:18:54 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:18:55 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:18:55 - root - INFO: - Finding object points...
+2020-10-09 19:19:08 - root - INFO: - Finding points done.
+2020-10-09 19:20:05 - root - INFO: - 
+==========================================
+
+2020-10-09 19:20:05 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:20:05 - root - INFO: - 
+==========================================
+
+2020-10-09 19:20:05 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:20:05 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:20:05 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:20:05 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:20:05 - root - INFO: - Stereo images loading...
+2020-10-09 19:20:05 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:20:06 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:20:06 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:20:07 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:20:07 - root - INFO: - Finding object points...
+2020-10-09 19:20:19 - root - INFO: - Finding points done.
+2020-10-09 19:21:27 - root - INFO: - 
+==========================================
+
+2020-10-09 19:21:27 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:21:27 - root - INFO: - 
+==========================================
+
+2020-10-09 19:21:27 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:21:27 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:21:27 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:21:27 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:21:27 - root - INFO: - Stereo images loading...
+2020-10-09 19:21:27 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:21:28 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:21:28 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:21:30 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:21:30 - root - INFO: - Finding object points...
+2020-10-09 19:21:42 - root - INFO: - Finding points done.
+2020-10-09 19:24:45 - root - INFO: - 
+==========================================
+
+2020-10-09 19:24:45 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:24:45 - root - INFO: - 
+==========================================
+
+2020-10-09 19:24:45 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:24:45 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:24:45 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:24:45 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:24:45 - root - INFO: - Stereo images loading...
+2020-10-09 19:24:45 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:24:47 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:24:47 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:24:48 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:24:48 - root - INFO: - Finding object points...
+2020-10-09 19:25:00 - root - INFO: - Finding points done.
+2020-10-09 19:30:35 - root - INFO: - 
+==========================================
+
+2020-10-09 19:30:35 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:30:35 - root - INFO: - 
+==========================================
+
+2020-10-09 19:30:35 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:30:35 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:30:35 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:30:35 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:30:35 - root - INFO: - Stereo images loading...
+2020-10-09 19:30:35 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:30:36 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:30:36 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:30:38 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:30:38 - root - INFO: - Finding object points...
+2020-10-09 19:30:50 - root - INFO: - Finding points done.
+2020-10-09 19:31:28 - root - INFO: - 
+==========================================
+
+2020-10-09 19:31:28 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:31:28 - root - INFO: - 
+==========================================
+
+2020-10-09 19:31:28 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:31:28 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:31:28 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:31:28 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:31:28 - root - INFO: - Stereo images loading...
+2020-10-09 19:31:28 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:31:29 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:31:29 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:31:30 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:31:30 - root - INFO: - Finding object points...
+2020-10-09 19:31:42 - root - INFO: - Finding points done.
+2020-10-09 19:32:12 - root - INFO: - 
+==========================================
+
+2020-10-09 19:32:12 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:32:12 - root - INFO: - 
+==========================================
+
+2020-10-09 19:32:12 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:32:12 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:32:12 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:32:12 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:32:12 - root - INFO: - Stereo images loading...
+2020-10-09 19:32:12 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:32:13 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:32:13 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:32:14 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:32:14 - root - INFO: - Finding object points...
+2020-10-09 19:32:27 - root - INFO: - Finding points done.
+2020-10-09 19:38:56 - root - INFO: - 
+==========================================
+
+2020-10-09 19:38:56 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:38:56 - root - INFO: - 
+==========================================
+
+2020-10-09 19:38:56 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:38:56 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:38:56 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:38:56 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:38:56 - root - INFO: - Stereo images loading...
+2020-10-09 19:38:56 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:38:57 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:38:57 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:38:58 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:38:58 - root - INFO: - Finding object points...
+2020-10-09 19:39:11 - root - INFO: - Finding points done.
+2020-10-09 19:39:40 - root - INFO: - 
+==========================================
+
+2020-10-09 19:39:40 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:39:40 - root - INFO: - 
+==========================================
+
+2020-10-09 19:39:40 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:39:40 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:39:40 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:39:40 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:39:40 - root - INFO: - Stereo images loading...
+2020-10-09 19:39:40 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:39:41 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:39:41 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:39:42 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:39:42 - root - INFO: - Finding object points...
+2020-10-09 19:39:55 - root - INFO: - Finding points done.
+2020-10-09 19:42:28 - root - INFO: - 
+==========================================
+
+2020-10-09 19:42:28 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:42:28 - root - INFO: - 
+==========================================
+
+2020-10-09 19:42:28 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:42:28 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:42:28 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:42:28 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:42:28 - root - INFO: - Stereo images loading...
+2020-10-09 19:42:28 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:42:29 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:42:29 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:42:30 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:42:30 - root - INFO: - Finding object points...
+2020-10-09 19:42:42 - root - INFO: - Finding points done.
+2020-10-09 19:43:34 - root - INFO: - 
+==========================================
+
+2020-10-09 19:43:34 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:43:34 - root - INFO: - 
+==========================================
+
+2020-10-09 19:43:34 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:43:34 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:43:34 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:43:34 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:43:34 - root - INFO: - Stereo images loading...
+2020-10-09 19:43:34 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:43:35 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:43:35 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:43:36 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:43:36 - root - INFO: - Finding object points...
+2020-10-09 19:43:49 - root - INFO: - Finding points done.
+2020-10-09 19:43:49 - root - INFO: - Evaluate the fundamental matrix
+2020-10-09 19:46:50 - root - INFO: - 
+==========================================
+
+2020-10-09 19:46:50 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:46:50 - root - INFO: - 
+==========================================
+
+2020-10-09 19:46:50 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:46:50 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_Intrin_fix_Fs.yaml
+2020-10-09 19:46:50 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:46:50 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:46:50 - root - INFO: - Stereo images loading...
+2020-10-09 19:46:50 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:46:51 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:46:51 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:46:52 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:46:52 - root - INFO: - Finding object points...
+2020-10-09 19:47:05 - root - INFO: - Finding points done.
+2020-10-09 19:47:05 - root - INFO: - Evaluate the fundamental matrix
+2020-10-09 19:47:05 - root - INFO: - The quantities of matching points is 54
+2020-10-09 19:47:05 - root - INFO: - The epipolar constraint is : 0.20176990296064076
+The symmetry epipolar distance is: 3023.9166513453233
+2020-10-09 19:48:34 - root - INFO: - 
+==========================================
+
+2020-10-09 19:48:34 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:48:34 - root - INFO: - 
+==========================================
+
+2020-10-09 19:48:34 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:48:34 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_cameraIntrin_guess.yaml
+2020-10-09 19:49:04 - root - INFO: - 
+==========================================
+
+2020-10-09 19:49:04 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:49:04 - root - INFO: - 
+==========================================
+
+2020-10-09 19:49:04 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-09 19:49:04 - root - INFO: - Initial stereo parameters from /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_cameraIntrin_guess.yaml
+2020-10-09 19:49:04 - root - INFO: - Stereo parameters load done.
+2020-10-09 19:49:04 - root - INFO: - load images from /Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/ /left & /right
+2020-10-09 19:49:04 - root - INFO: - Stereo images loading...
+2020-10-09 19:49:04 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:49:05 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:49:05 - root - INFO: - Load 54 images for calibration 
+ The shape is: 1080 , 1920 
+2020-10-09 19:49:06 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (54, 1080, 1920)
+2020-10-09 19:49:06 - root - INFO: - Finding object points...
+2020-10-09 19:49:19 - root - INFO: - Finding points done.
+2020-10-09 19:49:19 - root - INFO: - Evaluate the fundamental matrix
+2020-10-09 19:49:19 - root - INFO: - The quantities of matching points is 54
+2020-10-09 19:49:19 - root - INFO: - The epipolar constraint is : 1.0317111370001806
+The symmetry epipolar distance is: 56065.531329104386
