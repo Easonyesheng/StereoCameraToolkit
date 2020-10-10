@@ -52,11 +52,12 @@ class StereoCamera(object):
 
             
     """
-    def __init__(self):
+    def __init__(self, name):
         """
         """
-        self.camera_left = Camera()
-        self.camera_right = Camera()
+        self.name = name
+        self.camera_left = Camera(self.name+'_left')
+        self.camera_right = Camera(self.name+'_right')
 
         self.FM = np.zeros((3,3))
 
@@ -457,7 +458,7 @@ class StereoCamera(object):
 
         Returns:
         """
-        corners2 = cv2.cornerSubPix(img,corners,(11,11), (-1,-1), self.criteria)
+        corners2 = cv2.cornerSubPix(img,corners,(14,14), (-1,-1), self.criteria)
         return corners2
 
     def __stereo_find_points(self):
@@ -504,7 +505,7 @@ class StereoCamera(object):
         self.img_pts_r = img_pts_r
         self.stereo_pts_flag = True
         
-    def stereo_calibration(self, write_yaml_flag=False):
+    def stereo_calibration(self, write_yaml_flag=False, draw_flag=False, show_flag=False, save_flag=False, mono_calib=False):
         """name
             if not calibrated:
                 need to calibrate monocular camera first
@@ -518,31 +519,34 @@ class StereoCamera(object):
         Returns:
 
         """
-        if (not self.camera_left.flag_calib) or (not self.camera_right.flag_calib):
-            left_path = os.path.join(STEREOIMGPATH, 'left')
-            right_path = os.path.join(STEREOIMGPATH, 'right')
+        left_path = os.path.join(STEREOIMGPATH, 'left')
+        right_path = os.path.join(STEREOIMGPATH, 'right')
 
-            self.camera_left.load_images(left_path, 'Calibration')
-            self.camera_right.load_images(right_path, 'Calibration')
-            
-            self.camera_left.chess_board_size = np.array(CHESSBOARDSIZE)
-            self.camera_right.chess_board_size = np.array(CHESSBOARDSIZE)
-
-            # monocular calibration
-            self.camera_left.calibrate_camera()
-            self.camera_right.calibrate_camera()
-
-            if write_yaml_flag:
-                self.camera_left.write_yaml('_stereo_need')
-                self.camera_right.write_yaml('_stereo_need')
+        self.camera_left.load_images(left_path, 'Calibration')
+        self.camera_right.load_images(right_path, 'Calibration')
         
+        self.camera_left.chess_board_size = np.array(CHESSBOARDSIZE)
+        self.camera_right.chess_board_size = np.array(CHESSBOARDSIZE)
+
         # find the points!
         if not self.stereo_pts_flag:
             self.__stereo_find_points()
 
+        if mono_calib:
+            # monocular calibration
+            self.camera_left.calibrate_camera(draw_flag, show_flag, save_flag)
+            self.camera_right.calibrate_camera(draw_flag, show_flag, save_flag)
+
+            if write_yaml_flag:
+                self.camera_left.write_yaml('_stereo_need')
+                self.camera_right.write_yaml('_stereo_need')
+        else:
+            self.camera_left.IntP = cv2.initCameraMatrix2D(np.asarray(self.obj_pts), np.asarray(self.img_pts_l), tuple(self.camera_left.gary_img_shape), 0)
+            self.camera_right.IntP = cv2.initCameraMatrix2D(np.asarray(self.obj_pts), np.asarray(self.img_pts_r), tuple(self.camera_left.gary_img_shape), 0)
+        
         logging.info('Start Stereo Calibration')
 
-        stereocalib_criteria = (cv2.TERM_CRITERIA_MAX_ITER+cv2.TERM_CRITERIA_EPS, 100, 1e-5)
+        stereocalib_criteria = (cv2.TERM_CRITERIA_MAX_ITER+cv2.TERM_CRITERIA_EPS, 30, 1e-5)
 
         flags = 0
         # flags |= cv2.CALIB_FIX_INTRINSIC
@@ -557,13 +561,22 @@ class StereoCamera(object):
         # flags |= cv2.CALIB_FIX_K4
         # flags |= cv2.CALIB_FIX_K5
 
+        # self.stereo_calib_err, self.camera_left.IntP, self.camera_left.DisP, \
+        #                         self.camera_right.IntP, self.camera_right.DisP, \
+        #                         self.R_relate, self.t_relate, self.E_calib, self.F_calib = cv2.stereoCalibrate(
+        #     self.obj_pts, self.img_pts_l, self.img_pts_r, 
+        #     self.camera_left.IntP, self.camera_left.DisP, 
+        #     self.camera_right.IntP, self.camera_right.DisP, 
+        #     tuple(self.camera_left.gary_img_shape),
+        #     criteria=stereocalib_criteria, flags=flags) 
+
         self.stereo_calib_err, self.camera_left.IntP, self.camera_left.DisP, \
                                 self.camera_right.IntP, self.camera_right.DisP, \
                                 self.R_relate, self.t_relate, self.E_calib, self.F_calib = cv2.stereoCalibrate(
             self.obj_pts, self.img_pts_l, self.img_pts_r, 
-            self.camera_left.IntP, self.camera_left.DisP, self.camera_right.IntP,
-            self.camera_right.DisP, tuple(self.camera_left.gary_img_shape),
-            criteria=stereocalib_criteria, flags=flags) 
+            None,None,None,None,
+            tuple(self.camera_left.gary_img_shape),
+            None, None) 
 
         self.stereo_calib_flag = True
         logging.info('Stereo Calibration Done')
@@ -632,7 +645,7 @@ class StereoCamera(object):
             'epipolar_angle': self.epi_angle
 
         }
-        yaml_file = os.path.join(CONFIGPATH, 'Stereo_camera'+postfix+'.yaml')
+        yaml_file = os.path.join(CONFIGPATH, 'Stereo_'+self.name+postfix+'.yaml')
         file = open(yaml_file, 'w', encoding='utf-8')
         yaml.dump(camera_model, file)
         file.close()
@@ -644,10 +657,8 @@ if __name__ == "__main__":
 
     log_init(LOGFILE)
 
-    test = StereoCamera()
+    test = StereoCamera('AnBa')
 
-    test.camera_left.name = 'left'
-    test.camera_right.name = 'right'
 
     # test.camera_left.load_images(os.path.join(STEREOIMGPATH,'left'), 'Calibration')
     # test.camera_right.load_images(os.path.join(STEREOIMGPATH,'right'), 'Calibration')
@@ -664,7 +675,7 @@ if __name__ == "__main__":
     # test.camera_left.init_by_config(os.path.join(CONFIGPATH,'camera_left.yaml'))
     # test.camera_right.init_by_config(os.path.join(CONFIGPATH,'camera_right.yaml'))
 
-    test.stereo_calibration()
+    test.stereo_calibration(draw_flag=False, save_flag=False, mono_calib=False, write_yaml_flag=False)
 
 
     # test.cameras_load_imgs(STEREOIMGPATH)
@@ -673,13 +684,13 @@ if __name__ == "__main__":
 
     # test.evaluate_F('calib')
 
-    test.camera_right.evaluate_calibration()
-    test.camera_left.evaluate_calibration()
+    # test.camera_right.evaluate_calibration()
+    # test.camera_left.evaluate_calibration()
     
 
-    test.write_yaml('_undistort_Flag_guess')
-    # test.camera_left.write_yaml('_undistort_after_stereo')
-    # test.camera_right.write_yaml('_undistort_after_stereo')
+    test.write_yaml('_simplest')
+    # test.camera_left.write_yaml('')
+    # test.camera_right.write_yaml('')
     #=====================================================Undistort
     # for i in range(test.camera_left.Image_num):
     #     test.camera_left.undistort(i, True)

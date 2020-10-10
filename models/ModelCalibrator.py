@@ -40,7 +40,7 @@ class Calibrator(object):
 
 
     """
-    def __init__(self):
+    def __init__(self, name):
         """name
             description
         Args:
@@ -53,6 +53,7 @@ class Calibrator(object):
 
         """
         self.img = None
+        self.camera_name = name
         self.chess_board_size = None 
         self.criteria = None
         self.object_points = [] # 3d point in real world space
@@ -117,9 +118,10 @@ class Calibrator(object):
             img_show(img_drawn, 'draw_corners')
 
         if save_flag:
-            save_path = os.path.join(os.path.join(SAVEPATH,'draw_corner'),CAMERANAME)
+            save_path = os.path.join(os.path.join(SAVEPATH,'draw_corner'), self.camera_name)
             test_dir_if_not_create(save_path)
-            save_img_with_prefix(img_drawn, save_path, SAVEPREFIX+'_DrawConners_'+str(index))
+            save_img_with_prefix(img_drawn, save_path, 'DrawConners_'+str(index))
+            logging.info('save corners images to '+save_path)
         
     def __calibrate(self):
         """name
@@ -132,7 +134,7 @@ class Calibrator(object):
         ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(self.object_points, self.img_points, (self.img.shape[2], self.img.shape[1]),None,None)
         return ret, mtx, dist, rvecs, tvecs
 
-    def run(self, draw_flag = True, save_flag = False):
+    def run(self, draw_flag = True, save_flag = False, show_flag = False):
         """name
             calibration work flow
         Args:
@@ -176,7 +178,7 @@ class Calibrator(object):
                 self.img_points.append(corners2)
                 
                 if draw_flag:
-                    self.__draw_and_display(gray, corners2, i, save_flag, show_img_flag=False)
+                    self.__draw_and_display(gray, corners2, i, save_flag, show_img_flag=show_flag)
         
         ret, mtx, dist, rvecs, tvecs = self.__calibrate()
         logging.info("Calibration done, and the error of intrinsic is %f" % ret)

@@ -74,7 +74,7 @@ class Camera(object):
 
     """
 
-    def __init__(self, config=None):
+    def __init__(self,name):
         """name
             descriptor
         Args:
@@ -83,7 +83,7 @@ class Camera(object):
         Returns:
 
         """
-        self.name = CAMERANAME
+        self.name = name
         self.task = TASK
 
         self.IntP = np.zeros((3,3))
@@ -105,7 +105,7 @@ class Camera(object):
         self.Loader = Loader()
         self.img_path = ''
 
-        self.Calibrator = Calibrator()
+        self.Calibrator = Calibrator(self.name)
         self.chess_board_size = np.array(CHESSBOARDSIZE)
         self.gary_img_shape = None
         self.flag_calib = False
@@ -117,10 +117,7 @@ class Camera(object):
         self.save_path = ''
         self.save_prefix = ''
 
-        # log_init(LOGFILE)
-        logging.info('\n==========================================\n')
 
-        logging.info('\n==========New='+self.name+'=Turn==========\n')
 
     def init_by_config(self, yaml_path):
         """name
@@ -244,7 +241,7 @@ class Camera(object):
 
         logging.info('The camera has been calibrated: '+str(self.flag_calib))
 
-    def calibrate_camera(self):
+    def calibrate_camera(self, draw_flag, show_flag, save_flag):
         """name
             description
         Args:
@@ -256,7 +253,7 @@ class Camera(object):
         self.Calibrator.img = self.Image
         self.Calibrator.chess_board_size = self.chess_board_size
 
-        self.IntError, self.IntP, self.DisP, self.R, self.t, self.obj_pts, self.img_pts = self.Calibrator.run(save_flag=True)
+        self.IntError, self.IntP, self.DisP, self.R, self.t, self.obj_pts, self.img_pts = self.Calibrator.run(draw_flag,save_flag,show_flag)
         self.ExtP[:,:3] = self.R[0]
         self.ExtP[:,3:] = self.t[0]
         self.flag_calib = True
@@ -362,7 +359,7 @@ if __name__ == "__main__":
     # obj_points, img_points = test.calibrate_camera()
     # print(test.R)
 
-    test.show_attri()
+    # test.show_attri()
     
     # test.write_yaml()
     # test.evaluate_calibration(obj_points, img_points)
