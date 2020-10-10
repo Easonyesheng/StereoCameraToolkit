@@ -2471,3 +2471,97 @@ Start evaluation calibration
 
 2020-10-10 17:25:46 - root - INFO: - Calibration error (Reprojection) is:0.05065920920465342
 2020-10-10 17:25:46 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_undistort_Flag_fixInt.yaml
+2020-10-10 17:52:23 - root - INFO: - 
+==========================================
+
+2020-10-10 17:52:23 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-10 17:52:23 - root - INFO: - 
+==========================================
+
+2020-10-10 17:52:23 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-10 17:52:23 - root - INFO: - Load 52 images for calibration 
+ The shape is: 991 , 1920 
+2020-10-10 17:52:24 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (52, 991, 1920)
+2020-10-10 17:52:24 - root - INFO: - Load 52 images for calibration 
+ The shape is: 949 , 1836 
+2020-10-10 17:52:25 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (52, 949, 1836)
+2020-10-10 17:52:25 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-10 17:52:25 - root - INFO: - img for calibration shape: (52, 991, 1920)
+2020-10-10 17:52:25 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-10 17:52:25 - root - INFO: - Calibration...
+2020-10-10 17:52:33 - root - INFO: - Calibration done, and the error of intrinsic is 0.482167
+2020-10-10 17:52:33 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-10 17:52:33 - root - INFO: - img for calibration shape: (52, 949, 1836)
+2020-10-10 17:52:33 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-10 17:52:33 - root - INFO: - Calibration...
+2020-10-10 17:52:38 - root - INFO: - Calibration done, and the error of intrinsic is 0.476214
+2020-10-10 17:52:38 - root - INFO: - Finding object points...
+2020-10-10 17:52:43 - root - INFO: - Finding points done.
+2020-10-10 17:52:43 - root - INFO: - Start Stereo Calibration
+2020-10-10 17:52:53 - root - INFO: - Stereo Calibration Done
+2020-10-10 17:52:53 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-10 17:52:53 - root - INFO: - Calibration error (Reprojection) is:282.799316947718
+2020-10-10 17:52:53 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-10 17:52:53 - root - INFO: - Calibration error (Reprojection) is:104.96051463990672
+2020-10-10 17:52:53 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_undistort_Flag_fixInt.yaml
+2020-10-10 17:53:48 - root - INFO: - 
+==========================================
+
+2020-10-10 17:53:48 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-10 17:53:48 - root - INFO: - 
+==========================================
+
+2020-10-10 17:53:48 - root - INFO: - 
+==========New=test=Turn==========
+
+2020-10-10 17:53:48 - root - INFO: - Load 52 images for calibration 
+ The shape is: 991 , 1920 
+2020-10-10 17:53:49 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (52, 991, 1920)
+2020-10-10 17:53:49 - root - INFO: - Load 52 images for calibration 
+ The shape is: 949 , 1836 
+2020-10-10 17:53:50 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (52, 949, 1836)
+2020-10-10 17:53:50 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-10 17:53:50 - root - INFO: - img for calibration shape: (52, 991, 1920)
+2020-10-10 17:53:50 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-10 17:53:50 - root - INFO: - Calibration...
+2020-10-10 17:53:58 - root - INFO: - Calibration done, and the error of intrinsic is 0.482167
+2020-10-10 17:53:58 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-10 17:53:58 - root - INFO: - img for calibration shape: (52, 949, 1836)
+2020-10-10 17:53:58 - root - INFO: - chess_board_size: [ 6 13]
+2020-10-10 17:53:58 - root - INFO: - Calibration...
+2020-10-10 17:54:03 - root - INFO: - Calibration done, and the error of intrinsic is 0.476214
+2020-10-10 17:54:03 - root - INFO: - Finding object points...
+2020-10-10 17:54:09 - root - INFO: - Finding points done.
+2020-10-10 17:54:09 - root - INFO: - Start Stereo Calibration
+2020-10-10 17:54:19 - root - INFO: - Stereo Calibration Done
+2020-10-10 17:54:19 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-10 17:54:19 - root - INFO: - Calibration error (Reprojection) is:282.799316947718
+2020-10-10 17:54:19 - root - INFO: - 
+Start evaluation calibration
+
+2020-10-10 17:54:19 - root - INFO: - Calibration error (Reprojection) is:104.96051463990672
+2020-10-10 17:54:19 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_camera_undistort_Flag_guess.yaml

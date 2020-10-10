@@ -545,9 +545,9 @@ class StereoCamera(object):
         stereocalib_criteria = (cv2.TERM_CRITERIA_MAX_ITER+cv2.TERM_CRITERIA_EPS, 100, 1e-5)
 
         flags = 0
-        flags |= cv2.CALIB_FIX_INTRINSIC
+        # flags |= cv2.CALIB_FIX_INTRINSIC
         # flags |= cv2.CALIB_FIX_PRINCIPAL_POINT
-        # flags |= cv2.CALIB_USE_INTRINSIC_GUESS
+        flags |= cv2.CALIB_USE_INTRINSIC_GUESS
         # flags |= cv2.CALIB_FIX_FOCAL_LENGTH
         # flags |= cv2.CALIB_FIX_ASPECT_RATIO
         # flags |= cv2.CALIB_ZERO_TANGENT_DIST
@@ -677,7 +677,7 @@ if __name__ == "__main__":
     test.camera_left.evaluate_calibration()
     
 
-    test.write_yaml('_undistort_Flag_fixInt')
+    test.write_yaml('_undistort_Flag_guess')
     # test.camera_left.write_yaml('_undistort_after_stereo')
     # test.camera_right.write_yaml('_undistort_after_stereo')
     #=====================================================Undistort
