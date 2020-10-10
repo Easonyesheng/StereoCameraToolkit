@@ -591,7 +591,7 @@ class StereoCamera(object):
 
         
 
-        if whichF == 'calib':
+        if whichF == 'calib': # evaluate calibrated F
             if self.camera_left.Image_num == 0:
                 self.cameras_load_imgs(STEREOIMGPATH, 'gray')
 
