@@ -295,12 +295,12 @@ class Camera(object):
         # crop the image
         x,y,w,h = roi
         dst = dst[y:y+h, x:x+w]
-        img_show(dst, 'undistort')
+        # img_show(dst, 'undistort')
 
         if save_flag:
             save_path = os.path.join(os.path.join(SAVEPATH,'undistort'),self.name)
             test_dir_if_not_create(save_path)
-            save_img_with_prefix(dst, save_path, SAVEPREFIX+'_undistort')
+            save_img_with_prefix(dst, save_path, self.name+'_'+str(index)+'_undistort')
 
     def show_img(self, index = 0, save_flag=True):
         """name
@@ -354,10 +354,10 @@ if __name__ == "__main__":
 
     # test.show_attri()
 
-    yaml_path = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_Left.yaml'
-    test.init_by_config(yaml_path)
+    # yaml_path = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/camera_Left.yaml'
+    # test.init_by_config(yaml_path)
 
-    # test.load_images(IMGPATH ,'Calibration')
+    test.load_images(IMGPATH ,'Calibration')
 
     # obj_points, img_points = test.calibrate_camera()
     # print(test.R)

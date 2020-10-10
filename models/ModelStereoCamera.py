@@ -504,7 +504,6 @@ class StereoCamera(object):
         self.img_pts_r = img_pts_r
         self.stereo_pts_flag = True
         
-
     def stereo_calibration(self, write_yaml_flag=False):
         """name
             if not calibrated:
@@ -548,15 +547,15 @@ class StereoCamera(object):
         flags = 0
         flags |= cv2.CALIB_FIX_INTRINSIC
         # flags |= cv2.CALIB_FIX_PRINCIPAL_POINT
-        flags |= cv2.CALIB_USE_INTRINSIC_GUESS
+        # flags |= cv2.CALIB_USE_INTRINSIC_GUESS
         # flags |= cv2.CALIB_FIX_FOCAL_LENGTH
-        flags |= cv2.CALIB_FIX_ASPECT_RATIO
-        flags |= cv2.CALIB_ZERO_TANGENT_DIST
-        flags |= cv2.CALIB_RATIONAL_MODEL
-        flags |= cv2.CALIB_SAME_FOCAL_LENGTH
-        flags |= cv2.CALIB_FIX_K3
-        flags |= cv2.CALIB_FIX_K4
-        flags |= cv2.CALIB_FIX_K5
+        # flags |= cv2.CALIB_FIX_ASPECT_RATIO
+        # flags |= cv2.CALIB_ZERO_TANGENT_DIST
+        # flags |= cv2.CALIB_RATIONAL_MODEL
+        # flags |= cv2.CALIB_SAME_FOCAL_LENGTH
+        # flags |= cv2.CALIB_FIX_K3
+        # flags |= cv2.CALIB_FIX_K4
+        # flags |= cv2.CALIB_FIX_K5
 
         self.stereo_calib_err, self.camera_left.IntP, self.camera_left.DisP, \
                                 self.camera_right.IntP, self.camera_right.DisP, \
@@ -659,26 +658,29 @@ if __name__ == "__main__":
     # test.camera_right.calibrate_camera()
     # test.camera_right.evaluate_calibration()
 
-    # test.camera_left.write_yaml('_before_stereo')
-    # test.camera_right.write_yaml('_before_stereo')
+    # test.camera_left.write_yaml('_undistort_before_stereo')
+    # test.camera_right.write_yaml('_undistort_before_stereo')
 
     # test.camera_left.init_by_config(os.path.join(CONFIGPATH,'camera_left.yaml'))
     # test.camera_right.init_by_config(os.path.join(CONFIGPATH,'camera_right.yaml'))
 
-    # test.stereo_calibration()
+    test.stereo_calibration()
 
 
     # test.cameras_load_imgs(STEREOIMGPATH)
     # test.EstimateFMs()
-    test.init_stereo_by_config(os.path.join(CONFIGPATH, 'Stereo_cameraIntrin_guess.yaml'))
+    # test.init_stereo_by_config(os.path.join(CONFIGPATH, 'Stereo_cameraIntrin_guess.yaml'))
 
-    test.evaluate_F('calib')
+    # test.evaluate_F('calib')
 
-    # test.camera_right.evaluate_calibration()
-    # test.camera_left.evaluate_calibration()
+    test.camera_right.evaluate_calibration()
+    test.camera_left.evaluate_calibration()
     
 
-    # test.write_yaml('_test')
-    # test.camera_left.write_yaml('_after_stereo')
-    # test.camera_right.write_yaml('_after_stereo')
-
+    test.write_yaml('_undistort_Flag_fixInt')
+    # test.camera_left.write_yaml('_undistort_after_stereo')
+    # test.camera_right.write_yaml('_undistort_after_stereo')
+    #=====================================================Undistort
+    # for i in range(test.camera_left.Image_num):
+    #     test.camera_left.undistort(i, True)
+    #     test.camera_right.undistort(i, True)
