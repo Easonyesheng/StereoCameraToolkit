@@ -458,7 +458,7 @@ class StereoCamera(object):
 
         Returns:
         """
-        corners2 = cv2.cornerSubPix(img,corners,(14,14), (-1,-1), self.criteria)
+        corners2 = cv2.cornerSubPix(img,corners,(15,15), (-1,-1), self.criteria)
         return corners2
 
     def __stereo_find_points(self):
@@ -561,22 +561,22 @@ class StereoCamera(object):
         # flags |= cv2.CALIB_FIX_K4
         # flags |= cv2.CALIB_FIX_K5
 
-        # self.stereo_calib_err, self.camera_left.IntP, self.camera_left.DisP, \
-        #                         self.camera_right.IntP, self.camera_right.DisP, \
-        #                         self.R_relate, self.t_relate, self.E_calib, self.F_calib = cv2.stereoCalibrate(
-        #     self.obj_pts, self.img_pts_l, self.img_pts_r, 
-        #     self.camera_left.IntP, self.camera_left.DisP, 
-        #     self.camera_right.IntP, self.camera_right.DisP, 
-        #     tuple(self.camera_left.gary_img_shape),
-        #     criteria=stereocalib_criteria, flags=flags) 
-
         self.stereo_calib_err, self.camera_left.IntP, self.camera_left.DisP, \
                                 self.camera_right.IntP, self.camera_right.DisP, \
                                 self.R_relate, self.t_relate, self.E_calib, self.F_calib = cv2.stereoCalibrate(
             self.obj_pts, self.img_pts_l, self.img_pts_r, 
-            None,None,None,None,
+            self.camera_left.IntP, self.camera_left.DisP, 
+            self.camera_right.IntP, self.camera_right.DisP, 
             tuple(self.camera_left.gary_img_shape),
-            None, None) 
+            criteria=stereocalib_criteria, flags=flags) 
+
+        # self.stereo_calib_err, self.camera_left.IntP, self.camera_left.DisP, \
+        #                         self.camera_right.IntP, self.camera_right.DisP, \
+        #                         self.R_relate, self.t_relate, self.E_calib, self.F_calib = cv2.stereoCalibrate(
+        #     self.obj_pts, self.img_pts_l, self.img_pts_r, 
+        #     None,None,None,None,
+        #     tuple(self.camera_left.gary_img_shape),
+        #     None, None) 
 
         self.stereo_calib_flag = True
         logging.info('Stereo Calibration Done')
@@ -657,7 +657,7 @@ if __name__ == "__main__":
 
     log_init(LOGFILE)
 
-    test = StereoCamera('AnBa')
+    test = StereoCamera('HaiKang')
 
 
     # test.camera_left.load_images(os.path.join(STEREOIMGPATH,'left'), 'Calibration')
@@ -687,8 +687,12 @@ if __name__ == "__main__":
     # test.camera_right.evaluate_calibration()
     # test.camera_left.evaluate_calibration()
     
+    #================================
+    # name format
+    # _monoCalib_  _flag_ _intP_  
+    #================================
 
-    test.write_yaml('_simplest')
+    test.write_yaml('_no_monoCalib')
     # test.camera_left.write_yaml('')
     # test.camera_right.write_yaml('')
     #=====================================================Undistort
