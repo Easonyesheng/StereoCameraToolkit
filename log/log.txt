@@ -3313,3 +3313,122 @@ self.Image shape is: (30, 540, 720)
 2020-10-10 20:30:44 - root - INFO: - Start Stereo Calibration
 2020-10-10 20:30:46 - root - INFO: - Stereo Calibration Done
 2020-10-10 20:30:46 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_HaiKangno_mono.yaml
+2020-10-12 11:05:05 - root - INFO: - Load 10 images for calibration 
+ The shape is: 540 , 720 
+2020-10-12 11:05:05 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (10, 540, 720)
+2020-10-12 11:05:05 - root - INFO: - Load 10 images for calibration 
+ The shape is: 540 , 720 
+2020-10-12 11:05:05 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (10, 540, 720)
+2020-10-12 11:05:05 - root - INFO: - Finding object points...
+2020-10-12 11:05:06 - root - INFO: - Finding points done.
+2020-10-12 11:05:06 - root - INFO: - Start Stereo Calibration
+2020-10-12 11:05:06 - root - INFO: - Stereo Calibration Done
+2020-10-12 11:05:06 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_HaiKang_no_monoCalib_load_10.yaml
+2020-10-12 11:05:31 - root - INFO: - Load 15 images for calibration 
+ The shape is: 540 , 720 
+2020-10-12 11:05:31 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (15, 540, 720)
+2020-10-12 11:05:31 - root - INFO: - Load 15 images for calibration 
+ The shape is: 540 , 720 
+2020-10-12 11:05:31 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (15, 540, 720)
+2020-10-12 11:05:31 - root - INFO: - Finding object points...
+2020-10-12 11:05:32 - root - INFO: - Finding points done.
+2020-10-12 11:05:32 - root - INFO: - Start Stereo Calibration
+2020-10-12 11:05:33 - root - INFO: - Stereo Calibration Done
+2020-10-12 11:05:33 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_HaiKang_no_monoCalib_load_15.yaml
+2020-10-12 11:05:47 - root - INFO: - Load 20 images for calibration 
+ The shape is: 540 , 720 
+2020-10-12 11:05:48 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (20, 540, 720)
+2020-10-12 11:05:48 - root - INFO: - Load 20 images for calibration 
+ The shape is: 540 , 720 
+2020-10-12 11:05:48 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (20, 540, 720)
+2020-10-12 11:05:48 - root - INFO: - Finding object points...
+2020-10-12 11:05:49 - root - INFO: - Finding points done.
+2020-10-12 11:05:49 - root - INFO: - Start Stereo Calibration
+2020-10-12 11:05:49 - root - INFO: - Stereo Calibration Done
+2020-10-12 11:05:49 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_HaiKang_no_monoCalib_load_20.yaml
+2020-10-12 11:06:11 - root - INFO: - Load 30 images for calibration 
+ The shape is: 540 , 720 
+2020-10-12 11:06:11 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (30, 540, 720)
+2020-10-12 11:06:11 - root - INFO: - Load 30 images for calibration 
+ The shape is: 540 , 720 
+2020-10-12 11:06:11 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (30, 540, 720)
+2020-10-12 11:06:11 - root - INFO: - Finding object points...
+2020-10-12 11:06:13 - root - INFO: - Finding points done.
+2020-10-12 11:06:13 - root - INFO: - Start Stereo Calibration
+2020-10-12 11:06:14 - root - INFO: - Stereo Calibration Done
+2020-10-12 11:06:14 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_HaiKang_no_monoCalib_load_30.yaml
+2020-10-12 11:06:34 - root - INFO: - Load 30 images for calibration 
+ The shape is: 540 , 720 
+2020-10-12 11:06:34 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (30, 540, 720)
+2020-10-12 11:06:34 - root - INFO: - Load 30 images for calibration 
+ The shape is: 540 , 720 
+2020-10-12 11:06:35 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (30, 540, 720)
+2020-10-12 11:06:35 - root - INFO: - Finding object points...
+2020-10-12 11:06:36 - root - INFO: - Finding points done.
+2020-10-12 11:06:36 - root - INFO: - Start Stereo Calibration
+2020-10-12 11:06:38 - root - INFO: - Stereo Calibration Done
+2020-10-12 11:06:38 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_HaiKang_no_monoCalib_load_40.yaml
+2020-10-12 11:08:15 - root - INFO: - Load 10 images for calibration 
+ The shape is: 540 , 720 
+2020-10-12 11:08:16 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (10, 540, 720)
+2020-10-12 11:08:16 - root - INFO: - Load 10 images for calibration 
+ The shape is: 540 , 720 
+2020-10-12 11:08:16 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (10, 540, 720)
+2020-10-12 11:08:16 - root - INFO: - Finding object points...
+2020-10-12 11:08:16 - root - INFO: - Finding points done.
+2020-10-12 11:08:16 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-12 11:08:16 - root - INFO: - img for calibration shape: (10, 540, 720)
+2020-10-12 11:08:16 - root - INFO: - chess_board_size: [ 8 12]
+2020-10-12 11:08:16 - root - INFO: - Calibration...
+2020-10-12 11:08:16 - root - INFO: - Calibration done, and the error of intrinsic is 0.487722
+2020-10-12 11:08:16 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-12 11:08:16 - root - INFO: - img for calibration shape: (10, 540, 720)
+2020-10-12 11:08:16 - root - INFO: - chess_board_size: [ 8 12]
+2020-10-12 11:08:16 - root - INFO: - Calibration...
+2020-10-12 11:08:17 - root - INFO: - Calibration done, and the error of intrinsic is 0.478461
+2020-10-12 11:08:17 - root - INFO: - Start Stereo Calibration
+2020-10-12 11:08:17 - root - INFO: - Stereo Calibration Done
+2020-10-12 11:08:17 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_HaiKang_monoCalib_load_10.yaml
+2020-10-12 11:09:37 - root - INFO: - Load 10 images for calibration 
+ The shape is: 540 , 720 
+2020-10-12 11:09:37 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (10, 540, 720)
+2020-10-12 11:09:37 - root - INFO: - Load 10 images for calibration 
+ The shape is: 540 , 720 
+2020-10-12 11:09:37 - root - INFO: - In Mod: Calibration, Image loading DONE.
+self.Image shape is: (10, 540, 720)
+2020-10-12 11:09:37 - root - INFO: - Finding object points...
+2020-10-12 11:09:38 - root - INFO: - Finding points done.
+2020-10-12 11:09:38 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-12 11:09:38 - root - INFO: - img for calibration shape: (10, 540, 720)
+2020-10-12 11:09:38 - root - INFO: - chess_board_size: [ 8 12]
+2020-10-12 11:09:38 - root - INFO: - Calibration...
+2020-10-12 11:09:38 - root - INFO: - Calibration done, and the error of intrinsic is 0.487722
+2020-10-12 11:09:38 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2020-10-12 11:09:38 - root - INFO: - img for calibration shape: (10, 540, 720)
+2020-10-12 11:09:38 - root - INFO: - chess_board_size: [ 8 12]
+2020-10-12 11:09:38 - root - INFO: - Calibration...
+2020-10-12 11:09:38 - root - INFO: - Calibration done, and the error of intrinsic is 0.478461
+2020-10-12 11:09:38 - root - INFO: - Start Stereo Calibration
+2020-10-12 11:09:39 - root - INFO: - Stereo Calibration Done
+2020-10-12 11:09:39 - root - INFO: - Write stereo camera model into /Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config/Stereo_HaiKang_monoCalib_flag_fix_IntP_load_10.yaml

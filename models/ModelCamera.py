@@ -152,7 +152,7 @@ class Camera(object):
             self.save_prefix = config['save_prefix']
             logging.info('Camera initialization done.')
 
-    def load_images(self, image_path, load_mod_flag):
+    def load_images(self, image_path, load_mod_flag, load_num = -1):
         """name
             
         Args:
@@ -167,9 +167,9 @@ class Camera(object):
             self.Image = self.Loader.load_image_single()
             self.Image_num = 1
         if load_mod_flag == 'Calibration':
-            self.Image, self.Image_num, self.gary_img_shape = self.Loader.load_images_calibration()
+            self.Image, self.Image_num, self.gary_img_shape = self.Loader.load_images_calibration(load_num)
         if load_mod_flag == 'imgs':
-            self.Image, self.Image_num = self.Loader.load_images()
+            self.Image, self.Image_num = self.Loader.load_images(load_num)
             
         logging.info('In Mod: %s, Image loading DONE.\nself.Image shape is: ' %load_mod_flag+str(self.Image.shape))
     

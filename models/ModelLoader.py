@@ -69,7 +69,7 @@ class Loader(object):
        
         return img
     
-    def load_images_calibration(self):
+    def load_images_calibration(self, load_num = -1):
         """name
             load imgs default as 3 channels
         Args:
@@ -83,6 +83,7 @@ class Loader(object):
             sys.exit("Load without path! ")
         
         img_names = glob.glob(os.path.join(self.image_path,'*.jpg'))
+        img_names = img_names[:load_num]
         if len(img_names) < 10: 
             logging.warning('Images not enough!')
             sys.exit('Images not enough!')
@@ -112,7 +113,7 @@ class Loader(object):
         
         return img, N, grayimg_shape
 
-    def load_images(self):
+    def load_images(self, load_num = -1):
         """name
             description
         Args:
@@ -122,6 +123,7 @@ class Loader(object):
 
         """
         img_names = glob.glob(os.path.join(self.image_path,'*.jpg'))
+        img_names = img_names[:load_num]
         N = len(img_names)
 
         img_temp = cv2.imread(img_names[0])

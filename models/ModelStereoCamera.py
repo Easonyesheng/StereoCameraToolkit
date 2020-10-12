@@ -274,7 +274,7 @@ class StereoCamera(object):
 
         return True
 
-    def cameras_load_imgs(self, load_path, load_mod = 'norm'):
+    def cameras_load_imgs(self, load_path, load_mod = 'norm', load_num = -1):
         """name
             description
         Args:
@@ -290,11 +290,11 @@ class StereoCamera(object):
         logging.info('load images from %s /left & /right'% load_path)
         logging.info('Stereo images loading...')
         if load_mod == 'norm':  
-            self.camera_left.load_images(left_path, 'imgs')
-            self.camera_right.load_images(right_path, 'imgs')
+            self.camera_left.load_images(left_path, 'imgs', load_num)
+            self.camera_right.load_images(right_path, 'imgs', load_num)
         elif load_mod == 'gray':
-            self.camera_left.load_images(left_path,'Calibration')
-            self.camera_right.load_images(left_path,'Calibration')
+            self.camera_left.load_images(left_path,'Calibration', load_num)
+            self.camera_right.load_images(left_path,'Calibration', load_num)
 
     def ExactGoodMatch(self,filter = False,point_len = -1, index = 0):
         """Get matching points & Use F_GT to get good matching points
@@ -505,7 +505,7 @@ class StereoCamera(object):
         self.img_pts_r = img_pts_r
         self.stereo_pts_flag = True
         
-    def stereo_calibration(self, write_yaml_flag=False, draw_flag=False, show_flag=False, save_flag=False, mono_calib=False):
+    def stereo_calibration(self, write_yaml_flag=False, draw_flag=False, show_flag=False, save_flag=False, mono_calib=False, load_num=-1):
         """name
             if not calibrated:
                 need to calibrate monocular camera first
@@ -522,8 +522,8 @@ class StereoCamera(object):
         left_path = os.path.join(STEREOIMGPATH, 'left')
         right_path = os.path.join(STEREOIMGPATH, 'right')
 
-        self.camera_left.load_images(left_path, 'Calibration')
-        self.camera_right.load_images(right_path, 'Calibration')
+        self.camera_left.load_images(left_path, 'Calibration', load_num=load_num)
+        self.camera_right.load_images(right_path, 'Calibration', load_num=load_num)
         
         self.camera_left.chess_board_size = np.array(CHESSBOARDSIZE)
         self.camera_right.chess_board_size = np.array(CHESSBOARDSIZE)
@@ -549,9 +549,9 @@ class StereoCamera(object):
         stereocalib_criteria = (cv2.TERM_CRITERIA_MAX_ITER+cv2.TERM_CRITERIA_EPS, 30, 1e-5)
 
         flags = 0
-        # flags |= cv2.CALIB_FIX_INTRINSIC
+        flags |= cv2.CALIB_FIX_INTRINSIC
         # flags |= cv2.CALIB_FIX_PRINCIPAL_POINT
-        flags |= cv2.CALIB_USE_INTRINSIC_GUESS
+        # flags |= cv2.CALIB_USE_INTRINSIC_GUESS
         # flags |= cv2.CALIB_FIX_FOCAL_LENGTH
         # flags |= cv2.CALIB_FIX_ASPECT_RATIO
         # flags |= cv2.CALIB_ZERO_TANGENT_DIST
@@ -675,7 +675,7 @@ if __name__ == "__main__":
     # test.camera_left.init_by_config(os.path.join(CONFIGPATH,'camera_left.yaml'))
     # test.camera_right.init_by_config(os.path.join(CONFIGPATH,'camera_right.yaml'))
 
-    test.stereo_calibration(draw_flag=False, save_flag=False, mono_calib=False, write_yaml_flag=False)
+    test.stereo_calibration(draw_flag=False, save_flag=False, mono_calib=True, write_yaml_flag=False, load_num=10)
 
 
     # test.cameras_load_imgs(STEREOIMGPATH)
@@ -692,7 +692,7 @@ if __name__ == "__main__":
     # _monoCalib_  _flag_ _intP_  
     #================================
 
-    test.write_yaml('_no_monoCalib')
+    test.write_yaml('_monoCalib_flag_fix_IntP_load_10')
     # test.camera_left.write_yaml('')
     # test.camera_right.write_yaml('')
     #=====================================================Undistort
