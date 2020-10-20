@@ -27,8 +27,8 @@ import logging
 from ModelLoader import Loader
 from ModelEvaluator import Evaluator
 from ModelCalibrator import Calibrator
-from Util.util import *
-from Set.settings import *
+from ModelUtil.util import *
+from ModelSet.settings import *
 
 class Camera(object):
     """Basic class Camera
@@ -337,7 +337,7 @@ class Camera(object):
             'Calibration_err': self.IntError,
             'Reproject_err': self.Reproject_err
         }
-        yaml_file = os.path.join(CONFIGPATH, 'camera_'+self.name+postfix+'.yaml')
+        yaml_file = os.path.join(WRITEPATH, 'camera_'+self.name+postfix+'.yaml')
         file = open(yaml_file, 'w', encoding='utf-8')
         yaml.dump(camera_model, file)
         file.close()

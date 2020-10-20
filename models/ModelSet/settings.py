@@ -28,3 +28,4 @@ CHESSBOARDSIZE = [8,12] # HaiKang
 
 LOGFILE = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/log/log.txt'
 CONFIGPATH = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config'
+WRITEPATH = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/CameraPara'

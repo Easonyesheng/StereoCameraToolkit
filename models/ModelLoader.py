@@ -25,9 +25,9 @@ import numpy as np
 from tqdm import tqdm
 import logging
 
-from Set.settings import *
-from Util.util import *
-from Util.kitti_ana import KittiAnalyse
+from ModelSet.settings import *
+from ModelUtil.util import *
+from ModelUtil.kitti_ana import KittiAnalyse
 
 
 

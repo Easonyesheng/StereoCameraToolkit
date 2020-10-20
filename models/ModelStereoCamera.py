@@ -26,8 +26,8 @@ import logging
 import glob
 import time
 
-from Set.settings import *
-from Util.util import *
+from ModelSet.settings import *
+from ModelUtil.util import *
 from ModelCamera import Camera
 from ModelLoader import Loader
 from ModelEvaluator import Evaluator
@@ -645,7 +645,7 @@ class StereoCamera(object):
             'epipolar_angle': self.epi_angle
 
         }
-        yaml_file = os.path.join(CONFIGPATH, 'Stereo_'+self.name+postfix+'.yaml')
+        yaml_file = os.path.join(WRITEPATH, 'Stereo_'+self.name+postfix+'.yaml')
         file = open(yaml_file, 'w', encoding='utf-8')
         yaml.dump(camera_model, file)
         file.close()

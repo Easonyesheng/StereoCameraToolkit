@@ -22,10 +22,10 @@ from tqdm import tqdm
 import numpy as np
 import sys
 import logging
-from Set.settings import *
+from ModelSet.settings import *
 
 
-from Util.util import *
+from ModelUtil.util import *
 
 
 

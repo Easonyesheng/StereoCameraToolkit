@@ -21,8 +21,8 @@ import numpy as np
 import sys
 from tqdm import tqdm
 
-from Util.util import *
-from Set.settings import *
+from ModelUtil.util import *
+from ModelSet.settings import *
 
 
 
