@@ -7,6 +7,5 @@
     Plz Wait
     Now you can read the /models/*.py for a preview.
 
-## Read [this]() for Code_V1.
 
-## Read [this]() for the monocular camera calibration part.
+## Read [this](https://blog.csdn.net/weixin_42730997/article/details/108960908) for the monocular camera calibration part.
