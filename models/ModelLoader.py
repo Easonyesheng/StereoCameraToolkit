@@ -216,4 +216,3 @@ class Loader(object):
 
         return F
 
-    
