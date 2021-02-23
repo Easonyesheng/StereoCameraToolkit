@@ -1,6 +1,6 @@
 # StereoCameraToolkit
 
- A Toolkit for monocular/stereo camera self-calibration and stereo images processing.
+ A Toolkit for monocular/stereo camera (self-)calibration and stereo images processing.
 
 ## Refactoring this code now
 
