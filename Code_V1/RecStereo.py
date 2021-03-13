@@ -14,12 +14,12 @@ SavePrefix = '1_1'
 Rect = SelfCalibration(ImgPath,ParaPath,SavePath,SavePrefix)
 
 # load imgs
-left_name = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/left/2.png'
-right_name = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/right/2.png'
+left_name = '/Users/zhangyesheng/Downloads/stereotest_1201/left/left0050.jpg'
+right_name = '/Users/zhangyesheng/Downloads/stereotest_1201/right/right0050.jpg'
 Rect.load_image_pair(left_name, right_name)
 
 # load F
-F = np.array([9.768250931346025e-09,-2.500754865249672e-07,-9.548449895853595e-04,-6.860072261347790e-07,-2.777662381107611e-07,0.106495821734710,0.001526302816024,-0.106009349648440,-1.225012201964717])
+F = np.array([3.859384665011900e-07,1.174750025819467e-05,0.001531730508105,2.221824335066730e-06,5.242290366570594e-07,0.273809471444167,-0.008896052858825,-0.280564089701346,3.309041896528640])
 F.resize((3,3))
 Rect.FE = F
 Rect.F = F

@@ -105,7 +105,7 @@ def log_init(logfilename):
         datefmt='%Y-%m-%d %H:%M:%S')
 
     # 使用FileHandler输出到文件
-    fh = logging.FileHandler(logfilename)
+    fh = logging.FileHandler(logfilename, 'w')
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(formatter)
 

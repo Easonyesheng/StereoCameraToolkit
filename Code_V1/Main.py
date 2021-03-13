@@ -296,7 +296,7 @@ class SelfCalibration:
         """Get corresponding F from nx9 matrix
             The i_th line 1x9 -> F correspond to the 'i_th.jpg' 
         """
-        with open F_file as f:
+        with open(F_file) as f:
             f_list = f.readlines()
         
         F = np.array(f_list[line_index].split(),dtype=float).reshape((3,3))
@@ -975,30 +975,30 @@ class SelfCalibration:
         cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"RectUncalibLeft.jpg"),rectimg1)
         cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"RectUncalibRight.jpg"),rectimg2)
 
-        # cv2.startWindowThread()
-        # # cv2.imshow("left", rectimg1)
-        # # cv2.imshow("right", rectimg2)
+        cv2.startWindowThread()
+        # cv2.imshow("left", rectimg1)
+        # cv2.imshow("right", rectimg2)
 
-        # # draw the images side by side
-        # total_size = (max(rectimg1.shape[0], rectimg2.shape[0]),
-        #               rectimg1.shape[1] + rectimg2.shape[1], 3)
-        # img = np.zeros(total_size, dtype=np.uint8)
-        # img[:rectimg1.shape[0], :rectimg1.shape[1]] = rectimg1
-        # img[:rectimg2.shape[0], rectimg1.shape[1]:] = rectimg2
+        # draw the images side by side
+        total_size = (max(rectimg1.shape[0], rectimg2.shape[0]),
+                      rectimg1.shape[1] + rectimg2.shape[1], 3)
+        img = np.zeros(total_size, dtype=np.uint8)
+        img[:rectimg1.shape[0], :rectimg1.shape[1]] = rectimg1
+        img[:rectimg2.shape[0], rectimg1.shape[1]:] = rectimg2
  
-        # # draw horizontal lines every 25 px accross the side by side image
-        # for i in range(20, img.shape[0], 25):
-        #     cv2.line(img, (0, i), (img.shape[1], i), (255, 0, 0))
+        # draw horizontal lines every 25 px accross the side by side image
+        for i in range(20, img.shape[0], 25):
+            cv2.line(img, (0, i), (img.shape[1], i), (255, 0, 0))
  
-        # cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"RectUncalib.jpg"),img)
+        cv2.imwrite(os.path.join(self.SavePath,self.SavePrefix+"RectUncalib.jpg"),img)
         
-        #show
-        # cv2.imshow('imgRectified', img)
+        # show
+        cv2.imshow('imgRectified', img)
         
    
-        # k = cv2.waitKey()
-        # if k == 27:
-        #     cv2.destroyAllWindows()
+        k = cv2.waitKey()
+        if k == 27:
+            cv2.destroyAllWindows()
         
 if __name__ == "__main__":
 
