@@ -7,7 +7,7 @@ import yaml
 
 
 # Normal
-IMGPATH = '/Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/test_calib'
+IMGPATH = r'D:\DeepCalib\CalibrationNet\Dataset\For_Traditional_Calib_20_3\img'
 CAMERANAME = 'test'
 
 # IMGPATH = '/Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/calibrator_data_0927/left'
@@ -21,11 +21,13 @@ STEREOIMGPATH = '/Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/pics/imagep
 # CAMERANAME = 'right'
 
 TASK = 'Calibration'
-SAVEPATH = '/Users/zhangyesheng/Desktop/Dataset/StereoCamera_db/Res/Calib'
+SAVEPATH = r'D:\StereoCamera\Res'
 SAVEPREFIX = 'calibration_test'
-CHESSBOARDSIZE = [8,12] # HaiKang
+# CHESSBOARDSIZE = [8,12] # HaiKang
 # CHESSBOARDSIZE = [6,13] # Anba
+CHESSBOARDSIZE = [6,8] # Syn
 
-LOGFILE = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/log/log.txt'
-CONFIGPATH = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/config'
-WRITEPATH = '/Users/zhangyesheng/Desktop/Research/GraduationDesign/StereoVision/StereoCamera/CameraPara'
+
+LOGFILE = r'D:\StereoCamera\log\log.txt'
+CONFIGPATH = r'D:\StereoCamera\config'
+WRITEPATH = r''
