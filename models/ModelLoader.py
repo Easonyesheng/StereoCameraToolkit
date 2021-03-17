@@ -84,7 +84,7 @@ class Loader(object):
         
         img_names = glob.glob(os.path.join(self.image_path,'*.jpg'))
         img_names = img_names[:load_num]
-        if len(img_names) < 10: 
+        if len(img_names) < 3: 
             logging.warning('Images not enough!')
             sys.exit('Images not enough!')
         
@@ -110,6 +110,7 @@ class Loader(object):
             # img_temp_gray = (img_temp_gray / np.max(img_temp_gray))
             # img_temp_gray = cv2.cvtColor(img_temp, cv2.COLOR_BGR2GRAY)
             img[i,:,:] = img_temp_gray
+        
         
         return img, N, grayimg_shape
 

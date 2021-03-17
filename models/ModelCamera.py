@@ -117,8 +117,6 @@ class Camera(object):
         self.save_path = ''
         self.save_prefix = ''
 
-
-
     def init_by_config(self, yaml_path):
         """name
 
@@ -209,29 +207,29 @@ class Camera(object):
         if not check_numpy_array(self.ExtP):
             logging.warning("Extrinsic Parameters are not loaded")
         else:
-            logging.info("Extrinsic Parameters: \n EP:"+str(self.ExtP))
+            logging.info("One of the Extrinsic Parameters: \n EP:"+str(self.ExtP))
 
-        if len(self.R.shape) == 3:
-            if not check_numpy_array(self.R[0]):
-                logging.warning('R is empty')
-            else:
-                logging.info('R: '+str(self.R[0]))
-        elif len(self.R.shape) == 2:
-            if not check_numpy_array(self.R):
-                logging.warning('R is empty')
-            else:
-                logging.info('R: '+str(self.R))
+        # if len(self.R) == 3:
+        #     if not check_numpy_array(self.R[0]):
+        #         logging.warning('R is empty')
+        #     else:
+        #         logging.info('R: '+str(self.R[0]))
+        # elif len(self.R) == 2:
+        #     if not check_numpy_array(self.R):
+        #         logging.warning('R is empty')
+        #     else:
+        #         logging.info('R: '+str(self.R))
 
-        if len(self.t.shape) == 3:
-            if not check_numpy_array(self.t[0]):
-                logging.warning('t is empty')
-            else:
-                logging.info('t: '+str(self.t[0]))
-        elif len(self.t.shape) == 2:
-            if not check_numpy_array(self.t):
-                logging.warning('t is empty')
-            else:
-                logging.info('t: '+str(self.t))
+        # if len(self.t) == 3:
+        #     if not check_numpy_array(self.t[0]):
+        #         logging.warning('t is empty')
+        #     else:
+        #         logging.info('t: '+str(self.t[0]))
+        # elif len(self.t) == 2:
+        #     if not check_numpy_array(self.t):
+        #         logging.warning('t is empty')
+        #     else:
+        #         logging.info('t: '+str(self.t))
 
         if not check_numpy_array(self.DisP):
             logging.warning("Disortion Parameters are not loaded")
@@ -241,7 +239,7 @@ class Camera(object):
 
         logging.info('The camera has been calibrated: '+str(self.flag_calib))
 
-    def calibrate_camera(self, draw_flag, show_flag, save_flag):
+    def calibrate_camera(self, draw_flag=False, show_flag=False, save_flag=False):
         """name
             description
         Args:
@@ -347,7 +345,8 @@ class Camera(object):
 
 if __name__ == "__main__":
 
-    test = Camera()
+    log_init(LOGFILE)
+    test = Camera('test')
 
     # test.show_attri()
 
@@ -358,8 +357,9 @@ if __name__ == "__main__":
 
     # obj_points, img_points = test.calibrate_camera()
     # print(test.R)
+    test.calibrate_camera(draw_flag=True, show_flag=True, save_flag=True)
 
-    # test.show_attri()
+    test.show_attri()
     
     # test.write_yaml()
     # test.evaluate_calibration(obj_points, img_points)
@@ -367,3 +367,11 @@ if __name__ == "__main__":
     # test.show_img(save_flag=True)
 
     # test.undistort(save_flag=True)
+
+    # GT load
+    gt_path = r'D:\DeepCalib\CalibrationNet\Dataset\For_Traditional_Calib_20_3\info\0-0.npy'
+    gt = np.load(gt_path,allow_pickle=True)
+    gt = gt.item()
+    print('GT:\n',gt['K'])
+    print(gt['R'])
+    print(gt['t'])
