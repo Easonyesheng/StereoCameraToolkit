@@ -4,7 +4,8 @@
 
 ## Refactoring this code now
 
-    Now you can read the /models/*.py for a preview.
+    **Announcement！**
+    All the useful codes are in ./models/
 
 ## The Code Structure  
 
