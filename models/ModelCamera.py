@@ -369,9 +369,9 @@ if __name__ == "__main__":
     # test.undistort(save_flag=True)
 
     # GT load
-    gt_path = r'D:\DeepCalib\CalibrationNet\Dataset\For_Traditional_Calib_20_3\info\0-0.npy'
-    gt = np.load(gt_path,allow_pickle=True)
-    gt = gt.item()
-    print('GT:\n',gt['K'])
-    print(gt['R'])
-    print(gt['t'])
+    # gt_path = r'D:\DeepCalib\CalibrationNet\Dataset\For_Traditional_Calib_40_0\info\0-0.npy'
+    # gt = np.load(gt_path,allow_pickle=True)
+    # gt = gt.item()
+    # print('GT:\n',gt['K'])
+    # # print(gt['R'])
+    # print(gt['t'])

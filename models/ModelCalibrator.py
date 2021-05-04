@@ -18,6 +18,7 @@ Attributes:
 """
 
 import cv2
+import os
 from tqdm import tqdm
 import numpy as np
 import sys
@@ -40,7 +41,7 @@ class Calibrator(object):
 
 
     """
-    def __init__(self, name):
+    def __init__(self, name, save_path=r''):
         """name
             description
         Args:
@@ -58,6 +59,7 @@ class Calibrator(object):
         self.criteria = None
         self.object_points = [] # 3d point in real world space
         self.img_points = [] # 2d points in image plane.
+        self.save_path = save_path
 
     def __pre_set(self):
         """name
@@ -94,7 +96,7 @@ class Calibrator(object):
         ret, corners = cv2.findChessboardCorners(gray, (self.chess_board_size[1],self.chess_board_size[0]),None)
         return ret, corners
 
-    def __find_corners_subpix(self, img, corners):
+    def __find_corners_subpix(self, img, corners, save_flag=False, name='0'):
         """name
             description
         Args:
@@ -102,6 +104,8 @@ class Calibrator(object):
         Returns:
         """
         corners2 = cv2.cornerSubPix(img,corners,(11,11), (-1,-1), self.criteria)
+        # np.save(os.path.join(self.save_path, name+'npy'), corners2)
+        # print(corners2[0])
         return corners2
     
     def __draw_and_display(self, img, corners2, index, save_flag = False, show_img_flag = False):
@@ -125,13 +129,29 @@ class Calibrator(object):
         
     def __calibrate(self):
         """name
-            Draw and display the corners
+            Calibration
         Args:
 
         Returns:
         """
         # print((self.img.shape[2], self.img.shape[1]))
+        # print(self.img_points[0].shape)
+        # print(self.object_points[0].shape)
         ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(self.object_points, self.img_points, (self.img.shape[2], self.img.shape[1]),None,None)
+        return ret, mtx, dist, rvecs, tvecs
+    
+    def __calibrate_with_flag(self, f, pp):
+        """name
+            Calibration with fix focal length
+        Args:
+            f: focal length
+            pp: principle points
+        Returns:
+        """
+        mtx = np.array([[f,0,pp],
+                        [0,f,pp],
+                        [0,0,1]])
+        ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(self.object_points, self.img_points, (self.img.shape[2], self.img.shape[1]),cv2.CALIB_USE_INTRINSIC_GUESS,cv2.CALIB_FIX_FOCAL_LENGTH)
         return ret, mtx, dist, rvecs, tvecs
 
     def run(self, draw_flag = True, save_flag = False, show_flag = False):
@@ -165,7 +185,7 @@ class Calibrator(object):
         objp_temp = self.__get_object_point()
 
         logging.info("Calibration...")
-        for i in tqdm(range(self.img.shape[0])):
+        for i in tqdm(range(self.img.shape[0]), ncols=80):
             gray = self.img[i,:,:]
             gray = gray.astype(np.uint8)
             # print(gray.dtype)
@@ -179,6 +199,8 @@ class Calibrator(object):
                 
                 if draw_flag:
                     self.__draw_and_display(gray, corners2, i, save_flag, show_img_flag=show_flag)
+            # else:
+            #     logging.info('Not all corners are found.')
         
         ret, mtx, dist, rvecs, tvecs = self.__calibrate()
         logging.info("Calibration done, and the error of intrinsic is %f" % ret)

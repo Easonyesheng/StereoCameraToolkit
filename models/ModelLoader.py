@@ -83,8 +83,9 @@ class Loader(object):
             sys.exit("Load without path! ")
         
         img_names = glob.glob(os.path.join(self.image_path,'*.jpg'))
-        img_names = img_names[:load_num]
-        if len(img_names) < 3: 
+        # img_names = img_names[:load_num]
+        if len(img_names) < 2: 
+            print(len(img_names))
             logging.warning('Images not enough!')
             sys.exit('Images not enough!')
         
