@@ -12,7 +12,9 @@ import yaml
 # IMGPATH = r'D:\DeepCalib\CalibrationNet\Dataset\data_vs_noise\data_vs_noise_radius1.5_bg\ForCalibAc5_bg\img'
 # IMGPATH = r'D:\DeepCalib\CalibrationNet\Dataset\data_real\img' # real
 # IMGPATH = r'D:\DeepCalib\CalibrationNet\Dataset\data_vs_light_nobg\ForCalibAc7_light\img\O'
-IMGPATH = r'D:\DeepCalib\CalibrationNet\Dataset\data_vs_dist\data_dist05\ForCalibAc22_dist05\dist_img'
+# IMGPATH = r'D:\DeepCalib\CalibrationNet\Dataset\data_vs_noise\data_vs_noise_radius1.5_no_bg\img'
+IMGPATH = r'D:\DeepCalib\CalibrationNet\Dataset\data_vs_dist\data_dist045\ForCalibAc0_dist045\dist_img'
+GT_path = r'D:\DeepCalib\CalibrationNet\Dataset\data_vs_dist\data_dist045\ForCalibAc0_dist045\GT\0-0.npy'
 
 CAMERANAME = 'test'
 

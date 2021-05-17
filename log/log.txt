@@ -1,38 +1,98 @@
-2021-05-04 16:21:26 - root - INFO: - Load 8 images for calibration 
- The shape is: 480 , 480 
-2021-05-04 16:21:26 - root - INFO: - In Mod: Calibration, Image loading DONE.
-self.Image shape is: (8, 480, 480)
-2021-05-04 16:21:26 - root - INFO: - 
+2021-05-17 16:41:46 - root - INFO: - In Mod: poses, Image loading DONE.
+self.Image shape is: (7, 480, 480)
+2021-05-17 16:41:46 - root - INFO: - 
 +++++++Calibration Start+++++++
 
-2021-05-04 16:21:26 - root - INFO: - img for calibration shape: (8, 480, 480)
-2021-05-04 16:21:26 - root - INFO: - chess_board_size: [6 5]
-2021-05-04 16:21:26 - root - INFO: - Calibration...
-2021-05-04 16:21:27 - root - INFO: - save corners images to D:\StereoCamera\Res\draw_corner\test
-2021-05-04 16:21:27 - root - INFO: - save corners images to D:\StereoCamera\Res\draw_corner\test
-2021-05-04 16:21:27 - root - INFO: - save corners images to D:\StereoCamera\Res\draw_corner\test
-2021-05-04 16:21:27 - root - INFO: - save corners images to D:\StereoCamera\Res\draw_corner\test
-2021-05-04 16:21:28 - root - INFO: - save corners images to D:\StereoCamera\Res\draw_corner\test
-2021-05-04 16:21:28 - root - INFO: - save corners images to D:\StereoCamera\Res\draw_corner\test
-2021-05-04 16:21:28 - root - INFO: - save corners images to D:\StereoCamera\Res\draw_corner\test
-2021-05-04 16:21:28 - root - INFO: - save corners images to D:\StereoCamera\Res\draw_corner\test
-2021-05-04 16:21:28 - root - INFO: - Calibration done, and the error of intrinsic is 1.623736
-2021-05-04 16:21:28 - root - INFO: - 
-Show attributes
+2021-05-17 16:41:46 - root - INFO: - img for calibration shape: (7, 480, 480)
+2021-05-17 16:41:46 - root - INFO: - chess_board_size: [6 5]
+2021-05-17 16:41:46 - root - INFO: - Calibration...
+2021-05-17 16:41:46 - root - INFO: - Calibration done, and the error of intrinsic is 1.095003
+2021-05-17 16:41:46 - root - INFO: - 0 Minimal error of ForCalibAc0_dist045 currently = 229.86539309236272 minimal = 229.86539309236272
+2021-05-17 16:41:46 - root - INFO: - In Mod: poses, Image loading DONE.
+self.Image shape is: (4, 480, 480)
+2021-05-17 16:41:46 - root - INFO: - 
++++++++Calibration Start+++++++
 
-2021-05-04 16:21:28 - root - INFO: - Camera name: test
-2021-05-04 16:21:28 - root - INFO: - Images: 
-2021-05-04 16:21:28 - root - INFO: - 8 Images got.
-Shape is:(8, 480, 480)
-2021-05-04 16:21:28 - root - INFO: - Intrinsic Parameters: 
- K:[[453.52397221   0.         235.04897423]
- [  0.         454.95228716 217.96221764]
- [  0.           0.           1.        ]]
-2021-05-04 16:21:28 - root - INFO: - One of the Extrinsic Parameters: 
- EP:[[-0.38502173 -0.38502173 -0.38502173  1.08054978]
- [-0.32391478 -0.32391478 -0.32391478  2.0852461 ]
- [ 3.04548748  3.04548748  3.04548748 17.71224429]]
-2021-05-04 16:21:28 - root - INFO: - Distortion Parameters: 
- D:[[ 1.65614395e+00 -3.03966667e+01  5.50673040e-02  9.63365282e-02
-   1.27316630e+02]]
-2021-05-04 16:21:28 - root - INFO: - The camera has been calibrated: True
+2021-05-17 16:41:46 - root - INFO: - img for calibration shape: (4, 480, 480)
+2021-05-17 16:41:46 - root - INFO: - chess_board_size: [6 5]
+2021-05-17 16:41:46 - root - INFO: - Calibration...
+2021-05-17 16:41:46 - root - INFO: - Calibration done, and the error of intrinsic is 1.177147
+2021-05-17 16:41:46 - root - INFO: - 1 Minimal error of ForCalibAc0_dist045 currently = 178.6177989673551 minimal = 178.6177989673551
+2021-05-17 16:41:46 - root - INFO: - In Mod: poses, Image loading DONE.
+self.Image shape is: (5, 480, 480)
+2021-05-17 16:41:46 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2021-05-17 16:41:46 - root - INFO: - img for calibration shape: (5, 480, 480)
+2021-05-17 16:41:46 - root - INFO: - chess_board_size: [6 5]
+2021-05-17 16:41:46 - root - INFO: - Calibration...
+2021-05-17 16:41:47 - root - INFO: - Calibration done, and the error of intrinsic is 1.197069
+2021-05-17 16:41:47 - root - INFO: - 2 Minimal error of ForCalibAc0_dist045 currently = 182.5291680671378 minimal = 178.6177989673551
+2021-05-17 16:41:47 - root - INFO: - In Mod: poses, Image loading DONE.
+self.Image shape is: (4, 480, 480)
+2021-05-17 16:41:47 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2021-05-17 16:41:47 - root - INFO: - img for calibration shape: (4, 480, 480)
+2021-05-17 16:41:47 - root - INFO: - chess_board_size: [6 5]
+2021-05-17 16:41:47 - root - INFO: - Calibration...
+2021-05-17 16:41:49 - root - INFO: - Calibration done, and the error of intrinsic is 1.297870
+2021-05-17 16:41:49 - root - INFO: - 3 Minimal error of ForCalibAc0_dist045 currently = 192.78445870772435 minimal = 178.6177989673551
+2021-05-17 16:41:49 - root - INFO: - In Mod: poses, Image loading DONE.
+self.Image shape is: (10, 480, 480)
+2021-05-17 16:41:49 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2021-05-17 16:41:49 - root - INFO: - img for calibration shape: (10, 480, 480)
+2021-05-17 16:41:49 - root - INFO: - chess_board_size: [6 5]
+2021-05-17 16:41:49 - root - INFO: - Calibration...
+2021-05-17 16:41:55 - root - INFO: - Calibration done, and the error of intrinsic is 1.309917
+2021-05-17 16:41:55 - root - INFO: - 4 Minimal error of ForCalibAc0_dist045 currently = 219.00703490397146 minimal = 178.6177989673551
+2021-05-17 16:41:55 - root - INFO: - In Mod: poses, Image loading DONE.
+self.Image shape is: (7, 480, 480)
+2021-05-17 16:41:55 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2021-05-17 16:41:55 - root - INFO: - img for calibration shape: (7, 480, 480)
+2021-05-17 16:41:55 - root - INFO: - chess_board_size: [6 5]
+2021-05-17 16:41:55 - root - INFO: - Calibration...
+2021-05-17 16:42:06 - root - INFO: - Calibration done, and the error of intrinsic is 1.285013
+2021-05-17 16:42:06 - root - INFO: - 5 Minimal error of ForCalibAc0_dist045 currently = 193.5992486666369 minimal = 178.6177989673551
+2021-05-17 16:42:06 - root - INFO: - In Mod: poses, Image loading DONE.
+self.Image shape is: (6, 480, 480)
+2021-05-17 16:42:06 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2021-05-17 16:42:06 - root - INFO: - img for calibration shape: (6, 480, 480)
+2021-05-17 16:42:06 - root - INFO: - chess_board_size: [6 5]
+2021-05-17 16:42:06 - root - INFO: - Calibration...
+2021-05-17 16:42:24 - root - INFO: - Calibration done, and the error of intrinsic is 1.331680
+2021-05-17 16:42:24 - root - INFO: - 6 Minimal error of ForCalibAc0_dist045 currently = 214.63394463842843 minimal = 178.6177989673551
+2021-05-17 16:42:24 - root - INFO: - In Mod: poses, Image loading DONE.
+self.Image shape is: (13, 480, 480)
+2021-05-17 16:42:24 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2021-05-17 16:42:24 - root - INFO: - img for calibration shape: (13, 480, 480)
+2021-05-17 16:42:24 - root - INFO: - chess_board_size: [6 5]
+2021-05-17 16:42:24 - root - INFO: - Calibration...
+2021-05-17 16:43:03 - root - INFO: - Calibration done, and the error of intrinsic is 1.528544
+2021-05-17 16:43:03 - root - INFO: - 7 Minimal error of ForCalibAc0_dist045 currently = 325.2179715974841 minimal = 178.6177989673551
+2021-05-17 16:43:03 - root - INFO: - In Mod: poses, Image loading DONE.
+self.Image shape is: (8, 480, 480)
+2021-05-17 16:43:03 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2021-05-17 16:43:03 - root - INFO: - img for calibration shape: (8, 480, 480)
+2021-05-17 16:43:03 - root - INFO: - chess_board_size: [6 5]
+2021-05-17 16:43:03 - root - INFO: - Calibration...
+2021-05-17 16:44:06 - root - INFO: - Calibration done, and the error of intrinsic is 1.484039
+2021-05-17 16:44:06 - root - INFO: - 8 Minimal error of ForCalibAc0_dist045 currently = 306.0117576646176 minimal = 178.6177989673551
+2021-05-17 16:44:06 - root - INFO: - In Mod: poses, Image loading DONE.
+self.Image shape is: (12, 480, 480)
+2021-05-17 16:44:06 - root - INFO: - 
++++++++Calibration Start+++++++
+
+2021-05-17 16:44:06 - root - INFO: - img for calibration shape: (12, 480, 480)
+2021-05-17 16:44:06 - root - INFO: - chess_board_size: [6 5]
+2021-05-17 16:44:06 - root - INFO: - Calibration...

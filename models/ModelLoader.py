@@ -144,6 +144,18 @@ class Loader(object):
         
         return img, N
 
+    def load_image_list(self, img_list):
+        l = len(img_list)
+        img_temp = cv2.imread(img_list[0])
+        H, W, _ = img_temp.shape
+        imgs = np.zeros((l,H,W))
+        for i, img_name in enumerate(img_list):
+            img_temp_gray = cv2.imread(img_name,0)
+            img_temp_gray.astype(np.int8)
+            imgs[i,:,:] = img_temp_gray
+
+        return imgs, l
+
     def Load_F_txt(self,FPath):
         """load F to evaluate from a txt file
             :para
