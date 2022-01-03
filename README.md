@@ -1,8 +1,9 @@
 # StereoCameraToolkit
 
  A Toolkit for (monocular\binocular)camera calibration and rectification. 
+---
 
-## Refactoring this code now
+- [x] Refactoring this code now
 
  **Announcement！**
     All the useful codes are in ./models/
